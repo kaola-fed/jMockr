@@ -1,4 +1,4 @@
-const ftlParser = require('../ftl_parse');
+﻿const ftlParser = require('../ftl_parse');
 const urlMap = require('../mock/index');
 const onMockFinish = urlMap.onMockFinish;
 const logUtil = require(`../util/logUtil`);
@@ -63,18 +63,6 @@ module.exports = function(app) {
         try {
             //初始化图片上传路由
             uploadImg(app);
-            //初始化页面入口路由
-            urlMap.forEach(function(page) {
-                app.get(page.entry, function(req, res, next) {
-                    if (req.xhr) {
-                        next();
-                    } else {
-                        ftlParser.render(page.ftlPath, function(html) {
-                            res.send(html);
-                        }, page.ftlData);
-                    }
-                });
-            });
 
             onMockFinish(() => {
                 try {
