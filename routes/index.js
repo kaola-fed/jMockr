@@ -1,9 +1,11 @@
-﻿const ftlParser = require('../ftl_parse');
-const urlMap = require('../mock/index');
-const onMockFinish = urlMap.onMockFinish;
+const ftlParser = require('../ftl_parse');
+const urlMap = require('../scanner/index');
 const logUtil = require(`../util/logUtil`);
 const uploadImg = require('./uploadImg');
-const urlsReturn200 = require('../mock/ajax/retCode200');
+const uploadFile = require('./uploadFile');
+const noProxyAjax = require('./noProxyAjax');
+const proxyAjax = require('./proxyAjax');
+const proxyConfig = urlMap.proxyConfig;
 
 function initRequestMap(app) {
     //初始化页面入口路由
@@ -22,49 +24,23 @@ function initRequestMap(app) {
             throw `Error initializing page entry:${page.entry}`;
         }
     });
-    //初始化ajax路由
-    urlMap.forEach((page) => {
-        if (!page.ajax) return;
-        page.ajax.forEach((opt) => {
-            try {
-                opt.method = opt.method || 'post';
-                opt.method.split(',').forEach(function(m) {
-                    app[m.toLowerCase()](opt.url, (req, res, next) => {
-                        res.json(opt.result);
-                    });
-                });
-            } catch (e) {
-                throw `Error initializing ajax:${opt.url}`;
-            }
-        });
-    });
 
-    urlsReturn200.forEach((url) => {
-        try {
-            app.use(url, (req, res) => {
-                res.json({
-                    retCode: 200
-                });
-            });
-        } catch (e) {
-            throw `Error initializing retCode200 ajax:${url}`;
-        }
-    });
+    //初始化图片上传路由
+    uploadImg(app);
+    //初始化上传文件
+    uploadFile(app);
 
-    app.use((req, res) => {
-        console.info(404);
-        console.info(req.originalUrl);
-        res.status(404).send('Page not found.');
-    });
+    if (proxyConfig.enable) { //初始化ajax路由(返回本地配置的mock数据)
+        proxyAjax.init(app);
+    } else { //初始化ajax路由(代理到远程测试服务器)
+        noProxyAjax.init(app, urlMap, urlMap.url200);
+    }
 }
 
 module.exports = function(app) {
     return new Promise((resolve, reject) => {
         try {
-            //初始化图片上传路由
-            uploadImg(app);
-
-            onMockFinish(() => {
+            urlMap.onMockFinish(() => {
                 try {
                     initRequestMap(app);
                     resolve();

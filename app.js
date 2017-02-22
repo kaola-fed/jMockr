@@ -13,6 +13,10 @@ var routes = require('./routes/index');
 
 var app = express();
 
+//http://stackoverflow.com/questions/10888610/ignore-invalid-self-signed-ssl-certificate-in-node-js-with-https-request
+//Ignore invalid self-signed ssl certificate in node.js with https.request
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 //app.use(logger('dev'));   //日志太多, 先注释掉 想看自己打开
 app.use(bodyParser.json());

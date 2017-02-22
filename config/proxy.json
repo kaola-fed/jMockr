@@ -1,0 +1,9 @@
+{
+  "enable": false,
+  "useIP": false,
+  "protocol": "https",
+  "domain": "globalms.netease.com",
+  "ip": "127.0.0.1",
+  "enablePort": false,
+  "port": 4000
+}

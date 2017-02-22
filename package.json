@@ -7,7 +7,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "startNode": "nodemon app.js",
-    "startSync": "browser-sync start --proxy \"localhost:3000\" --files \"../**/*.css, ../**/*.js, !../mock_server/**/*.*, ../**/*.html, ../**/*.ftl\""
+    "start": "nodemon app.js",
+    "s": "nodemon app.js",
+    "startSync": "browser-sync start --proxy \"localhost:3000\" --files \"../**/*.css, ../**/*.js, !../mock_server/**/*.*, ../**/*.html, ../**/*.ftl\"",
+    "hot": "browser-sync start --proxy \"localhost:3000\" --files \"../**/*.css, ../**/*.js, !../mock_server/**/*.*, ../**/*.html, ../**/*.ftl\"",
+    "h": "browser-sync start --proxy \"localhost:3000\" --files \"../**/*.css, ../**/*.js, !../mock_server/**/*.*, ../**/*.html, ../**/*.ftl\""
   },
   "author": "hzyubaoquan",
   "license": "ISC",
@@ -18,7 +22,8 @@
     "image-size": "^0.5.0",
     "morgan": "^1.7.0",
     "multer": "^1.2.0",
-    "node.extend": "^1.1.6"
+    "node.extend": "^1.1.6",
+    "superagent": "^3.3.1"
   },
   "devDependencies": {
     "browser-sync": "^2.16.0",

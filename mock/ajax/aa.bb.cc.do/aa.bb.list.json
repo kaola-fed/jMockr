@@ -1,8 +1,0 @@
-{
-  "url": "/aa/bb/list.do",
-  "method": "get",
-  "result": {
-    "retCode": 200,
-    "orderTransferList": [1, 2, 3]
-  }
-}
