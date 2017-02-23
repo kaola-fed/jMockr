@@ -19,7 +19,7 @@
     "type": "git",
     "url": "git+https://github.com/yubaoquan/mock_server.git"
   },
-  "author": "hzyubaoquan",
+  "author": "yubaoquan",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.2",
