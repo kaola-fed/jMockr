@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "for seperate frontend and backend development",
   "main": "app.js",
-  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "startNode": "nodemon app.js",
@@ -12,6 +11,13 @@
     "startSync": "browser-sync start --proxy \"localhost:3000\" --files \"../**/*.css, ../**/*.js, !../mock_server/**/*.*, ../**/*.html, ../**/*.ftl\"",
     "hot": "browser-sync start --proxy \"localhost:3000\" --files \"../**/*.css, ../**/*.js, !../mock_server/**/*.*, ../**/*.html, ../**/*.ftl\"",
     "h": "browser-sync start --proxy \"localhost:3000\" --files \"../**/*.css, ../**/*.js, !../mock_server/**/*.*, ../**/*.html, ../**/*.ftl\""
+  },
+  "bin": {
+    "jmockr": "bin/start.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yubaoquan/mock_server.git"
   },
   "author": "hzyubaoquan",
   "license": "ISC",
@@ -25,6 +31,7 @@
     "node.extend": "^1.1.6",
     "superagent": "^3.3.1",
     "browser-sync": "^2.16.0",
-    "nodemon": "^1.10.2"
+    "nodemon": "^1.10.2",
+    "minimist": "^1.2.0"
   }
 }

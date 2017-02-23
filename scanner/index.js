@@ -1,8 +1,13 @@
 'use strict';
+
+console.info('Reading config');
+
 const path = require('path');
 const fs = require('fs');
 
 const config = require('../../jmockr.config.json');
+config.serverConfig = config.serverConfig || {};
+
 const configParentPath = path.resolve('..');
 
 //url--页面映射
@@ -96,6 +101,7 @@ module.exports = arr;
 module.exports.url200 = urlsReturn200;
 module.exports.authConfig = config.authConfig;
 module.exports.proxyConfig = config.proxyConfig;
+module.exports.serverPort = config.serverConfig.port || 3000;
 module.exports.onMockFinish = function(cb) {
     Promise.all(tasks).then(cb);
 };

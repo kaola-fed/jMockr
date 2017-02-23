@@ -1,3 +1,5 @@
+'use strict';
+
 const ftlParser = require('../ftl_parse');
 const urlMap = require('../scanner/index');
 const logUtil = require(`../util/logUtil`);
