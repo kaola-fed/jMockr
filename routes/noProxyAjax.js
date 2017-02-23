@@ -19,10 +19,6 @@ function init(app, urlMap, urlsReturn200) {
     urlsReturn200.forEach((url) => {
         try {
             app.use(url, (req, res) => {
-                console.info('protocol', req.protocol);
-                console.info('hostname', req.hostname);
-                console.info('baseurl', req.baseUrl);
-                console.info('path', req.path);
                 res.json({
                     retCode: 200
                 });

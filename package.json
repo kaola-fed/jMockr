@@ -1,5 +1,5 @@
 {
-  "name": "mock_server",
+  "name": "jmockr",
   "version": "1.0.0",
   "description": "for seperate frontend and backend development",
   "main": "app.js",
@@ -23,9 +23,7 @@
     "morgan": "^1.7.0",
     "multer": "^1.2.0",
     "node.extend": "^1.1.6",
-    "superagent": "^3.3.1"
-  },
-  "devDependencies": {
+    "superagent": "^3.3.1",
     "browser-sync": "^2.16.0",
     "nodemon": "^1.10.2"
   }
