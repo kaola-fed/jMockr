@@ -99,6 +99,7 @@ function mock(page) {
 
 module.exports = arr;
 module.exports.url200 = urlsReturn200;
+module.exports.ftlPath = config.ftlPath;
 module.exports.authConfig = config.authConfig;
 module.exports.proxyConfig = config.proxyConfig;
 module.exports.serverPort = config.serverConfig.port || 3000;

@@ -1,51 +1,65 @@
-# mock server 使用说明
 
-##现已加入npm, 用法改变, 使用说明暂无
-
-
-##旧版使用说明:
+# jmockr 使用说明
 
 ## 1. 安装
 
-进入mock server文件夹, 运行npm install
+`npm install jmockr`
 
-## 2. 模拟数据配置
+## 2. 配置文件
 
-一个新页面对应的完整mock数据涉及到的文件结构如下:
+配置文件名为jmockr.config.json, 放置在jmockr所在的文件夹中(即执行npm install imockr 的文件夹).
 
-    --mock_server
-        |
-        |--commonFtlData
-        |    |
-        |    |--navMenu
-        |         |
-        |         |--xxx.js         页面所属的MS模块的url映射关系(影响顶部导航条)
-        |
-        |--ftlMockData
-        |    |
-        |    |--abc.def.json        页面中用到的同步数据
-        |
-        |--ajax
-        |   |
-        |   |--abc.def.do           定义页面中每个ajax接口的文件夹
-        |   |     |
-        |   |     |
-        |   |     |--aaa.do.json     接口aaa.do对应的定义
-        |   |     |--bbb.do.json     接口bbb.do对应的定义
-        |   |
-        |   |
-        |   |--retCode200.json       只需要返回retCode=200 信息的接口地址全部放在这个文件
-        |
-        |
-        |--urlMap.json              所有页面的url和ftl对应关系
+配置文件内容:
 
-说明: 有些页面是从其他页面取数据后跳转过去的, 并不出现在导航条中, 所以navMenu中的配置和urlMap.json都要保留, 并不重复.
+以下是一份示例
+ ```
+ {
+  "authConfig": {
+    "username": "xxxxx", //测试环境登录用的账号和口令
+    "password": "xxxxx_"
+  },
+  "proxyConfig": {
+    "enable": true, //是否将ajax请求代理到测试环境
+    "useIP": false, //代理时使用IP还是域名
+    "protocol": "https",
+    "domain": "globalms.netease.com", //测试环境的域名
+    "ip": "127.0.0.1", //测试环境的IP
+    "enablePort": false, //是否声明端口号
+    "port": 4000
+  },
+  "dataPath": {
+    "urlMap": "mock/urlMap.json", // 1.[文件地址]
+    "commonFtl": "mock/commonFtlData", // 2.[文件夹地址]
+    "url200": "mock/ajax/retCode200.json", // 3.[文件地址]
+    "pageFtl": "mock/ftlMockData", // 4.[文件夹地址]
+    "ajax": "mock/ajax" // 5.[文件夹地址]
+  },
+  "serverConfig": {
+    port: 3000 //jmockr监听的端口
+  },
+  "ftlPath": "xxxx", // 6.[文件夹地址]
+}
+ ```
 
-**注意: mock_server 初始化路由配置是通过urlMap进行初始化的, navMenu只作为页面中的一种展示数据使用.**
+ 1. 页面地址映射到的ftl文件相对路径, 内容为一个数组, 形如`[{"entry": "xxxxx", "ftlPath": "yyyyy"}, {"entry": "xxxxx2", "ftlPath": "yyyyy2"}]`
+ 2. 存放通用ftl mock数据(即所有页面均会使用的ftl数据)文件的目录, 每个文件是json文件
+ 3. 此文件为一个url数组, 数组中所有url的ajax返回数据为 `{retCode: 200}`
+ 4. 每个页面中独有的ftl mock 数据的文件目录, 每个文件是json文件, 文件的命名规则见<a href="#mmgz">命名规则</a>
+ 5. 页面中每个ajax接口的mock数据放在一个json文件中, 每个页面的所有mock数据的json文件放在一个ajax文件夹(ajax文件夹的命名规则见<a href="#mmgz">命名规则</a>)中, 所有页面的ajax文件夹放在此目录下
+ 6. 存放所有ftl文件的相对路径
 
-**所以, 新增页面时可以不修改navMenu, 但一定要在urlMap.json中增加对应关系**
+**注意: 所有的相对路径, 都是相对于jmockr.config.json文件**
+
+
+<div id="mmgz">命名规则</div>
+已页面地址为`/abc/def.do`为例,
 
 下面以一个路径为`/abc/def.do`的新页面为例
+
+去掉, 第一个斜杠, 把剩下的斜杠换成点即可. 所以页面ftl的mock数据文件名为`abc.def.do.json`
+页面的ajax mock数据文件夹名为`abc.def.do`, 在此文件夹下, 所有ajax接口的mock文件名格式无格式要求(随便起名), 但必须是json文件或导出数据的.js文件, 如`1.json`, `abc.json`均为合法文件名
+
+以下举例:
 
 #### a. 页面入口及同步数据配置
 
@@ -55,13 +69,13 @@
 
 > ftl文件位置：new_template/pages/aaa/bbb/ccc.ftl
 
-则向mock_server/mock/urlMap.json文件中的数组添加一项
+则向mock/urlMap.json文件中的数组添加一项
 
     {
 	    entry: '/abc/def.do',
 	    ftlPath: 'new_template/pages/aaa/bbb/ccc.ftl'
 	}
-如果需要在ftl中渲染同步数据的话, 在mock_server/mock/ftlMockData/路径下新建文件`abc.def.do.json`,  同步数据, 如下:
+如果需要在ftl中渲染同步数据的话, 在mock/ftlMockData/路径下新建文件`abc.def.do.json`,  同步数据, 如下:
 
     {
         sentence: "Hello World",
@@ -104,20 +118,19 @@
 
 **如果开启代理, 请确认当前host或者ip是自己需要调试的目标地址, 避免产生环境不对造成接口访问不到的问题**
 
-## 3. 启动
+## 3. 启动命令
 
-双击mock_server/路径下的startNode.bat，即可启动mock server。修改mock数据后可以直接生效，不需要重启。
+jmockr -n 或 jmockr --normal 普通启动, 修改mock数据或页面代码, 不会重启服务器
+jmockr -s 或 jmockr --start 热启动, 修改mock数据会触发jmockr重启
+jmockr -l 或 jmockr --live 带有live reload功能的热启动, 修改页面代码时会自动刷新浏览器 [此模式暂不支持]
 
-**tips: idea可以安装一个插件`CMD support`, 然后就可以在IDE中右键脚本文件, 在菜单中选择`run cmd script`选项运行脚本**
-
-**注意: idea自带的cmd环境无法直接运行启动脚本**
 
 ## 4. 注意
 
-1. 如果ftl中存在语法错误或ftl中引用了不存在的ftl(如fackData/xxxx)时, mock server 会默默的将其吞掉. mock server会在命令行中提示渲染对应的模板出错并返回<div>error</div>, 请观察ftl代码和模拟数据是否有误
+1. 如果ftl中存在语法错误或ftl中引用了不存在的ftl(如fackData/xxxx)时, jmockr 会默默的将其吞掉. jmockr 会在命令行和页面中提示渲染对应的模板出错, 请观察ftl代码和模拟数据是否有误
 
 
-## 5.页面实时刷新
+## 5.页面实时刷新(由于jMockr更新到npm, 原有npm run运行方式作废, 暂时停用)
 
 如果想在开发中启动实时刷新功能, 在mock server启动后,双击f5.bat即可(此时请使用localhost:3001的地址查看网页, 实时刷新功能开启时, 首屏渲染时间反而比不开时长)
 
