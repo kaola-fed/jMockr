@@ -1,4 +1,4 @@
-const proxyCfg = require('../config/proxy');
+const proxyCfg = require('../jmockr.config.json').proxyConfig;
 const authTool = require('../auth/cas');
 const logUtil = require('../util/logUtil');
 

@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 'use strict';
 
+const cmdify = require('cmdify');
+const config = require('../jmockr.config');
+
 const version = require('../package.json').version;
 const parseArgv = require('minimist');
 
 const nodemon = require('nodemon');
 const app = require('../app');
-
+const spawn = require('child_process').spawn;
 let args = parseArgv(process.argv.slice(2));
 
 index(args);
@@ -29,7 +32,16 @@ function index(args) {
     }
     if (args.l || args.live) {
         //https://browsersync.io/docs/options
-        console.info('页面live reload 启动(暂不支持)')
+        console.info('页面live reload 启动(alpha)');
+        nodemon({
+          script: 'appLauncher.js',
+          ext: 'js json'
+        });
+        let path2Watch = config.liveReload.watch.join(', ');
+        let path2Ignore = config.liveReload.ignore.map(p => `!${p}`).join(', ');
+        spawn(cmdify('browser-sync'), [
+            'start', '--proxy', `localhost:${config.serverConfig.port}`, `--files`, `${path2Watch}, ${path2Ignore}`],
+            {stdio: 'inherit'});
     }
     if (args.v || args.version) {
         console.info(version);

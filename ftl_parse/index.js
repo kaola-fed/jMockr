@@ -1,10 +1,10 @@
 'use strict';
 const path = require('path');
 const Freemarker = require('freemarker.js');
-const config = require('../scanner/index');
-
+const config = require('../jmockr.config.json');
+console.info(path.join(__dirname, '..', config.ftlFilePath))
 var fm = new Freemarker({
-    viewRoot: path.join(__dirname, '../../', config.ftlPath),
+    viewRoot: path.join(__dirname, '..', config.ftlFilePath),
     options: {
 
     }

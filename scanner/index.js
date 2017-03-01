@@ -5,11 +5,11 @@ console.info('Reading config');
 const path = require('path');
 const fs = require('fs');
 
-const config = require('../../jmockr.config.json');
+const config = require('../jmockr.config.json');
 config.serverConfig = config.serverConfig || {};
 
-const configParentPath = path.resolve('..');
-
+const configParentPath = path.resolve('.');
+console.info(configParentPath);
 //url--页面映射
 const uPath = path.resolve(configParentPath, config.dataPath.urlMap);
 if (!uPath) {

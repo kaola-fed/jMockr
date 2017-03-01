@@ -1,6 +1,6 @@
 {
   "name": "jmockr",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "for seperate frontend and backend development",
   "main": "app.js",
   "scripts": {
@@ -23,15 +23,15 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "browser-sync": "^2.16.0",
+    "cmdify": "0.0.4",
     "express": "^4.14.0",
     "freemarker.js": "^1.2.2",
     "image-size": "^0.5.0",
-    "morgan": "^1.7.0",
+    "minimist": "^1.2.0",
     "multer": "^1.2.0",
     "node.extend": "^1.1.6",
-    "superagent": "^3.3.1",
-    "browser-sync": "^2.16.0",
     "nodemon": "^1.10.2",
-    "minimist": "^1.2.0"
+    "superagent": "^3.3.1"
   }
 }

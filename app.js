@@ -4,12 +4,9 @@
  * @description 前端模拟服务器, 前后端分离开发用
  */
 
-const config = require('./scanner/index');
+const config = require('./jmockr.config.json');
 const express = require('express');
 const path = require('path');
-// var favicon = require('serve-favicon');
-const logger = require('morgan');
-// var cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 const routes = require('./routes/index');
@@ -21,8 +18,7 @@ module.exports.run = function() {
     //Ignore invalid self-signed ssl certificate in node.js with https.request
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-    // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-    //app.use(logger('dev'));   //日志太多, 先注释掉 想看自己打开
+    app.use(express.static(config.serverConfig.static));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     // app.use(cookieParser());
@@ -46,8 +42,8 @@ module.exports.run = function() {
 
     routes(app)
     .then(() => {
-        app.listen(config.serverPort, () => {
-            console.info(`Mock server listening on port ${config.serverPort}!`);
+        app.listen(config.serverConfig.port, () => {
+            console.info(`Mock server listening on port ${config.serverConfig.port}!`);
         });
     })
     .catch((e) => {

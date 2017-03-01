@@ -12,6 +12,7 @@
 配置文件内容:
 
 以下是一份示例
+
  ```
  {
   "authConfig": {
@@ -35,9 +36,21 @@
     "ajax": "mock/ajax" // 5.[文件夹地址]
   },
   "serverConfig": {
-    port: 3000 //jmockr监听的端口
+    "port": 3000 //jmockr监听的端口
+    "static": "./webapp" //前端静态文件位置 包括css/js/图片资源等
   },
-  "ftlPath": "xxxx", // 6.[文件夹地址]
+  "ftlFilePath": "xxxx", // 6.[文件夹地址]
+  "liveReload": { //liveReload 模式的配置
+      "watch": [ //监听变化的文件或路径
+          "**/*.css",
+          "**/*.js",
+          "**/*.html",
+          "**/*.ftl"
+      ],
+      "ignore": [ //不监听的文件或路径
+          "../ignore/**/*.*"
+      ]
+  }
 }
  ```
 
@@ -122,7 +135,7 @@
 
 jmockr -n 或 jmockr --normal 普通启动, 修改mock数据或页面代码, 不会重启服务器
 jmockr -s 或 jmockr --start 热启动, 修改mock数据会触发jmockr重启
-jmockr -l 或 jmockr --live 带有live reload功能的热启动, 修改页面代码时会自动刷新浏览器 [此模式暂不支持]
+jmockr -l 或 jmockr --live 带有live reload功能的热启动, 修改页面代码时会自动刷新浏览器
 
 
 ## 4. 注意
