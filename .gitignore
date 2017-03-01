@@ -50,3 +50,4 @@ fileStorage
 webapp
 /jmockr.config.json
 /mock
+/log
