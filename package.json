@@ -1,6 +1,6 @@
 {
   "name": "jmockr",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "for seperate frontend and backend development",
   "main": "app.js",
   "scripts": {
@@ -28,6 +28,7 @@
     "express": "^4.14.0",
     "freemarker.js": "^1.2.2",
     "image-size": "^0.5.0",
+    "json5": "^0.5.1",
     "minimist": "^1.2.0",
     "multer": "^1.2.0",
     "node.extend": "^1.1.6",

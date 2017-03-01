@@ -14,43 +14,43 @@
 以下是一份示例
 
  ```
- {
-  "authConfig": {
-    "username": "xxxxx", //测试环境登录用的账号和口令
-    "password": "xxxxx_"
-  },
-  "proxyConfig": {
-    "enable": true, //是否将ajax请求代理到测试环境
-    "useIP": false, //代理时使用IP还是域名
-    "protocol": "https",
-    "domain": "globalms.netease.com", //测试环境的域名
-    "ip": "127.0.0.1", //测试环境的IP
-    "enablePort": false, //是否声明端口号
-    "port": 4000
-  },
-  "dataPath": {
-    "urlMap": "mock/urlMap.json", // 1.[文件地址]
-    "commonFtl": "mock/commonFtlData", // 2.[文件夹地址]
-    "url200": "mock/ajax/retCode200.json", // 3.[文件地址]
-    "pageFtl": "mock/ftlMockData", // 4.[文件夹地址]
-    "ajax": "mock/ajax" // 5.[文件夹地址]
-  },
-  "serverConfig": {
-    "port": 3000 //jmockr监听的端口
-    "static": "./webapp" //前端静态文件位置 包括css/js/图片资源等
-  },
-  "ftlFilePath": "xxxx", // 6.[文件夹地址]
-  "liveReload": { //liveReload 模式的配置
-      "watch": [ //监听变化的文件或路径
-          "**/*.css",
-          "**/*.js",
-          "**/*.html",
-          "**/*.ftl"
-      ],
-      "ignore": [ //不监听的文件或路径
-          "../ignore/**/*.*"
-      ]
-  }
+{
+    "authConfig": {
+        "username": "xxxxx", //测试环境登录用的账号和口令
+        "password": "xxxxx_"
+    },
+    "proxyConfig": {
+        "enable": true, //是否将ajax请求代理到测试环境
+        "useIP": false, //代理时使用IP还是域名
+        "protocol": "https",
+        "domain": "globalms.netease.com", //测试环境的域名
+        "ip": "127.0.0.1", //测试环境的IP
+        "enablePort": false, //是否声明端口号
+        "port": 4000
+    },
+    "dataPath": {
+        "urlMap": "mock/urlMap.json", // 1.[文件地址]
+        "commonFtl": "mock/commonFtlData", // 2.[文件夹地址]
+        "url200": "mock/ajax/retCode200.json", // 3.[文件地址]
+        "pageFtl": "mock/ftlMockData", // 4.[文件夹地址]
+        "ajax": "mock/ajax" // 5.[文件夹地址]
+    },
+    "serverConfig": {
+        "port": 3000 //jmockr监听的端口
+        "static": "./webapp" //前端静态文件位置 包括css/js/图片资源等
+    },
+    "ftlFilePath": "xxxx", // 6.[文件夹地址]
+    "liveReload": { //liveReload 模式的配置
+        "watch": [ //监听变化的文件或路径
+             "**/*.css",
+             "**/*.js",
+             "**/*.html",
+             "**/*.ftl"
+        ],
+        "ignore": [ //不监听的文件或路径
+             "../ignore/**/*.*"
+        ]
+    }
 }
  ```
 
@@ -143,20 +143,55 @@ jmockr -l 或 jmockr --live 带有live reload功能的热启动, 修改页面代
 1. 如果ftl中存在语法错误或ftl中引用了不存在的ftl(如fackData/xxxx)时, jmockr 会默默的将其吞掉. jmockr 会在命令行和页面中提示渲染对应的模板出错, 请观察ftl代码和模拟数据是否有误
 
 
-## 5.页面实时刷新(由于jMockr更新到npm, 原有npm run运行方式作废, 暂时停用)
+## 5.页面实时刷新
 
-如果想在开发中启动实时刷新功能, 在mock server启动后,双击f5.bat即可(此时请使用localhost:3001的地址查看网页, 实时刷新功能开启时, 首屏渲染时间反而比不开时长)
+如果想在开发中启动实时刷新功能, 执行命令`jmockr -l` 或 `jmockr --live`即可(此时请使用localhost:3001的地址查看网页, 实时刷新功能开启时, 首屏渲染时间反而比不开时长)
 
 mock server中使用的实时刷新插件来自browsersync
 
 使用过程中发现, browserSync会出现某些文件改动后不自动刷新的问题, 并偶尔出现请求时间变长的问题. 如果影响使用, 请关闭browserSync的代理服务器, 直接用node的3000地址访问
 
-参考: [browsersync中文文档](http://www.browsersync.cn/)
-[官网](https://www.browsersync.io/)
+参考:
+[browsersync中文文档](http://www.browsersync.cn/)
+[browsersync官网](https://www.browsersync.io/)
 
 ## 6.tips
 
-目前使用中常见的错误造成的异常(mock文件数据格式错误, ftl文件找不到, 渲染出错等), 都可以在mockserver 的cmd中或页面上打印出来, 如果页面出现加载不出来的情况, 请留意cmd中的信息
+1.目前使用中常见的错误造成的异常(mock文件数据格式错误, ftl文件找不到, 渲染出错等), 都可以在mockserver 的cmd中或页面上打印出来, 如果页面出现加载不出来的情况, 请留意cmd中的信息
+
+2.jmockr支持json5风格的json文件, 如下:
+
+```
+{
+    foo: 'bar',
+    while: true,
+
+    this: 'is a \
+multi-line string',
+
+    // this is an inline comment
+    here: 'is another', // inline comment
+
+    /* this is a block comment
+       that continues on another line */
+
+    hex: 0xDEADbeef,
+    half: .5,
+    delta: +10,
+    to: Infinity,   // and beyond!
+
+    finally: 'a trailing comma',
+    oh: [
+        "we shouldn't forget",
+        'arrays can have',
+        'trailing commas too',
+    ],
+}
+```
+
+
+ 详见[JSON5](https://github.com/json5/json5)
+
 
 ## *. TODO
 
@@ -171,3 +206,18 @@ mock server中使用的实时刷新插件来自browsersync
 	result: function(query, body, params) {
 		return xxx;
 	}
+
+#### b.mock 文件中的数据支持正则编辑规则:
+可能如下
+```
+{
+	url: 'xxx',
+	method: 'post',
+	result: {
+		a: '1number10', //介于1到10之间的整数
+		b: '5string20'  //介于5到10字母长度的字符串
+	}
+}
+```
+参考资料:
+[nuysoft/Mock](https://github.com/nuysoft/Mock/wiki/Syntax-Specification)

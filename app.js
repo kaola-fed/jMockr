@@ -4,7 +4,7 @@
  * @description 前端模拟服务器, 前后端分离开发用
  */
 
-const config = require('./jmockr.config.json');
+const config = require('./scanner/config');
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');

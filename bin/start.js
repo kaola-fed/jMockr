@@ -2,7 +2,7 @@
 'use strict';
 
 const cmdify = require('cmdify');
-const config = require('../jmockr.config');
+const config = require('../scanner/config');
 
 const version = require('../package.json').version;
 const parseArgv = require('minimist');

@@ -4,33 +4,30 @@ console.info('Reading config');
 
 const path = require('path');
 const fs = require('fs');
-
-const config = require('../jmockr.config.json');
+const fileUtil = require('../util/fileUtil');
+const config = require('./config');
 config.serverConfig = config.serverConfig || {};
 
-const configParentPath = path.resolve('.');
-console.info(configParentPath);
 //url--页面映射
-const uPath = path.resolve(configParentPath, config.dataPath.urlMap);
+const uPath = path.resolve(__dirname, '..', config.dataPath.urlMap);
 if (!uPath) {
     console.error('未配置urlMap');
     process.exit(1);
 }
-const arr = require(uPath);
+const arr = fileUtil.json5Require(uPath);
 
 //公共ftl数据
-const cPath = path.resolve(configParentPath, config.dataPath.commonFtl);
+const cPath = path.resolve(__dirname, '..', config.dataPath.commonFtl);
 
 //单页ftl数据
-const pPath = path.resolve(configParentPath, config.dataPath.pageFtl);
+const pPath = path.resolve(__dirname, '..', config.dataPath.pageFtl);
 //单页ajax数据
-const aPath = path.resolve(configParentPath, config.dataPath.ajax);
+const aPath = path.resolve(__dirname, '..', config.dataPath.ajax);
 
 //retCode200的接口
-const url200Path = path.resolve(configParentPath, config.dataPath.url200);
+const url200Path = path.resolve(__dirname, '..', config.dataPath.url200);
 const urlsReturn200 = require(url200Path);
 
-const fileUtil = require('../util/fileUtil');
 const extend = require('node.extend');
 
 console.info('starting...');
@@ -38,6 +35,8 @@ console.info('starting...');
 let tasks = arr.map((page) => {
     return mock(page);
 });
+
+const j5require = fileUtil.json5Require;
 
 function isFrontPage(url) {
     return url == '/' || url == '/index.do';
@@ -53,7 +52,7 @@ function mock(page) {
                 return fs.statSync(`${cPath}/${name}`).isFile();
             })
             .then(function(fileName) {
-                let data = require(`${cPath}/${fileName}`);
+                let data = j5require(`${cPath}/${fileName}`);
                 extend(page.ftlData, data);
             }).catch((e) => {
                 console.info(e);
@@ -69,7 +68,7 @@ function mock(page) {
         if (pPath) {
             let ftlMockFilePath = path.join(pPath, page.entry.slice(1).replace(/\//g, '.'), 'json');
             try {
-                extend(page.ftlData, require(ftlMockFilePath));
+                extend(page.ftlData, j5require(ftlMockFilePath));
             } catch(e) {
                 //console.info('no ftl data, pass');
             }
@@ -85,8 +84,8 @@ function mock(page) {
             fileUtil.listFiles(ajaxFolderPath, item => /\.json/.test(item))
             .then((fileNames) => {
                 fileNames.forEach((fileName) => {
-                    let json = require(`${ajaxFolderPath}/${fileName}`);
-                    page.ajax.push(json);
+                    let json = j5require(`${ajaxFolderPath}/${fileName}`);
+                    json && page.ajax.push(json);
                 });
                 resolve();
             }).catch(() => {

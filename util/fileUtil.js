@@ -1,4 +1,5 @@
 const fs = require('fs');
+const JSON5 = require('json5');
 
 function listFiles(path, myFilter) {
     return new Promise(function(resolve, reject) {
@@ -56,8 +57,25 @@ function writeFile(fd, data) {
     });
 }
 
+function json5Require(filePath) {
+    if (!fs.existsSync(filePath)) {
+        // console.info(`File [${path}] not exist!`);
+        return null;
+    }
+    try {
+        if (/\.js$/.test(filePath)) return require(filePath);
+
+        let fileContent = fs.readFileSync(filePath);
+        return JSON5.parse(fileContent);
+    } catch (e) {
+        console.info(`require json5 file [${filePath}] failed`, e);
+        return null;
+    }
+}
+
 module.exports = {
     listFiles,
     readFile,
-    makeFile
+    makeFile,
+    json5Require
 };
