@@ -1,7 +1,19 @@
 
 # jmockr 使用说明
 
+[![NPM version][npm-image]][npm-url]
+[![npm download][download-image]][download-url]
+
+[npm-image]: http://img.shields.io/npm/v/jmockr.svg?style=flat-square
+[npm-url]: http://npmjs.org/package/jmockr
+[download-image]: https://img.shields.io/npm/dm/jmockr.svg?style=flat-square
+[download-url]: https://npmjs.org/package/jmockr
+
+
 ## 1. 安装
+
+
+[![dom-scroll-into-view](https://nodei.co/npm/jmockr.png)](https://npmjs.org/package/jmockr)
 
 `npm install jmockr`
 
@@ -221,3 +233,8 @@ multi-line string',
 ```
 参考资料:
 [nuysoft/Mock](https://github.com/nuysoft/Mock/wiki/Syntax-Specification)
+
+
+## License
+
+jMockr is released under the SIC license.
