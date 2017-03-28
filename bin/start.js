@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
+const path = require('path');
 const cmdify = require('cmdify');
 const config = require('../scanner/config');
 
@@ -26,16 +27,16 @@ function index(args) {
     if (args.s || args.start) {
         console.info('mock 数据热更新启动');
         return nodemon({
-          script: 'appLauncher.js',
-          ext: 'js json'
+            script: path.resolve(__dirname, '../appLauncher.js'),
+            ext: 'js json'
         });
     }
     if (args.l || args.live) {
         //https://browsersync.io/docs/options
         console.info('页面live reload 启动(alpha)');
         nodemon({
-          script: 'appLauncher.js',
-          ext: 'js json'
+            script: path.resolve(__dirname, '../appLauncher.js'),
+            ext: 'js json'
         });
         let path2Watch = config.liveReload.watch.join(', ');
         let path2Ignore = config.liveReload.ignore.map(p => `!${p}`).join(', ');
@@ -65,7 +66,7 @@ function showHelp() {
     console.info('-h, --help\tshow help');
     console.info('-n, --normal\t普通启动, 修改mock数据或页面代码, 不会重启服务器');
     console.info('-s, --start\t热启动, 修改mock数据会触发jmockr重启');
-    console.info('-l, --live\t带有live reload功能的热启动, 修改页面代码时会自动刷新浏览器 [此模式暂不支持]')
+    console.info('-l, --live\t带有live reload功能的热启动, 修改页面代码时会自动刷新浏览器');
     console.info('=======================================');
 }
 
