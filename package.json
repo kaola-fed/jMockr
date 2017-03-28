@@ -1,6 +1,6 @@
 {
   "name": "jmockr",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "for seperate frontend and backend development",
   "main": "app.js",
   "scripts": {

@@ -9,7 +9,7 @@ const config = require('./config');
 config.serverConfig = config.serverConfig || {};
 
 //url--页面映射
-const uPath = path.resolve(__dirname, '..', config.dataPath.urlMap);
+const uPath = path.resolve(config.dataPath.urlMap);
 if (!uPath) {
     console.error('未配置urlMap');
     process.exit(1);
@@ -17,15 +17,15 @@ if (!uPath) {
 const arr = fileUtil.json5Require(uPath);
 
 //公共ftl数据
-const cPath = path.resolve(__dirname, '..', config.dataPath.commonFtl);
+const cPath = path.resolve(config.dataPath.commonFtl);
 
 //单页ftl数据
-const pPath = path.resolve(__dirname, '..', config.dataPath.pageFtl);
+const pPath = path.resolve(config.dataPath.pageFtl);
 //单页ajax数据
-const aPath = path.resolve(__dirname, '..', config.dataPath.ajax);
+const aPath = path.resolve(config.dataPath.ajax);
 
 //retCode200的接口
-const url200Path = path.resolve(__dirname, '..', config.dataPath.url200);
+const url200Path = path.resolve(config.dataPath.url200);
 const urlsReturn200 = require(url200Path);
 
 const extend = require('node.extend');
