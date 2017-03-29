@@ -19,7 +19,7 @@
 
 ## 2. 配置文件
 
-配置文件名为jmockr.config.json, 放置在jmockr所在的文件夹中(即执行npm install imockr 的文件夹).
+配置文件名为jmockr.config.json, 放置在jmockr所在的文件夹中(即执行npm install jmockr 的文件夹).
 
 配置文件内容:
 
