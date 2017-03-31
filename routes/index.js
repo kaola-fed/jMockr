@@ -10,6 +10,12 @@ const proxyAjax = require('./proxyAjax');
 const proxyConfig = urlMap.proxyConfig;
 
 function initRequestMap(app) {
+    app.all('*', (req, res, next) => {
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+        res.header('Access-Control-Allow-Methods', 'POST, GET');
+        next();
+    });
     //初始化页面入口路由
     urlMap.forEach(function(page) {
         try {

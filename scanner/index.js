@@ -81,7 +81,7 @@ function mock(page) {
             let ajaxFolderPath = path.join(aPath, relativePath);
 
             // 限制文件返回格式为json; 可以过滤mac中的隐藏文件, 如.DSstore, 防止读取ajax配置失败
-            fileUtil.listFiles(ajaxFolderPath, item => /\.json/.test(item))
+            fileUtil.listFiles(ajaxFolderPath, item => /\.json(5)?$/.test(item))
             .then((fileNames) => {
                 fileNames.forEach((fileName) => {
                     let json = j5require(`${ajaxFolderPath}/${fileName}`);

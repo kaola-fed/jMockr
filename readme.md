@@ -237,4 +237,4 @@ multi-line string',
 
 ## License
 
-jMockr is released under the SIC license.
+jMockr is released under the ISC license.
