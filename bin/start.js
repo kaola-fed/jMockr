@@ -24,11 +24,11 @@ function index(args) {
         console.info('普通启动');
         return app.run();
     }
-    if (args.s || args.start) {
+    if (args.s || args.start) { 
         console.info('mock 数据热更新启动');
         return nodemon({
             script: path.resolve(__dirname, '../appLauncher.js'),
-            ext: 'js json'
+            ext: '.js .json .json5'
         });
     }
     if (args.l || args.live) {
