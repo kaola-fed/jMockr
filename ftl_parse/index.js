@@ -1,24 +1,24 @@
 'use strict';
 const path = require('path');
-const Freemarker = require('freemarker.js');
+const Render = require('fast-ftl').Render;
 const config = require('../scanner/config');
 
-const fm = new Freemarker({
-    viewRoot: path.resolve(config.ftlFilePath),
-    options: {
-
-    }
+const render = Render({
+    root: path.resolve(config.ftlFilePath),
+    paths: [],
+    defaultEncoding: "utf-8", 	 // 默认 encoding
+    urlEscapingCharsetSet: "utf-8", // URLEscapingCharset
+    numberFormat: "0.##########" // 数字格式化方式
 });
 
 module.exports.render = function(tpl, cb, dataObject) {
-    fm.render(tpl, dataObject || {}, function(err, html, output) {
-        if (err) {
-            console.info(`渲染出错:${tpl}`);
-            html = `
-                <div>渲染出错:${tpl}</div>
-                <div>${err}</div>
-            `;
-        }
+    if (tpl.startsWith('/')) tpl = tpl.slice(1);
+    render.parse(tpl, dataObject).then(cb).catch(e => {
+        console.info(`渲染出错:${tpl}`);
+        let html = `
+            <div>渲染出错:${tpl}</div>
+            <div>${e}</div>
+        `;
         cb(html);
     });
 };

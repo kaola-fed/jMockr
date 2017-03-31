@@ -1,6 +1,6 @@
 {
   "name": "jmockr",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "for seperate frontend and backend development",
   "main": "app.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "browser-sync": "^2.16.0",
     "cmdify": "0.0.4",
     "express": "^4.14.0",
-    "freemarker.js": "^1.2.2",
+    "fast-ftl": "^1.7.0",
     "image-size": "^0.5.0",
     "json5": "^0.5.1",
     "minimist": "^1.2.0",
