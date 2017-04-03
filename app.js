@@ -39,19 +39,14 @@ module.exports.run = function() {
         console.info(err);
         res.status(err.status || 500).send('Server crashed.');
     });
-
     routes(app)
     .then(() => {
         app.listen(config.serverConfig.port, () => {
-            console.info(`Mock server listening on port ${config.serverConfig.port}!`);
+            console.info(`      jMockr listening on port ${config.serverConfig.port}!\n`);
         });
     })
     .catch((e) => {
         console.info(e);
-        console.error('Mock server crashed');
+        console.error('jMockr crashed!\n');
     });
-}
-
-module.exports.foo = function() {
-    console.info('bar');
 }

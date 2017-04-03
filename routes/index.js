@@ -23,6 +23,7 @@ function initRequestMap(app) {
                 if (req.xhr) {
                     next();
                 } else {
+                    page.ftlData.RequestParameters = req.query || {};
                     ftlParser.render(page.ftlPath, (html) => {
                         res.send(html);
                     }, page.ftlData);

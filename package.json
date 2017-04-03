@@ -1,16 +1,11 @@
 {
   "name": "jmockr",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "for seperate frontend and backend development",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "startNode": "nodemon app.js",
-    "start": "nodemon app.js",
-    "s": "nodemon app.js",
-    "startSync": "browser-sync start --proxy \"localhost:3000\" --files \"../**/*.css, ../**/*.js, !../mock_server/**/*.*, ../**/*.html, ../**/*.ftl\"",
-    "hot": "browser-sync start --proxy \"localhost:3000\" --files \"../**/*.css, ../**/*.js, !../mock_server/**/*.*, ../**/*.html, ../**/*.ftl\"",
-    "h": "browser-sync start --proxy \"localhost:3000\" --files \"../**/*.css, ../**/*.js, !../mock_server/**/*.*, ../**/*.html, ../**/*.ftl\""
+    "s": "nodemon ./bin/start.js -s",
+    "n": "nodemon ./bin/start.js -n"
   },
   "bin": {
     "jmockr": "bin/start.js"
@@ -22,6 +17,7 @@
   "author": "yubaoquan",
   "license": "ISC",
   "dependencies": {
+    "ansi-escapes": "^1.4.0",
     "body-parser": "^1.15.2",
     "browser-sync": "^2.16.0",
     "cmdify": "0.0.4",

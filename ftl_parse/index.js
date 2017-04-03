@@ -2,6 +2,7 @@
 const path = require('path');
 const Render = require('fast-ftl').Render;
 const config = require('../scanner/config');
+const makeErrorHtml = require('./makeErrorHtml');
 
 const render = Render({
     root: path.resolve(config.ftlFilePath),
@@ -13,12 +14,14 @@ const render = Render({
 
 module.exports.render = function(tpl, cb, dataObject) {
     if (tpl.startsWith('/')) tpl = tpl.slice(1);
-    render.parse(tpl, dataObject).then(cb).catch(e => {
-        console.info(`渲染出错:${tpl}`);
-        let html = `
-            <div>渲染出错:${tpl}</div>
-            <div>${e}</div>
-        `;
-        cb(html);
-    });
+    render.parse(tpl, dataObject)
+        .then(cb)
+        .catch(e => {
+            console.info(`渲染出错:${tpl}`);
+            try {
+                cb(makeErrorHtml(tpl, e));
+            } catch (e) {
+                console.info(e);
+            }
+        });
 };

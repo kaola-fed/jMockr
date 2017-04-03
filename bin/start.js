@@ -16,16 +16,15 @@ let args = parseArgv(process.argv.slice(2));
 index(args);
 
 function index(args) {
-    sayHello();
     if (argsUnknown(args) || args.h || args.help) {
         return showHelp();
     }
     if (args.n || args.normal) {
-        console.info('普通启动');
+        // console.info('\n普通启动');
         return app.run();
     }
-    if (args.s || args.start) { 
-        console.info('mock 数据热更新启动');
+    if (args.s || args.start) {
+        // console.info('mock 数据热更新启动');
         return nodemon({
             script: path.resolve(__dirname, '../appLauncher.js'),
             ext: '.js .json .json5'
@@ -33,7 +32,7 @@ function index(args) {
     }
     if (args.l || args.live) {
         //https://browsersync.io/docs/options
-        console.info('页面live reload 启动(alpha)');
+        // console.info('页面live reload 启动(alpha)');
         nodemon({
             script: path.resolve(__dirname, '../appLauncher.js'),
             ext: 'js json'
@@ -68,8 +67,4 @@ function showHelp() {
     console.info('-s, --start\t热启动, 修改mock数据会触发jmockr重启');
     console.info('-l, --live\t带有live reload功能的热启动, 修改页面代码时会自动刷新浏览器');
     console.info('=======================================');
-}
-
-function sayHello() {
-    console.info('============Welcome using jMockr=======');
 }

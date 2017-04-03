@@ -1,38 +1,86 @@
 'use strict';
 
-console.info('Reading config');
+console.info('\n============Welcome using jMockr============');
 
 const path = require('path');
 const fs = require('fs');
 const fileUtil = require('../util/fileUtil');
 const config = require('./config');
+const Print = require('../util/print');
+
 config.serverConfig = config.serverConfig || {};
 
-//url--页面映射
-const uPath = path.resolve(config.dataPath.urlMap);
-if (!uPath) {
-    console.error('未配置urlMap');
-    process.exit(1);
+
+function convertPathes(config) {
+    let pathes = Object.assign({
+        urlMap: false,
+        commonFtl: false,
+        pageFtl: false,
+        ajax: false,
+        url200: false
+    }, config.dataPath);
+
+    let errors = []
+    if (!pathes.urlMap) {
+        errors.push('未配置URLMap');
+    } else {
+        pathes.uPath = path.resolve(pathes.urlMap);
+    }
+    if (!pathes.commonFtl) {
+        errors.push('未公共Ftl数据存放位置');
+    } else {
+        pathes.cPath = path.resolve(pathes.commonFtl);
+    }
+    if (!pathes.pageFtl) {
+        errors.push('未找到页面ftl数据存放位置');
+    } else {
+        pathes.pPath = path.resolve(pathes.pageFtl)
+    }
+    if (!pathes.ajax) {
+        errors.push('未找到异步数据存放位置');
+    } else {
+        pathes.aPath = path.resolve(pathes.ajax);
+    }
+    if (pathes.url200) {
+        pathes.url200Path = path.resolve(pathes.url200);
+    } else {
+        errors.push('未找到retCode200接口的数据存放位置');
+    }
+    errors.forEach((error) => {
+        console.error(error);
+    });
+    return pathes;
 }
-const arr = fileUtil.json5Require(uPath);
+
+let pathes = convertPathes(config);
+
+//url--页面映射
+const uPath = pathes.uPath
+let urlMap = [];
+if (uPath) {
+    urlMap = fileUtil.json5Require(uPath);
+}
 
 //公共ftl数据
-const cPath = path.resolve(config.dataPath.commonFtl);
+const cPath = pathes.cPath;
 
 //单页ftl数据
-const pPath = path.resolve(config.dataPath.pageFtl);
+const pPath = pathes.pPath;
+
 //单页ajax数据
-const aPath = path.resolve(config.dataPath.ajax);
+const aPath = pathes.aPath;
 
 //retCode200的接口
-const url200Path = path.resolve(config.dataPath.url200);
-const urlsReturn200 = require(url200Path);
+const url200Path = pathes.url200Path;
+let urlsReturn200 = [];
+if (url200Path) {
+    urlsReturn200 = require(url200Path);
+}
 
 const extend = require('node.extend');
 
-console.info('starting...');
-
-let tasks = arr.map((page) => {
+let initialedPage = 0;
+let tasks = urlMap.map((page) => {
     return mock(page);
 });
 
@@ -44,6 +92,14 @@ function isFrontPage(url) {
 
 function mock(page) {
     return new Promise((resolve, reject) => {
+        let originResolve = resolve;
+        resolve = function() {
+            initialedPage ++;
+            let percent = (initialedPage / urlMap.length * 100).toFixed(2);
+            Print.update(`      Loading configuration ... ${percent}%`);
+            if (percent >= 100) console.info('\n      Configuration load finished.');
+            originResolve();
+        }
         page.ftlData = {};
 
         //初始化公用ftl数据
@@ -70,7 +126,7 @@ function mock(page) {
             try {
                 extend(page.ftlData, j5require(ftlMockFilePath));
             } catch(e) {
-                //console.info('no ftl data, pass');
+                // console.info('no ftl data, pass');
             }
         }
 
@@ -96,12 +152,18 @@ function mock(page) {
     });
 }
 
-module.exports = arr;
+module.exports = urlMap;
 module.exports.url200 = urlsReturn200;
 module.exports.ftlPath = config.ftlPath;
 module.exports.authConfig = config.authConfig;
 module.exports.proxyConfig = config.proxyConfig;
 module.exports.serverPort = config.serverConfig.port || 3000;
+
 module.exports.onMockFinish = function(cb) {
-    Promise.all(tasks).then(cb);
+    Promise.all(tasks)
+    .then(cb)
+    .catch((e) => {
+        console.error(e);
+        process.exit(1);
+    });
 };
