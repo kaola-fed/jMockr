@@ -5,6 +5,7 @@ console.info('\n============Welcome using jMockr============');
 const path = require('path');
 const fs = require('fs');
 const fileUtil = require('../util/fileUtil');
+const j5require = fileUtil.json5Require;
 const config = require('./config');
 const Print = require('../util/print');
 
@@ -51,14 +52,14 @@ function convertPathes(config) {
     });
     return pathes;
 }
-
+ 
 let pathes = convertPathes(config);
 
 //url--页面映射
 const uPath = pathes.uPath
 let urlMap = [];
 if (uPath) {
-    urlMap = fileUtil.json5Require(uPath);
+    urlMap = j5require(uPath);
 }
 
 //公共ftl数据
@@ -74,7 +75,7 @@ const aPath = pathes.aPath;
 const url200Path = pathes.url200Path;
 let urlsReturn200 = [];
 if (url200Path) {
-    urlsReturn200 = require(url200Path);
+    urlsReturn200 = j5require(url200Path);
 }
 
 const extend = require('node.extend');
@@ -84,7 +85,6 @@ let tasks = urlMap.map((page) => {
     return mock(page);
 });
 
-const j5require = fileUtil.json5Require;
 
 function isFrontPage(url) {
     return url == '/' || url == '/index.do';

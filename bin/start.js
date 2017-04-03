@@ -9,7 +9,6 @@ const version = require('../package.json').version;
 const parseArgv = require('minimist');
 
 const nodemon = require('nodemon');
-const app = require('../app');
 const spawn = require('child_process').spawn;
 let args = parseArgv(process.argv.slice(2));
 
@@ -20,6 +19,7 @@ function index(args) {
         return showHelp();
     }
     if (args.n || args.normal) {
+        const app = require('../app');
         // console.info('\n普通启动');
         return app.run();
     }
