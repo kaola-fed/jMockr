@@ -52,7 +52,7 @@ function convertPathes(config) {
     });
     return pathes;
 }
- 
+
 let pathes = convertPathes(config);
 
 //url--页面映射
@@ -122,9 +122,12 @@ function mock(page) {
 
         //初始化同步接口数据
         if (pPath) {
-            let ftlMockFilePath = path.join(pPath, page.entry.slice(1).replace(/\//g, '.'), 'json');
+            let ftlMockFilePath = path.join(pPath, page.entry.slice(1).replace(/\//g, '.'));
+            let ftlMockFilePath1 = ftlMockFilePath + '.json';
+            let ftlMockFilePath2 = ftlMockFilePath + '.json5';
             try {
-                extend(page.ftlData, j5require(ftlMockFilePath));
+                extend(page.ftlData, j5require(ftlMockFilePath1));
+                extend(page.ftlData, j5require(ftlMockFilePath2));
             } catch(e) {
                 // console.info('no ftl data, pass');
             }
