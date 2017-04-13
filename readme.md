@@ -48,8 +48,10 @@
         "ajax": "mock/ajax" // 5.[文件夹地址]
     },
     "serverConfig": {
-        "port": 3000 //jmockr监听的端口
-        "static": "./webapp" //前端静态文件位置 包括css/js/图片资源等
+        "port": 3000, //jmockr监听的端口
+        "static": "./webapp", //前端静态文件位置 包括css/js/图片资源等
+        "noOpenPage": false, //服务器启动之后, 是否禁止自动在浏览器中打开默认页面
+        "initialURL": 'www.test.com' //服务器启动后默认打开的页面地址, 如果不填, 将打开 http://localhost:port 
     },
     "ftlFilePath": "xxxx", // 6.[文件夹地址]
     "liveReload": { //liveReload 模式的配置

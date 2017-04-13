@@ -8,8 +8,8 @@ const config = require('./scanner/config');
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-
 const routes = require('./routes/index');
+const opn = require('opn');
 
 module.exports.run = function() {
     const app = express();
@@ -43,6 +43,10 @@ module.exports.run = function() {
     .then(() => {
         app.listen(config.serverConfig.port, () => {
             console.info(`      jMockr listening on port ${config.serverConfig.port}!\n`);
+            if (!config.serverConfig.noOpenPage) {
+                let url = config.serverConfig.initialURL || `http://localhost:${config.serverConfig.port}`;
+                opn(url);
+            }
         });
     })
     .catch((e) => {
