@@ -1,15 +1,17 @@
 'use strict';
 
 const ftlParser = require('../ftl_parse');
-const urlMap = require('../scanner/index');
+const scanner = require('../scanner/index');
 const logUtil = require(`../util/logUtil`);
 const uploadImg = require('./uploadImg');
 const uploadFile = require('./uploadFile');
 const noProxyAjax = require('./noProxyAjax');
 const proxyAjax = require('./proxyAjax');
-const proxyConfig = urlMap.proxyConfig;
+const proxyConfig = scanner.proxyConfig;
 
-function initRequestMap(app) {
+function initRequestMap(app, cb) {
+    let {mockData, url200} = scanner.scan();
+
     app.all('*', (req, res, next) => {
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
@@ -17,7 +19,7 @@ function initRequestMap(app) {
         next();
     });
     //初始化页面入口路由
-    urlMap.forEach(function(page) {
+    mockData.forEach((page) => {
         try {
             app.get(page.entry, (req, res, next) => {
                 if (req.xhr) {
@@ -30,7 +32,7 @@ function initRequestMap(app) {
                 }
             });
         } catch (e) {
-            throw `Error initializing page entry:${page.entry}`;
+            throw new Error(`Error initializing page entry:${page.entry}`);
         }
     });
 
@@ -42,23 +44,9 @@ function initRequestMap(app) {
     if (proxyConfig.enable) { //初始化ajax路由(返回本地配置的mock数据)
         proxyAjax.init(app);
     } else { //初始化ajax路由(代理到远程测试服务器)
-        noProxyAjax.init(app, urlMap, urlMap.url200);
+        noProxyAjax.init(app, mockData, url200);
     }
+    return cb();
 }
 
-module.exports = function(app) {
-    return new Promise((resolve, reject) => {
-        try {
-            urlMap.onMockFinish(() => {
-                try {
-                    initRequestMap(app);
-                    resolve();
-                } catch (e) {
-                    reject(e);
-                }
-            });
-        } catch(e) {
-            reject(e);
-        }
-    });
-};
+module.exports = initRequestMap;

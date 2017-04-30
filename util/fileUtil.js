@@ -9,15 +9,24 @@ function listFiles(path, myFilter) {
                 //console.info(err);
                 reject(err);
             } else {
-                resolve(files.filter(myFilter||function(){return true}));
+                resolve(files.filter(myFilter || (() => true)));
             }
         });
     });
 }
 
+function listFilesSync(path, myFilter = () => true) {
+    let files = fs.readdirSync(path).filter(myFilter);
+    return (operation) => {
+        files.forEach((file) => {
+            operation(file);
+        });
+    };
+}
+
 function readFile(path) {
-    return new Promise(function (resolve, reject) {
-        fs.readFile(path, 'utf-8', function (err, data) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(path, 'utf-8', (err, data) => {
             if (err) {
                 console.error('read error');
                 reject();
@@ -30,8 +39,8 @@ function readFile(path) {
 }
 
 function makeFile(args) {
-    return new Promise(function (resolve, reject) {
-        fs.open(args.path, args.mode || 'a', function(err ,fd) {
+    return new Promise((resolve, reject) => {
+        fs.open(args.path, args.mode || 'a', (err, fd) => {
             if (err) {
                 reject(err);
                 console.info('打开失败');
@@ -46,8 +55,8 @@ function makeFile(args) {
 }
 
 function writeFile(fd, data) {
-    return new Promise(function(resolve, reject) {
-        fs.appendFile(fd, data, 'utf-8', function(err, data) {
+    return new Promise((resolve, reject) => {
+        fs.appendFile(fd, data, 'utf-8', (err, data) => {
             if (err) {
                 reject();
             } else {
@@ -75,6 +84,7 @@ function json5Require(filePath) {
 
 module.exports = {
     listFiles,
+    listFilesSync,
     readFile,
     makeFile,
     json5Require

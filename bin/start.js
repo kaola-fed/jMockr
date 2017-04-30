@@ -4,47 +4,38 @@
 const path = require('path');
 const cmdify = require('cmdify');
 const config = require('../scanner/config');
-
 const version = require('../package.json').version;
 const parseArgv = require('minimist');
-
-const nodemon = require('nodemon');
 const spawn = require('child_process').spawn;
+
+const watcher = require('../watcher/index');
+const app = require('../app');
 let args = parseArgv(process.argv.slice(2));
 
 index(args);
 
 function index(args) {
     if (argsUnknown(args) || args.h || args.help) {
-        return showHelp();
-    }
-    if (args.n || args.normal) {
-        const app = require('../app');
-        // console.info('\n普通启动');
-        return app.run();
-    }
-    if (args.s || args.start) {
-        // console.info('mock 数据热更新启动');
-        return nodemon({
-            script: path.resolve(__dirname, '../appLauncher.js'),
-            ext: '.js .json .json5'
+        showHelp();
+    } else if (args.v || args.version) {
+        console.info(version);
+    } else {
+        app.start();
+        if (args.n || args.normal) return; // Normal start, no file change detect.
+
+        watcher.addListener(() => {
+            console.info('File change detected, restart server...');
+            app.restart();
         });
-    }
-    if (args.l || args.live) {
+        if (args.s || args.start) return; // Only restart when mock data changed.
+
+        //Reload when public assets changed.
         //https://browsersync.io/docs/options
-        // console.info('页面live reload 启动(alpha)');
-        nodemon({
-            script: path.resolve(__dirname, '../appLauncher.js'),
-            ext: 'js json'
-        });
         let path2Watch = config.liveReload.watch.join(', ');
         let path2Ignore = config.liveReload.ignore.map(p => `!${p}`).join(', ');
         spawn(cmdify('browser-sync'), [
             'start', '--proxy', `localhost:${config.serverConfig.port}`, `--files`, `${path2Watch}, ${path2Ignore}`],
             {stdio: 'inherit'});
-    }
-    if (args.v || args.version) {
-        console.info(version);
     }
 }
 

@@ -10,10 +10,12 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const routes = require('./routes/index');
 const opn = require('opn');
+const print = require('./util/print');
 
-module.exports.run = function() {
-    const app = express();
+let server, sockets;
 
+function start() {
+    let app = express();
     //http://stackoverflow.com/questions/10888610/ignore-invalid-self-signed-ssl-certificate-in-node-js-with-https-request
     //Ignore invalid self-signed ssl certificate in node.js with https.request
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -39,19 +41,29 @@ module.exports.run = function() {
         console.info(err);
         res.status(err.status || 500).send('Server crashed.');
     });
-    routes(app)
-    .then(() => {
-        app.listen(config.serverConfig.port, () => {
-            console.info(`      jMockr listening on port ${config.serverConfig.port}!\n`);
-            if (!config.serverConfig.noOpenPage) {
-                let url = config.serverConfig.initialURL || `http://localhost:${config.serverConfig.port}`;
-                opn(url);
-            }
+
+    try {
+        routes(app, () => {
+            server = app.listen(config.serverConfig.port, () => {
+                print.update(`          jMockr listening on port ${config.serverConfig.port}!\n`);
+                if (!config.serverConfig.noOpenPage) {
+                    let url = config.serverConfig.initialURL || `http://localhost:${config.serverConfig.port}`;
+                    opn(url);
+                }
+            });
+            sockets = [];
+            server.on('connection', socket => sockets.push(socket));
         });
-    })
-    .catch((e) => {
+    } catch (e) {
+        console.info('jMockr crashed!');
         console.info(e);
-        console.error('jMockr crashed!\n');
-    });
-}
-//test ssh 2
+    }
+};
+
+function restart() {
+    server.close(start);
+    sockets.forEach(socket => socket.destroy());
+};
+
+module.exports.start = start;
+module.exports.restart= restart;

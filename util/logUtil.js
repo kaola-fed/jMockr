@@ -56,7 +56,7 @@ function logAgentRes(res) {
     logFile({
         title: 'text',
         content: res.text
-    })
+    });
 }
 
 //打印请求信息

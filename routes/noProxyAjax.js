@@ -7,10 +7,12 @@ function init(app, urlMap, urlsReturn200) {
                 opt.method = opt.method || 'post';
                 opt.method.split(',').forEach(function(m) {
                     app[m.toLowerCase()](opt.url, (req, res, next) => {
+                        // console.info(opt.result);
                         res.json(opt.result);
                     });
                 });
             } catch (e) {
+                // console.info(opt);
                 throw `Error initializing ajax:${opt.url}`;
             }
         });
