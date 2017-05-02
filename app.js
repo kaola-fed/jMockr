@@ -14,6 +14,8 @@ const print = require('./util/print');
 const reloader = require('./pageReloader/reloader');
 
 let server, sockets;
+let serverConfig = config.serverConfig;
+let openPageAfterLaunch = !!serverConfig.initialURL || (serverConfig.noOpenPage !== true);
 
 function start() {
     let app = express();
@@ -47,9 +49,10 @@ function start() {
         routes(app, () => {
             server = app.listen(config.serverConfig.port, () => {
                 print.update(`          jMockr listening on port ${config.serverConfig.port}!\n`);
-                if (!config.serverConfig.noOpenPage) {
+                if (openPageAfterLaunch) {
                     let url = config.serverConfig.initialURL || `http://localhost:${config.serverConfig.port}`;
                     opn(url);
+                    openPageAfterLaunch = false; //only open once
                 }
             });
             sockets = [];
@@ -65,7 +68,6 @@ function start() {
 };
 
 function restart() {
-    console.info('restart');
     server.close(start);
     sockets.forEach(socket => socket.destroy());
 };

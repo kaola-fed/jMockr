@@ -14,24 +14,8 @@ const injector = require('connect-inject');
 function initRequestMap(app, cb) {
     let {mockData, url200} = scanner.scan();
 
-    app.all('*', (req, res, next) => {
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
-        res.header('Access-Control-Allow-Methods', 'POST, GET');
-        next();
-    });
-    app.use(injector({
-        snippet: `
-        <script src="//cdn.socket.io/socket.io-1.2.0.js"></script>
-        <script>
-            var socket = io();
-            socket.on('reload', function(msg) {
-                console.info(msg);
-                location.reload();
-            });
-        </script>
-        `
-    }));
+    initCORS(app);
+    initWebSocket(app);
 
     //初始化页面入口路由
     mockData.forEach((page) => {
@@ -62,6 +46,32 @@ function initRequestMap(app, cb) {
         noProxyAjax.init(app, mockData, url200);
     }
     return cb();
+}
+
+function initCORS(app) {
+    app.all('*', (req, res, next) => {
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+        res.header('Access-Control-Allow-Methods', 'POST, GET');
+        next();
+    });
+}
+
+function initWebSocket(app) {
+    app.get('/socket.io.js', (req, res, next) => {
+        res.sendFile(path.resolve(__dirname, '../script/socket.io.js'));
+    });
+    app.use(injector({
+        snippet: `
+        <script src="/socket.io.js"></script>
+        <script>
+            var socket = io();
+            socket.on('reload', function(msg) {
+                location.reload();
+            });
+        </script>
+        `
+    }));
 }
 
 module.exports = initRequestMap;

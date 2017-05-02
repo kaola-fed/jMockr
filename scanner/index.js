@@ -1,8 +1,4 @@
 'use strict';
-const chalk = require('chalk');
-
-let welcomeMsg = '\n============Welcome using jMockr============';
-console.info(chalk.bgGreen.bold(welcomeMsg));
 
 const path = require('path');
 const fs = require('fs');

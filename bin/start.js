@@ -5,16 +5,19 @@ const path = require('path');
 const config = require('../scanner/config');
 const version = require('../package.json').version;
 const parseArgv = require('minimist');
+const chalk = require('chalk');
 
 const watcher = require('../watcher/base');
 const mockDataWatcher = require('../watcher/mockDataWatcher');
 const pageWatcher = require('../watcher/pageWatcher');
 const app = require('../app');
+
 let args = parseArgv(process.argv.slice(2));
 
 index(args);
 
 function index(args) {
+    sayHi();
     if (argsUnknown(args) || args.h || args.help) {
         showHelp();
     } else if (args.v || args.version) {
@@ -34,6 +37,11 @@ function index(args) {
             app.reloadPages();
         });
     }
+}
+
+function sayHi() {
+    let welcomeMsg = '\n============Welcome using jMockr============';
+    console.info(chalk.bgGreen.bold(welcomeMsg));
 }
 
 function argsUnknown(args) {
