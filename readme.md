@@ -50,8 +50,8 @@
     "serverConfig": {
         "port": 3000, //jmockr监听的端口
         "static": "./webapp", //前端静态文件位置 包括css/js/图片资源等
-        "noOpenPage": false, //服务器启动之后, 是否禁止自动在浏览器中打开默认页面
-        "initialURL": 'www.test.com' //服务器启动后默认打开的页面地址, 如果不填, 将打开 http://localhost:port 
+        "noOpenPage": false, //服务器启动之后, 是否禁止自动在浏览器中打开默认页面, 如果设置了initialURL, 此配置项无效
+        "initialURL": 'www.test.com' //服务器启动后默认打开的页面地址, 如果不填, 将打开 http://localhost:port
     },
     "ftlFilePath": "xxxx", // 6.[文件夹地址]
     "liveReload": { //liveReload 模式的配置
@@ -147,33 +147,13 @@
 
 ## 3. 启动命令
 
-jmockr -n 或 jmockr --normal 普通启动, 修改mock数据或页面代码, 不会重启服务器
-jmockr -s 或 jmockr --start 热启动, 修改mock数据会触发jmockr重启
-jmockr -l 或 jmockr --live 带有live reload功能的热启动, 修改页面代码时会自动刷新浏览器
+    jmockr -n 或 jmockr --normal 普通启动, 修改mock数据或页面代码, 不会重启服务器
+    jmockr -s 或 jmockr --start 热启动, 修改mock数据会触发jmockr更新mock数据
+    jmockr -l 或 jmockr --live 带有live reload功能的热启动, 修改页面代码时会自动刷新浏览器
 
+## 4.tips
 
-## 4. 注意
-
-1. 如果ftl中存在语法错误或ftl中引用了不存在的ftl(如fackData/xxxx)时, jmockr 会默默的将其吞掉. jmockr 会在命令行和页面中提示渲染对应的模板出错, 请观察ftl代码和模拟数据是否有误
-
-
-## 5.页面实时刷新
-
-如果想在开发中启动实时刷新功能, 执行命令`jmockr -l` 或 `jmockr --live`即可(此时请使用localhost:3001的地址查看网页, 实时刷新功能开启时, 首屏渲染时间反而比不开时长)
-
-mock server中使用的实时刷新插件来自browsersync
-
-使用过程中发现, browserSync会出现某些文件改动后不自动刷新的问题, 并偶尔出现请求时间变长的问题. 如果影响使用, 请关闭browserSync的代理服务器, 直接用node的3000地址访问
-
-参考:
-[browsersync中文文档](http://www.browsersync.cn/)
-[browsersync官网](https://www.browsersync.io/)
-
-## 6.tips
-
-1.目前使用中常见的错误造成的异常(mock文件数据格式错误, ftl文件找不到, 渲染出错等), 都可以在mockserver 的cmd中或页面上打印出来, 如果页面出现加载不出来的情况, 请留意cmd中的信息
-
-2.jmockr支持json5风格的json文件, 如下:
+1. jmockr支持json5风格的json文件, 如下:
 
 ```
 {
