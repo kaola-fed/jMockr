@@ -16,7 +16,7 @@ function clean() {
 };
 
 module.exports.clean = clean;
-module.exports.update = function (msg) {
+module.exports.update = (msg) => {
     clean();
     msg = '' + msg;
     readline.output.write(msg);

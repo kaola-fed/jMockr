@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 const routes = require('./routes/index');
 const opn = require('opn');
 const print = require('./util/print');
+const reloader = require('./pageReloader/reloader');
 
 let server, sockets;
 
@@ -52,7 +53,10 @@ function start() {
                 }
             });
             sockets = [];
-            server.on('connection', socket => sockets.push(socket));
+            reloader.start(server);
+            server.on('connection', socket => {
+                sockets.push(socket);
+            });
         });
     } catch (e) {
         console.info('jMockr crashed!');
@@ -61,9 +65,11 @@ function start() {
 };
 
 function restart() {
+    console.info('restart');
     server.close(start);
     sockets.forEach(socket => socket.destroy());
 };
 
 module.exports.start = start;
 module.exports.restart= restart;
+module.exports.reloadPages = reloader.reloadPages;

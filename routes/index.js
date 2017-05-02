@@ -1,5 +1,6 @@
 'use strict';
 
+const path = require('path');
 const ftlParser = require('../ftl_parse');
 const scanner = require('../scanner/index');
 const logUtil = require(`../util/logUtil`);
@@ -8,6 +9,7 @@ const uploadFile = require('./uploadFile');
 const noProxyAjax = require('./noProxyAjax');
 const proxyAjax = require('./proxyAjax');
 const proxyConfig = scanner.proxyConfig;
+const injector = require('connect-inject');
 
 function initRequestMap(app, cb) {
     let {mockData, url200} = scanner.scan();
@@ -18,6 +20,19 @@ function initRequestMap(app, cb) {
         res.header('Access-Control-Allow-Methods', 'POST, GET');
         next();
     });
+    app.use(injector({
+        snippet: `
+        <script src="//cdn.socket.io/socket.io-1.2.0.js"></script>
+        <script>
+            var socket = io();
+            socket.on('reload', function(msg) {
+                console.info(msg);
+                location.reload();
+            });
+        </script>
+        `
+    }));
+
     //初始化页面入口路由
     mockData.forEach((page) => {
         try {

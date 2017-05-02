@@ -2,13 +2,13 @@
 'use strict';
 
 const path = require('path');
-const cmdify = require('cmdify');
 const config = require('../scanner/config');
 const version = require('../package.json').version;
 const parseArgv = require('minimist');
-const spawn = require('child_process').spawn;
 
-const watcher = require('../watcher/index');
+const watcher = require('../watcher/base');
+const mockDataWatcher = require('../watcher/mockDataWatcher');
+const pageWatcher = require('../watcher/pageWatcher');
 const app = require('../app');
 let args = parseArgv(process.argv.slice(2));
 
@@ -23,19 +23,16 @@ function index(args) {
         app.start();
         if (args.n || args.normal) return; // Normal start, no file change detect.
 
-        watcher.addListener(() => {
-            console.info('File change detected, restart server...');
+        mockDataWatcher.addListener(() => {
+            console.info('Mock data changed, restart server...');
             app.restart();
         });
         if (args.s || args.start) return; // Only restart when mock data changed.
 
-        //Reload when public assets changed.
-        //https://browsersync.io/docs/options
-        let path2Watch = config.liveReload.watch.join(', ');
-        let path2Ignore = config.liveReload.ignore.map(p => `!${p}`).join(', ');
-        spawn(cmdify('browser-sync'), [
-            'start', '--proxy', `localhost:${config.serverConfig.port}`, `--files`, `${path2Watch}, ${path2Ignore}`],
-            {stdio: 'inherit'});
+        //Reload when page content changed.
+        pageWatcher.addListener(() => {
+            app.reloadPages();
+        });
     }
 }
 
