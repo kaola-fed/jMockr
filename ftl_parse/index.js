@@ -6,7 +6,7 @@ const makeErrorHtml = require('./makeErrorHtml');
 
 const render = Render({
     root: path.resolve(config.ftlFilePath),
-    paths: [],
+    paths: config.moduleFtlPathes,
     defaultEncoding: "utf-8",  // 默认 encoding
     urlEscapingCharsetSet: "utf-8", // URLEscapingCharset
     numberFormat: "0.##########" // 数字格式化方式

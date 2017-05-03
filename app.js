@@ -47,14 +47,19 @@ function start() {
 
     try {
         routes(app, () => {
-            server = app.listen(config.serverConfig.port, () => {
-                print.update(`          jMockr listening on port ${config.serverConfig.port}!\n`);
-                if (openPageAfterLaunch) {
-                    let url = config.serverConfig.initialURL || `http://localhost:${config.serverConfig.port}`;
-                    opn(url);
-                    openPageAfterLaunch = false; //only open once
-                }
-            });
+            try {
+                server = app.listen(config.serverConfig.port, () => {
+                    print.update(`          jMockr listening on port ${config.serverConfig.port}!\n`);
+                    if (openPageAfterLaunch) {
+                        let url = config.serverConfig.initialURL || `http://localhost:${config.serverConfig.port}`;
+                        opn(url);
+                        openPageAfterLaunch = false; //only open once
+                    }
+                });
+            } catch (e) {
+                console.info('监听失败, 请检查端口是否被占用');
+                process.exit(1);
+            }
             sockets = [];
             reloader.start(server);
             server.on('connection', socket => {
@@ -68,8 +73,8 @@ function start() {
 };
 
 function restart() {
-    server.close(start);
     sockets.forEach(socket => socket.destroy());
+    server.close(start);
 };
 
 module.exports.start = start;

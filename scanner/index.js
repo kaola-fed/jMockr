@@ -58,7 +58,7 @@ function convertPathes(config) {
         pathes.uPath = path.resolve(pathes.urlMap);
     }
     if (!pathes.commonFtl) {
-        errors.push('未公共Ftl数据存放位置');
+        errors.push('未找到公共Ftl数据存放位置');
     } else {
         pathes.cPath = path.resolve(pathes.commonFtl);
     }
@@ -145,3 +145,4 @@ module.exports.ftlPath = config.ftlPath;
 module.exports.authConfig = config.authConfig;
 module.exports.proxyConfig = config.proxyConfig;
 module.exports.serverPort = config.serverConfig.port || 3000;
+module.exports.moduleFtlPathes = module.exports.moduleFtlPathes || [];
