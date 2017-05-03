@@ -47,19 +47,21 @@ function start() {
 
     try {
         routes(app, () => {
-            try {
-                server = app.listen(config.serverConfig.port, () => {
-                    print.update(`          jMockr listening on port ${config.serverConfig.port}!\n`);
-                    if (openPageAfterLaunch) {
-                        let url = config.serverConfig.initialURL || `http://localhost:${config.serverConfig.port}`;
-                        opn(url);
-                        openPageAfterLaunch = false; //only open once
-                    }
-                });
-            } catch (e) {
-                console.info('监听失败, 请检查端口是否被占用');
-                process.exit(1);
-            }
+            server = app.listen(config.serverConfig.port, () => {
+                print.update(`          jMockr listening on port ${config.serverConfig.port}!\n`);
+                if (openPageAfterLaunch) {
+                    let url = config.serverConfig.initialURL || `http://localhost:${config.serverConfig.port}`;
+                    opn(url);
+                    openPageAfterLaunch = false; //only open once
+                }
+            });
+            server.on('error', (e) => {
+                if (e.code == 'EADDRINUSE') {
+                    console.log(`\nPort ${config.serverConfig.port} is in use, please check.`);
+                    server.close();
+                    process.exit();
+                }
+            });
             sockets = [];
             reloader.start(server);
             server.on('connection', socket => {
