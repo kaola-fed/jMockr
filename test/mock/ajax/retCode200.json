@@ -1,0 +1,6 @@
+[
+  '/cms/tank/deleteTag.do',
+  '/cms/tank/batchPublishTag.do',
+  '/tanks/publish.do',
+  '/config/setTankConfig.do'
+]

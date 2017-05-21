@@ -1,0 +1,11 @@
+{
+  url: '/tanks/params.do',
+  method: 'post',
+  result: {
+    retCode: 200,
+    params: {
+        status: 1,
+        distance: 100
+    }
+  }
+}

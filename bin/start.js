@@ -22,6 +22,7 @@ function index(args) {
         showHelp();
     } else if (args.v || args.version) {
         console.info(version);
+        process.exit(0);
     } else {
         app.start();
         if (args.n || args.normal) return; // Normal start, no file change detect.

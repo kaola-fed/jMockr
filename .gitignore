@@ -47,7 +47,6 @@ Temporary Items
 .apdisk
 node_modules
 fileStorage
-webapp
 /jmockr.config.json
 /mock
 /log

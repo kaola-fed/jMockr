@@ -1,0 +1,85 @@
+{#if !condition.opCategory}
+<h2><b>{topTips}</b></h2>
+{#else}
+<ul class="nav nav-tabs" style="margin: 20px;">
+    {#list categories as category}
+        {#if category.show}
+    <li r-class="{{'active': condition.opCategory==category.id}}">
+        <a href="javascript:;" on-click="{this.changeOpCategory(category.id)}">{category.name}</a>
+    </li>
+        {/if}
+    {/list}
+</ul>
+
+<ul class="nav nav-pills" style="margin-left: 20px;">
+    <li>
+        <button class="btn btn-default" r-class="{{'active': tab == 0}}"
+                on-click="{tab = 0}">未提交（{notSubmittedCount}）个</button>
+    </li>
+    <li>
+        <button class="btn btn-default" r-class="{{'active': tab == 2}}"
+                on-click="{tab = 2}">审核未通过（{notPassCount}）个</button>
+    </li>
+    <li>
+        <button class="btn btn-default" r-class="{{'active': tab == 3}}"
+                on-click="{tab = 3}">审核已通过（{alreadyPassCount}）个</button>
+    </li>
+    <li>
+        <button class="btn btn-default" r-class="{{'active': tab == 1}}"
+                on-click="{tab = 1}">未审核（{notAuditCount}）个</button>
+    </li>
+    <li>
+        <button class="btn btn-default" r-class="{{'active': tab == 4}}"
+                on-click="{tab = 4}">全部（{allCount}）个</button>
+    </li>
+</ul>
+<div class="m-operationWrapper">
+    <div class="m-operations">
+        <div class="m-search f-fr">
+            <select r-model={condition.searchType}>
+                <option value="1">坦克ID</option>
+                <option value="3">坦克主题</option>
+                <option value="6">创建人账号</option>
+            </select>
+            {#if condition.searchType == 1 || condition.searchType == 5}
+            <input type="text" r-model="{condition.searchContent|number}">&nbsp;
+            {#else}
+            <input type="text" r-model="{condition.searchContent}">&nbsp;
+            {/if}
+            <select r-model={condition.numberType}>
+                <option value="favorNum">被收藏数</option>
+                <option value="productNum">武器数量</option>
+            </select>
+            <input type="text" r-model="{condition[condition.numberType]|number}">以上&nbsp;
+            <button on-click={this.refresh()} class="btn btn-flat btn-primary">搜索</button>
+        </div>
+    </div>
+</div>
+<div class="m-tableWrapper">
+    <table class="table table-bordered table-striped dataTable">
+        <thead>
+        <tr>
+            <th>坦克ID</th>
+            <th>坦克名称</th>
+            <th>所属类型</th>
+            <th>坦克价格</th>
+            <th>武器数量</th>
+        </tr>
+        </thead>
+        <tbody>
+        {#list list as item}
+        <tr>
+            <td>{item.id}</td>
+            <td>{item.name}</td>
+            <td>{item.type}</td>
+            <td>{item.price}</td>
+            <td>{item.productNum}</td>
+        </tr>
+        {/list}
+        </tbody>
+    </table>
+</div>
+<div class="f-tar" style="margin-right: 10px;">
+    <pager total={Math.ceil(total/20)} currentPage={currentPage} totalCount = {total}></pager>
+</div>
+{/if}

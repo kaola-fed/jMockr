@@ -1,0 +1,7 @@
+{
+  "sentence1": "aaa",
+  "sentence2": "bbb",
+  "number1": 111,
+  number2: 222,
+  arr: [1, 2, 3, 'hello']
+}

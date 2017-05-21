@@ -1,0 +1,37 @@
+{
+  "authConfig": {
+    "username": "B9647",
+    "password": "qa12345_"
+  },
+  "proxyConfig": {
+    "enable": false,
+    "useIP": false,
+    "protocol": "https",
+    "domain": "globalms.netease.com",
+    "ip": "127.0.0.1",
+    "enablePort": false,
+    "port": 4000
+  },
+  "ftlFilePath": "./webapp/WEB-INF/ftl",
+  "moduleFtlPathes": [],
+  "dataPath": {
+    "urlMap": "./mock/urlMap.json",
+    "url200": "./mock/ajax/retCode200.json",
+    "commonFtl": "./mock/commonFtlData",
+    "pageFtl": "./mock/ftlMockData",
+    "ajax": "./mock/ajax"
+  },
+  "serverConfig": {
+    "port": 4500,
+    "static": "./webapp",
+    initialURL: ''
+  },
+  liveReload: {
+      "watch": [
+          './webapp/'
+      ],
+      "ignore": [
+          "../../ignore/**/*.*"
+      ]
+  }
+}

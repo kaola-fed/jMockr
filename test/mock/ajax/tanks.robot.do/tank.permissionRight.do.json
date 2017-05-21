@@ -1,0 +1,8 @@
+{
+  "url": "/tank/permissionRight.do",
+  "method": "post",
+  "result": {
+    "retCode": 200,
+    "opCategory": [1, 2, 3, 4, 5, 6]
+  }
+}

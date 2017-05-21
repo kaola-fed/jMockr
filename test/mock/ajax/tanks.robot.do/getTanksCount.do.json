@@ -1,0 +1,16 @@
+{
+  "url": "/tank/audit/getAuditTankCount.do",
+  "method": "post",
+  "result": {
+    "count": {
+      "opCategory": 69,
+      "allCount": 2055,
+      "notSubmittedCount": 626,
+      "notAuditCount": 799,
+      "notPassCount": 527,
+      "alreadyPassCount": 497
+    },
+    "retCode": 200,
+    "retDesc": "zo6oVga178"
+  }
+}

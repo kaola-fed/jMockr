@@ -46,8 +46,6 @@
         }],
         //禁止拖尾逗号
         "comma-dangle": ["error", {
-            "arrays": "never",
-            "objects": "never",
             "imports": "never",
             "exports": "never",
             "functions": "never"

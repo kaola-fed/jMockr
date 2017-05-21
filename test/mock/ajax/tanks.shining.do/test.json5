@@ -1,0 +1,7 @@
+{
+    url: '/testx',
+    method: 'get',
+    result: {
+        abd: 124
+    }
+}

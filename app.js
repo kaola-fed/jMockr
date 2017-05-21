@@ -74,6 +74,7 @@ function start() {
     }
 };
 
+
 function restart() {
     sockets.forEach(socket => socket.destroy());
     server.close(start);

@@ -1,0 +1,24 @@
+<div class="m-operationWrapper f-oh">
+    <p>参数状态:{params.status|status}</p>
+    <div class="m-operations">
+        <span on-click={this.edit()} class="btn btn-primary btn-flat">修改</span>
+        <span on-click={this.publish()} class="btn btn-primary btn-flat">发布</span>
+    </div>
+</div>
+<div class="m-commonModal f-tal">
+    <div class="property">
+        <label class="key">坦克参数：</label>
+        <span>作战半径≥{params.distance}米</span>
+    </div>
+    <div id="test-ftl" class="property" style="padding: 20px;">
+        <p id="sentence-1">{sentence1}</p>
+        <p id="sentence-2">{sentence2}</p>
+        <p id="number-1">{number1}</p>
+        <p id="number-2">{number2}</p>
+        <p id="array">
+            {#list arr as item}
+            <span>{item}</span>
+            {/list}
+        </p>
+    </div>
+</div>

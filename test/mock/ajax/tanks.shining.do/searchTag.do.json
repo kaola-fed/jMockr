@@ -1,0 +1,46 @@
+{
+    "url": "/cms/tank/searchTag.do",
+    "method": "post",
+    "result": {
+        "retCode": 200,
+        "retDesc": "AK47 mp5",
+        "paginationInfo": {
+            "currentPage": 1,
+            "recordPerPage": 20,
+            "totalPage": 6,
+            "totalRecord": 120
+        },
+        "list": [
+            {
+                "id": "66611",
+                "name": "光棱坦克",
+                "imgUrl": "/res/shining.jpg",
+                "tankNum": 58116,
+                "creator": "4Y3p0ifLy1",
+                "opStatus": 31810,
+                "tagStatus": 99800,
+                "isPublishBefore": 0
+            },
+            {
+                "id": "88919",
+                "name": "天启坦克",
+                "imgUrl": "/res/tianqi.jpg",
+                "tankNum": 16579,
+                "creator": "99aUbFtmUO",
+                "opStatus": 52919,
+                "tagStatus": 43691,
+                "isPublishBefore": 0
+            },
+            {
+                "id": "90341",
+                "name": "恐怖机器人",
+                "imgUrl": "/res/robot.jpg",
+                "tankNum": 86010,
+                "creator": "PKc9mrZX9O",
+                "opStatus": 59295,
+                "tagStatus": 1286,
+                "isPublishBefore": 0
+            }
+        ]
+    }
+}

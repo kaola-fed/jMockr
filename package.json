@@ -4,9 +4,7 @@
   "description": "for seperate frontend and backend development",
   "main": "app.js",
   "scripts": {
-    "n": "node ./bin/start.js -n",
-    "s": "node ./bin/start.js -s",
-    "l": "node ./bin/start.js -l"
+    "test": "node ./test/index"
   },
   "bin": {
     "jmockr": "bin/start.js"

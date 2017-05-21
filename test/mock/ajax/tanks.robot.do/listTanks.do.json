@@ -1,0 +1,36 @@
+{
+  "url": "/tank/audit/listTank.do",
+  "method": "post",
+  "result": {
+    "retCode": 200,
+    "list": [
+      {
+        "id": "aaa",
+        "name": "robot1",
+        "type": 44437,
+        "productNum": 26554,
+        "price": 8957
+      },
+      {
+          "id": "bbb",
+          "name": "robot2",
+          "type": 12,
+          "productNum": 123,
+          "price": 90
+      },
+      {
+          "id": "ddd",
+          "name": "robot3",
+          "type": 34,
+          "productNum": 56,
+          "price": 78
+      }
+    ],
+    "paginationInfo": {
+      "currentPage": 1,
+      "recordPerPage": 20,
+      "totalPage": 6,
+      "totalRecord": 120
+    }
+  }
+}

@@ -1,0 +1,162 @@
+
+.m-operationWrapper {
+    overflow: hidden;
+    margin: 10px;
+    padding: 10px;
+}
+.m-operationWrapper .m-operations {
+    border: 0;
+    padding: 0;
+}
+.m-operations select {
+    border-radius: 0;
+    box-shadow: none;
+    border-color: #d2d6de;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    -webkit-transition: border-color ease-in-out 0.15s,-webkit-box-shadow ease-in-out 0.15s;
+    -o-transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
+}
+.m-operations input {
+    height: 34px;
+}
+.m-operations button {
+    height: 34px;
+    vertical-align: top;
+}
+.m-operationWrapper .conditionItem {
+    margin-right: 10px;
+}
+.m-tableWrapper {
+    margin-top: 10px;
+}
+.m-tableWrapper table {
+    width: 100%;
+    text-align: center;
+}
+.m-tableWrapper table thead tr th {
+    text-align: center;
+    padding-right: 0;
+}
+
+.m-commonModal {
+    max-height: 600px;
+    /*overflow: auto;*/
+    text-align: left;
+}
+.m-tableWrapper.bigTh th{
+    height: 35px;
+    text-align: center;
+}
+
+.m-commonModal .property{
+    margin-bottom: 10px;
+}
+.m-commonModal .key {
+    margin-right: 10px;
+    font-weight: bold;
+    display: inline-block;
+    min-width: 120px;
+    text-align: right;
+}
+.m-commonModal .key.fl-l{
+    float: left;
+}
+.m-commonModal .colorWrap {
+    float: left;
+    padding: 0;
+}
+.m-commonModal .colorName {
+    display: inline-block;
+    width: 60px;
+}
+.m-commonModal .colorPreview{
+    width: 100px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.u-necessary:before,
+.m-commonModal .necessary:before,
+.m-commonModal .key.necessary:before {
+    color: red;
+    content: '*';
+}
+.m-commonModal .gray {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+
+    filter: grayscale(100%);
+
+    filter: gray;
+}
+.m-commonModal .bgImg {
+    height: 100px;
+}
+.m-commonModal .imgContainer {
+    height: 75px;
+    width: 200px;
+}
+.m-commonModal .imgOpt {
+    vertical-align: top;
+}
+.m-commonModal .value {
+    margin-left: 130px;
+}
+.m-commonModal .numberInput {
+    width: 30px;
+    margin: 0 5px;
+}
+.m-commonModal .verticalVal {
+    margin-bottom: 5px;
+    display: inline-block;
+    vertical-align: top;
+}
+.m-commonModal .values {
+    display: inline-block;
+    vertical-align: top;
+}
+.m-commonModal .linkLike {
+    font-weight: normal;
+    color: #337ab7;
+    cursor: pointer;
+}
+.m-commonModal .smallBtn {
+    padding: 3px;
+}
+.m-tableWrapper .imgContainer {
+    margin: 5px;
+}
+
+.m-commonModal .tips {
+    padding: 5px;
+    overflow: hidden;
+    font-weight: bold;
+}
+
+.m-commonModal table{
+    table-layout:fixed;
+    width:100%;
+    *width:auto;
+}
+.m-commonModal .btnWrapper {
+    margin: 5px 0;
+}
+
+.u-pageTitle {
+    font-size: 20px;
+    padding-bottom: 10px;
+    margin: 0;
+    font-weight: bold;
+}

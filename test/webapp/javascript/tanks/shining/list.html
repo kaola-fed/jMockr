@@ -1,0 +1,56 @@
+<div class="m-operationWrapper" style="overflow: visible;">
+    <div class="m-operations">
+        <div class="m-search f-fr">
+            <label style="margin: 0 15px 10px;">按条件搜索</label>
+                <select r-model={searchType}>
+                    <option value="0">全部</option>
+                    <option value="1">坦克名称</option>
+                    <option value="2">坦克ID</option>
+                </select>
+            <input type="text"
+                   {#if searchType == 0}
+                   disabled="disabled"
+                   {#elseif searchType == 2}
+                   r-model={searchContent|number}
+                   {#else}
+                   r-model={searchContent}
+                   {/if}
+            >
+            <button on-click={this.getList()} class="btn btn-primary btn-flat" style="margin-left: 10px;">搜索</button>
+        </div>
+        <span on-click={this.publishItems()} class="btn btn-primary btn-flat">发布</span>
+    </div>
+</div>
+<div class="m-tableWrapper">
+    <table class="table table-bordered table-striped dataTable">
+        <thead>
+        <tr>
+            <th>坦克ID</th>
+            <th>坦克名称</th>
+            <th>坦克图片</th>
+            <th>现存数量</th>
+            <th>负责人</th>
+            <th>坦克状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {#list list as item}
+        <tr>
+            <td>{item.id}</td>
+            <td>{item.name}</td>
+            <td><img src="{item.imgUrl}" width="100px" height="100px"></td>
+            <td>{item.tankNum}</td>
+            <td>{item.creator}</td>
+            <td>{item.opStatus|opStatus}</td>
+            <td>
+                <a href="javascript:;" on-click={this.removeItem(item)}>删除</a>
+            </td>
+        </tr>
+        {/list}
+        </tbody>
+    </table>
+</div>
+<div class="f-tar" style="margin-right: 10px;">
+    <pager total={Math.ceil(total/20)} currentPage={currentPage} totalCount = {total}></pager>
+</div>

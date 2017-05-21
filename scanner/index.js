@@ -106,6 +106,7 @@ function countResolvedPage() {
 function initCommonFtl(page, cPath) {
     if (!cPath) return;
     let fileIterator = fileUtil.listFilesSync(cPath, (name) => {
+        if (!fileUtil.isImportable(name)) return false;
         return fs.statSync(`${cPath}/${name}`).isFile();
     });
     fileIterator(function(fileName) {

@@ -1,0 +1,16 @@
+<div id="b-modal1" class="m-bModal1" {#if destroying}style="background-color: rgba(255, 255, 255, 0);"{/if}
+>
+    <div class="bmodal animated bounceInRight" style="width: {width||640}px; top: {top||150}px;" ref="body">
+        <div class="header">
+            <div class="title">{title}&nbsp;</div>
+            <div class="x" on-click={this.close()}></div>
+        </div>
+        <div class="body" style="max-height: {maxHeight||800}px;">
+            <div class="content" style="text-align: center;">{#include content||this.content}</div>
+        </div>
+        <div class="buttons">
+            <button class="button activeButton f-close" on-click={this.confirm()}>{okTitle || '确定'}</button>
+            <button class="button" on-click={this.close()}>{cancelTitle || '取消'}</button>
+        </div>
+    </div>
+</div>
