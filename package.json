@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yubaoquan/mock_server.git"
+    "url": "git+https://github.com/yubaoquan/jMockr.git"
   },
   "author": "yubaoquan",
   "license": "ISC",
