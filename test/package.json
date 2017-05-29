@@ -1,5 +1,6 @@
 {
     "scripts": {
-        "test": "node ../bin/start -v"
+        "testv": "node ../bin/start -v",
+        "testn": "node ../bin/start -n"
     }
 }

@@ -2,7 +2,7 @@
 const path = require('path');
 const Render = require('fast-ftl').Render;
 const config = require('../scanner/config');
-const makeErrorHtml = require('./makeErrorHtml');
+const makeErrorHtml = require('./makeErrorHTML');
 
 const render = Render({
     root: path.resolve(config.ftlFilePath),

@@ -4,7 +4,7 @@
   "description": "for seperate frontend and backend development",
   "main": "app.js",
   "scripts": {
-    "test": "node ./test/index"
+    "test": "jest"
   },
   "bin": {
     "jmockr": "bin/start.js"
@@ -31,5 +31,10 @@
     "opn": "^4.0.2",
     "socket.io": "^1.7.3",
     "superagent": "^3.3.1"
+  },
+  "devDependencies": {
+    "jest": "^20.0.4",
+    "pify": "^3.0.0",
+    "supertest": "^3.0.0"
   }
 }

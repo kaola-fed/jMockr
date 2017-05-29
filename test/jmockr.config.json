@@ -1,13 +1,13 @@
 {
   "authConfig": {
-    "username": "B9647",
-    "password": "qa12345_"
+    "username": "Boss19860407",
+    "password": "qiqiab12345^"
   },
   "proxyConfig": {
     "enable": false,
     "useIP": false,
     "protocol": "https",
-    "domain": "globalms.netease.com",
+    "domain": "www.baidu.com",
     "ip": "127.0.0.1",
     "enablePort": false,
     "port": 4000

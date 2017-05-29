@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 /**
  * @author hzyubaoquan
  * @description 模拟ms中的图片上传服务
@@ -15,7 +15,7 @@ var storage = multer.diskStorage({
     destination(req, file, cb) {
         cb(null, path.join(__dirname, '../fileStorage'));
     },
-    filename (req, file, cb) {
+    filename(req, file, cb) {
         var fileNewName = `${Date.now()}-${file.originalname}`;
         cb(null, fileNewName);
     }
@@ -31,7 +31,7 @@ var upload = multer({
 upload = upload.fields([{name: 'imgFile'}]);
 
 function dealUpload(req, res) {
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
         upload(req, res, (err) => {
             if (err) {
                 reject(err);
@@ -58,11 +58,11 @@ function imgValid(limit, imgInfo) {
 }
 
 module.exports = function(app) {
-    app.post('/frontpage/uploadimg.do', function (req, res, next) {
+    app.post('/frontpage/uploadimg.do', (req, res, next) => {
         var moduleId = req.query.module;
         dealUpload(req, res)
             .then(() => {
-                var imgName = req.files['imgFile'][0].filename,
+                var imgName = req.files.imgFile[0].filename,
                     limit = {
                         size: req.query.imgSize,
                         //type: req.query.isAllowPng,
@@ -76,7 +76,7 @@ module.exports = function(app) {
                 let newImgPath = path.join(__dirname, `../fileStorage/${newImgName}`);
                 fs.renameSync(imgPath, newImgPath);
 
-                switch(imgValid(limit, imgInfo)) {
+                switch (imgValid(limit, imgInfo)) {
                     case 0:
                         res.send(`<script>window.top.${moduleId}("/mock_server/fileStorage/${newImgName}");</script>`);
                         break;

@@ -1,6 +1,6 @@
 {
     "parserOptions": {
-        "ecmaVersion": 6,
+        "ecmaVersion": 7,
         "sourceType": "script",
         "ecmaFeatures": {
         }
@@ -8,7 +8,8 @@
     "env": {
         "browser": true,
         "node": true,
-        "es6": true
+        "es6": true,
+        "jest": true
     },
     "rules": {
         //句尾强制加分号
