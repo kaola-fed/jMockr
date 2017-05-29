@@ -2,11 +2,13 @@ const exec = require('child_process').exec;
 const path = require('path');
 
 let child;
-function runServer() {
-    console.info('building...');
-    console.info(__dirname);
+function getRunKey(char) {
+    return `test${char}`;
+}
 
-    child = exec('npm run testn', {
+function runServer(char) {
+    let key = getRunKey(char);
+    child = exec(`npm run ${key}`, {
         cwd: __dirname
     }, (err, stdout, stderr) => {
         if (err) console.info(err);
