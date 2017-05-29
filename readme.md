@@ -2,6 +2,7 @@
 # jmockr 使用说明
 
 [![NPM version][npm-image]][npm-url]
+[![Build Status](https://travis-ci.org/yubaoquan/jMockr.svg?branch=master)](https://travis-ci.org/yubaoquan/jMockr)
 [![npm download][download-image]][download-url]
 
 [npm-image]: http://img.shields.io/npm/v/jmockr.svg?style=flat-square
