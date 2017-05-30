@@ -31,11 +31,9 @@ function get(url, judge) {
                 .end((err, res) => {
                     try {
                         if (err) {
-                            console.error('in error');
                             return resolve(judge(res));
                         }
                         if (judge) {
-                            console.info('judge');
                             resolve(judge(res));
                         } else {
                             resolve(expect(res.status).toBe(200));
@@ -92,10 +90,8 @@ async function changeRetCode200() {
             await get(urls[i]);
         } else {
             await get(urls[i], (res) => {
-                console.info('dealing with ', urls[i]);
-                console.info(res.statusCode);
                 expect(res.statusCode).toBe(404);
-            })
+            });
         }
     }
     await get('http://localhost:4500' + newURL);

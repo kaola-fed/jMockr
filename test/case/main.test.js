@@ -13,7 +13,7 @@ beforeAll(async () => {
     });
 });
 
-test('get home page should return status 200', () => {
+test.only('get home page should return status 200', () => {
     return r.get('/')
         .expect((res) => {
             expect(res.status).toBe(200);

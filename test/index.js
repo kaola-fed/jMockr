@@ -13,7 +13,6 @@ function runServer(char) {
     }, (err, stdout, stderr) => {
         if (err) console.info(err);
         else {
-            console.info('no error');
             console.info(stdout);
             console.info(stderr);
         }
