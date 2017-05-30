@@ -31,7 +31,8 @@ function get(url, judge) {
                 .end((err, res) => {
                     try {
                         if (err) {
-                            return resolve(judge(res));
+                            if (judge) return resolve(judge(res));
+                            else return resolve(expect(res.status).toBe(200));
                         }
                         if (judge) {
                             resolve(judge(res));
@@ -53,11 +54,12 @@ function get(url, judge) {
     });
 }
 
-// test('test promise', async () => {
-//     expect.assertions(2);
-//     await get('https://www.baidu.com');
-//     await get('http://www.qq.com');
-// });
+test('get home page should return status 200', () => {
+    return r.get('/')
+        .expect((res) => {
+            expect(res.status).toBe(200);
+        });
+});
 
 test('Before delete, all url are reachable', async () => {
     expect.assertions(urls.length);
@@ -73,18 +75,12 @@ test('After delete and add, route changes', async () => {
     await changeRetCode200();
 });
 
-async function timeout(ms) {
-  await new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
-
 async function changeRetCode200() {
     let firstURL = originURLs[0];
     let newURL = '/notExists.do';
     let newContent = JSON.stringify([firstURL, newURL]).replace(/^"|"$/g, '');
     await pify(fs.writeFile)(filePath, newContent);
-    await timeout(2000);
+    await timeout(1000);
     for (let i = 0; i < urls.length; i++) {
         if (i === 0) {
             await get(urls[i]);
@@ -97,12 +93,19 @@ async function changeRetCode200() {
     await get('http://localhost:4500' + newURL);
 }
 
-async function writeFile(path, str) {
 
+async function timeout(ms) {
+  await new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
 
+// test('ignore', async () => {
+//     await timeout(1000);
+//     expect(1).toBeTruthy();
+// });
 afterAll(() => {
-    childProcess.kill();
+    childProcess.kill('SIGTERM');
+    // process.kill(childProcess.pid, 'SIGTERM');
     fs.writeFile(filePath, JSON.stringify(originURLs).replace(/^"|"$/g, ''));
 });
-// get(console.info);

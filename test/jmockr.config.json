@@ -24,7 +24,8 @@
   "serverConfig": {
     "port": 4500,
     "static": "./webapp",
-    initialURL: ''
+    initialURL: '',
+    noOpenPage: true
   },
   liveReload: {
       "watch": [
