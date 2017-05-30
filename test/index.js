@@ -11,16 +11,28 @@ function runServer(char) {
     child = exec(`npm run ${key}`, {
         cwd: __dirname
     }, (err, stdout, stderr) => {
-        if (err) console.info(err);
-        else {
-            console.info(stdout);
-            console.info(stderr);
+        // This function is useless currently, save it for debug.
+        if (err) {
+            // parent process kill the child_process,
+            // so the code will be null and signal be "SIGTERM",
+            // which will be regarded as child_process call failed.
+            // console.info(err);
+        } else {
+            // console.info(stdout);
+            // console.info(stderr);
         }
+    });
+
+    child.stdout.on('data', (data) => {
+        // console.info(data);
+    });
+    child.stderr.on('data', (data) => {
+        console.info(data);
     });
 
     process.on('exit', () => {
         child.kill();
-        console.info('bye');
+        // console.info('bye');
     });
 
     process.on('SIGTERM', () => {

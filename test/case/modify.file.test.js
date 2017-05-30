@@ -1,13 +1,13 @@
 const fs = require('fs');
 const fileUtil = require('../../util/fileUtil');
-const request = require('supertest');
-const runServer = require('../index');
 const path = require('path');
 const pify = require('pify');
+const psTree = require('ps-tree');
+const request = require('supertest');
+const runServer = require('../index');
 const sg = require('superagent');
 
 const r = request('http://localhost:4500');
-// const r = request('https://www.baidu.com');
 
 let childProcess;
 let originURLs;
@@ -104,34 +104,35 @@ async function timeout(ms) {
 //     await timeout(1000);
 //     expect(1).toBeTruthy();
 // });
-var psTree = require('ps-tree');
 
-var kill = function (pid, signal, callback) {
+function kill(pid, signal, callback) {
     signal   = signal || 'SIGKILL';
     callback = callback || function () {};
-    var killTree = true;
-    if(killTree) {
-        psTree(pid, function (err, children) {
+    let killTree = true;
+    if (killTree) {
+        psTree(pid, (err, children) => {
             [pid].concat(
-                children.map(function (p) {
-                    return p.PID;
-                })
-            ).forEach(function (tpid) {
-                try { process.kill(tpid, signal) }
-                catch (ex) { }
+                children.map(p => p.PID)
+            ).forEach((tpid) => {
+                try {
+                    process.kill(tpid, signal) ;
+                } catch (ex) {
+                    conosle.info(ex);
+                }
             });
             callback();
         });
     } else {
-        try { process.kill(pid, signal) }
-        catch (ex) { }
+        try {
+            process.kill(pid, signal)
+        } catch (ex) {
+            console.info(ex);
+        }
         callback();
     }
 };
 
 afterAll(() => {
-    // childProcess.kill('SIGTERM');
     kill(childProcess.pid);
-    // process.kill(childProcess.pid, 'SIGTERM');
     fs.writeFile(filePath, JSON.stringify(originURLs).replace(/^"|"$/g, ''));
 });
