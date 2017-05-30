@@ -35,9 +35,10 @@
   "devDependencies": {
     "jest": "^20.0.4",
     "pify": "^3.0.0",
+    "ps-tree": "^1.1.0",
     "supertest": "^3.0.0"
   },
   "jest": {
-      "setupTestFrameworkScriptFile": "./test/setup.js"
+    "setupTestFrameworkScriptFile": "./test/setup.js"
   }
 }
