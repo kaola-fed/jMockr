@@ -50,3 +50,4 @@ fileStorage
 /jmockr.config.json
 /mock
 /log
+.idea/
