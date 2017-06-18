@@ -36,7 +36,7 @@
         "enable": true, //是否将ajax请求代理到测试环境
         "useIP": false, //代理时使用IP还是域名
         "protocol": "https",
-        "domain": "globalms.netease.com", //测试环境的域名
+        "domain": "xxx.yyy.com", //测试环境的域名
         "ip": "127.0.0.1", //测试环境的IP
         "enablePort": false, //是否声明端口号
         "port": 4000
