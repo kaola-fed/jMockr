@@ -1,5 +1,4 @@
-
-# jmockr 使用说明
+# jmockr introduction
 
 [![NPM version][npm-image]][npm-url]
 [![Build Status](https://travis-ci.org/yubaoquan/jMockr.svg?branch=master)](https://travis-ci.org/yubaoquan/jMockr)
@@ -11,101 +10,105 @@
 [download-url]: https://npmjs.org/package/jmockr
 
 
-## 1. 安装
+## 1. Install
 
 
 [![dom-scroll-into-view](https://nodei.co/npm/jmockr.png)](https://npmjs.org/package/jmockr)
 
 `npm install jmockr`
 
-## 2. 配置文件
+## 2. Config
 
-配置文件名为jmockr.config.json, 放置在jmockr所在的文件夹中(即执行npm install jmockr 的文件夹).
+The config file is named `jmockr.config.json`, located in the folder where jmockr in.(the folder where you run `npm install jmockr`)
 
-配置文件内容:
 
-以下是一份示例
+Here is a demo:
 
  ```
 {
     "authConfig": {
-        "username": "xxxxx", //测试环境登录用的账号和口令
-        "password": "xxxxx_"
+        "username": "xxxxx", //useless now
+        "password": "xxxxx_" //useless now
     },
-    "proxyConfig": {
-        "enable": true, //是否将ajax请求代理到测试环境
-        "useIP": false, //代理时使用IP还是域名
+    "proxyConfig": { // proxy config
+        "enable": true, // whether proxy the ajax request to other server
+        "useIP": false, // use IP to locate the target server, if set to true, the `domain` is omitted, otherwise `ip` is omitted
         "protocol": "https",
-        "domain": "xxx.yyy.com", //测试环境的域名
-        "ip": "127.0.0.1", //测试环境的IP
-        "enablePort": false, //是否声明端口号
+        "domain": "xxx.yyy.com",
+        "ip": "127.0.0.1",
+        "enablePort": false, // whether send request to a specific port of target server, if set to false, the `port` is omitted
         "port": 4000
     },
     "dataPath": {
-        "urlMap": "mock/urlMap.json", // 1.[文件地址]
-        "commonFtl": "mock/commonFtlData", // 2.[文件夹地址]
-        "url200": "mock/ajax/retCode200.json", // 3.[文件地址]
-        "pageFtl": "mock/ftlMockData", // 4.[文件夹地址]
-        "ajax": "mock/ajax" // 5.[文件夹地址]
+        "urlMap": "mock/urlMap.json", // 1.[file]
+        "commonFtl": "mock/commonFtlData", // 2.[folder]
+        "url200": "mock/ajax/retCode200.json", // 3.[file]
+        "pageFtl": "mock/ftlMockData", // 4.[folder]
+        "ajax": "mock/ajax" // 5.[folder]
     },
     "serverConfig": {
-        "port": 3000, //jmockr监听的端口
-        "static": "./webapp", //前端静态文件位置 包括css/js/图片资源等
-        "noOpenPage": false, //服务器启动之后, 是否禁止自动在浏览器中打开默认页面, 如果设置了initialURL, 此配置项无效
-        "initialURL": 'www.test.com' //服务器启动后默认打开的页面地址, 如果不填, 将打开 http://localhost:port
+        "port": 3000, // port jmockr listens on
+        "static": "./webapp", // static files are put here, like css or js files
+        "noOpenPage": false, // whether open the default page in browser. if initialURL is set, this option is omitted
+        "initialURL": 'www.test.com' // Default page to open after server launched. If ommited, will set to `http://localhost:port`
     },
-    "ftlFilePath": "xxxx", // 6.[文件夹地址]
-    "moduleFtlPathes": ["aaa", "bbb"], // 7.[文件夹地址]
-    "liveReload": { //liveReload 模式的配置
-        "watch": [ //监听变化的文件或路径
+    "ftlFilePath": "xxxx", // Folder
+    "moduleFtlPathes": ["aaa", "bbb"], // Folder
+    "liveReload": { // live reload config
+        "watch": [ // paths to watch, if file under these has changed, server will refresh the browser
              "**/*.css",
              "**/*.js",
              "**/*.html",
              "**/*.ftl"
         ],
-        "ignore": [ //不监听的文件或路径
+        "ignore": [ //paths not watch
              "../ignore/**/*.*"
         ]
     }
 }
  ```
 
- 1. 页面地址映射到的ftl文件相对路径, 内容为一个数组, 形如`[{"entry": "xxxxx", "ftlPath": "yyyyy"}, {"entry": "xxxxx2", "ftlPath": "yyyyy2"}]`
- 2. 存放通用ftl mock数据(即所有页面均会使用的ftl数据)文件的目录, 每个文件是json文件
- 3. 此文件为一个url数组, 数组中所有url的ajax返回数据为 `{retCode: 200}`
- 4. 每个页面中独有的ftl mock 数据的文件目录, 每个文件是json文件, 文件的命名规则见<a href="#mmgz">命名规则</a>
- 5. 页面中每个ajax接口的mock数据放在一个json文件中, 每个页面的所有mock数据的json文件放在一个ajax文件夹(ajax文件夹的命名规则见<a href="#mmgz">命名规则</a>)中, 所有页面的ajax文件夹放在此目录下
- 6. 存放所有ftl文件/文件夹的根路径(相对当前配置文件的路径)
- 7. 其他ftl根路径(与`ftlFilePath`同级或在`ftlFilePath`外层, 如从node_modules中引用的ftl, 可以在这里配置)
+ 1. Array of map, the map is pages url to page template file , like`[{"entry": "/this/is/a/page", "ftlPath": "/the/template/file.ftl"}, {"entry": "xxxxx2", "ftlPath": "yyyyy2"}]`
 
-**注意: 所有的相对路径, 都是相对于jmockr.config.json文件**
+ 2. A folder stores common freemarker mock data(the mock data that all pages need to use), files under the folder are json files.
+
+ 3. Array of url in this file, all the url is ajax that response `{retCode: 200}`
+
+ 4. Folder stores page scoped freemarker mock data ftl mock. Every file in this folder is json file, see<a href="#mmgz">naming rule</a>
+
+ 5. Each ajax mock data is put in a json file. All ajax mock data file are put in a page scoped ajax folder (to name this folder, see <a href="#mmgz">naming rule</a>), all the folders is in this folder.
+
+ 6. Store all ftl files or subfolders(ralative to jmockr config file).
+
+ 7. Other ftl's root path(on the same level or out of `ftlFilePath`, for example ftl in node_modules)
+
+**Tips: all relative paths are relative to `jmockr.config.json`**
 
 
-<div id="mmgz">命名规则</div>
-已页面地址为`/abc/def.do`为例,
+<div id="mmgz">Naming rule</div>
+Take a page who's url is `/abc/def.do` for instance,
 
-下面以一个路径为`/abc/def.do`的新页面为例
+1. Remove the first slash in url
+2. Replace rest slashes in url to dot. so filename of sync data for the page is `abc.def.do.json`
+3. Under ajax mock data folder, all ajax config files have no limit of naming rule, but must be json file or exportable .js file, such as `1.json`, `abc.json` are valid.
 
-去掉, 第一个斜杠, 把剩下的斜杠换成点即可. 所以页面ftl的mock数据文件名为`abc.def.do.json`
-页面的ajax mock数据文件夹名为`abc.def.do`, 在此文件夹下, 所有ajax接口的mock文件名格式无格式要求(随便起名), 但必须是json文件或导出数据的.js文件, 如`1.json`, `abc.json`均为合法文件名
+Example:
 
-以下举例:
+#### a. Page route and sync mock data config
 
-#### a. 页面入口及同步数据配置
+When you create a page, like
 
-新建一个页面时，如
+> page url：/abc/def.do
 
-> 页面地址：/abc/def.do
+> freemarker file location：new_template/pages/aaa/bbb/ccc.ftl
 
-> ftl文件位置：new_template/pages/aaa/bbb/ccc.ftl
-
-则向mock/urlMap.json文件中的数组添加一项
+You need to add one config item to array in `mock/urlMap.json`
 
     {
 	    entry: '/abc/def.do',
 	    ftlPath: 'new_template/pages/aaa/bbb/ccc.ftl'
 	}
-如果需要在ftl中渲染同步数据的话, 在mock/ftlMockData/路径下新建文件`abc.def.do.json`,  同步数据, 如下:
+If you need to put some sync data to freemarker, create a new file named`abc.def.do.json`, put it to `mock/ftlMockData/` fill the sync mock data in this file, like:
 
     {
         sentence: "Hello World",
@@ -113,30 +116,30 @@
         arr: [1, 2, 3, 4, 5, 6, 7]
     }
 
-#### b.异步接口配置
+#### b. AJAX config
 
-##### 1.完整配置
+##### 1.Complete config
 
-在`mock_server/mock/ajax/`路径下添加文件夹`abc.def.do`
+Add `abc.def.do` to `mock_server/mock/ajax/`
 
-文件夹名为entry的值(即页面地址)去掉第一个斜杠
+File name is entry(the page url) exclude the first slash.
 
-页面中每添加一个异步接口，就在abc.def.do路径下添加一个json文件, 文件名随意，json结构如下：
+When add an ajax config to the page，add a json file to `abc.def.do`, file name is not limited，data structure like this：
 
     {
-	    "url": "/cms/album/searchTag.do",   //异步接口地址
-	    "method": "post",                   //接口调用方法(get/post/put/delete) 不写时默认为post.
-	    //如果需要支持多种请求方式返回同样的结果, 可以将请求方式用逗号分开 如"method": "get,post"
-	    "result": {                         //接口返回值
+	    "url": "/cms/album/searchTag.do",   // the ajax url
+	    "method": "post",                   // (get/post/put/delete) if omitted, set to post.
+	    //if want to support multi methods to a ajax, split the methods with comma. like"method": "get,post"
+	    "result": {                         // response data from ajax
 	        "abc": "def"
 	    }
 	}
 
-##### 2.简化配置
+##### 2.simplified special config
 
-对于只需要server返回`{retCode: 200}`的接口(如发布数据, 删除数据的接口), 只需将接口的地址直接添加到`retCode200.json`中即可, 不需要其他配置
+There is a special config: If you need some ajax interface return `{retCode: 200}`, just add ajax url to  `retCode200.json`, no other config
 
-#### c.proxy配置
+#### c.Proxy config
 
 异步数据除了在本地的json文件中配置外, 还可以直接调用测试环境的接口获取, 即代理功能.
 
@@ -148,15 +151,15 @@
 
 **如果开启代理, 请确认当前host或者ip是自己需要调试的目标地址, 避免产生环境不对造成接口访问不到的问题**
 
-## 3. 启动命令
+## 3. Start up command
 
-    jmockr -n 或 jmockr --normal 普通启动, 修改mock数据或页面代码, 不会重启服务器
-    jmockr -s 或 jmockr --start 热启动, 修改mock数据会触发jmockr更新mock数据
-    jmockr -l 或 jmockr --live 带有live reload功能的热启动, 修改页面代码时会自动刷新浏览器
+    `jmockr -n` or `jmockr --normal` normal start, modifying mock data or page code will not trigger restart
+    `jmockr -s` or `jmockr --start` hot start, modifying mock data will trigger server to reload routes and mock data
+    `jmockr -l` or `jmockr --live` hot start with live reload, modifying page code such as js /css /html will trigger browser to reload the page
 
 ## 4.tips
 
-1. jmockr支持json5风格的json文件, 如下:
+1. jmockr support json5 file and json5 style in json file, like below:
 
 ```
 {
@@ -187,38 +190,7 @@ multi-line string',
 ```
 
 
- 详见[JSON5](https://github.com/json5/json5)
-
-
-## *. TODO
-
-#### a. 自定义异步接口返回数据的逻辑:
-
-	/**
-	 * query代表`req.query`
-	 * body代表`req.body`
-	 * params代表`req.params`
-	 * /
-
-	result: function(query, body, params) {
-		return xxx;
-	}
-
-#### b.mock 文件中的数据支持正则编辑规则:
-可能如下
-```
-{
-	url: 'xxx',
-	method: 'post',
-	result: {
-		a: '1number10', //介于1到10之间的整数
-		b: '5string20'  //介于5到10字母长度的字符串
-	}
-}
-```
-参考资料:
-[nuysoft/Mock](https://github.com/nuysoft/Mock/wiki/Syntax-Specification)
-
+ More about [JSON5](https://github.com/json5/json5)
 
 ## License
 
