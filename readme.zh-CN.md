@@ -44,7 +44,7 @@
     "dataPath": {
         "urlMap": "mock/urlMap.json", // 1.[文件地址]
         "commonFtl": "mock/commonFtlData", // 2.[文件夹地址]
-        "url200": "mock/ajax/retCode200.json", // 3.[文件地址]
+        "commonAjax": "mock/commonAjax", // 3.[文件夹地址]
         "pageFtl": "mock/ftlMockData", // 4.[文件夹地址]
         "ajax": "mock/ajax" // 5.[文件夹地址]
     },
@@ -72,7 +72,40 @@
 
  1. 页面地址映射到的ftl文件相对路径, 内容为一个数组, 形如`[{"entry": "xxxxx", "ftlPath": "yyyyy"}, {"entry": "xxxxx2", "ftlPath": "yyyyy2"}]`
  2. 存放通用ftl mock数据(即所有页面均会使用的ftl数据)文件的目录, 每个文件是json文件
- 3. 此文件为一个url数组, 数组中所有url的ajax返回数据为 `{retCode: 200}`
+ 3. 存放通用ajax配置的根目录, 此文件夹下包含的每个配置项是一个子文件夹, 每个子文件夹中包含两个文件: 一个文件 (文件名可以是 `url.js`, `url.json` 或者 `url.json5`) 存放异步接口的地址, 另一个文件 (文件名可以是 `data.js`, `data.json` 或者 `data.json5`) 存放异步接口返回的数据, 下面是一个例子:
+ ```
+ // 文件结构
+ /mock/commonAjax/
+                |
+                -------api1
+                |        |
+                |        |--url.json
+                |        |--data.json
+                |
+                |------api2
+                |        |
+                |        |--url.json
+                |        |--data.json
+
+// url.json
+
+[
+    '/the/first/url.do',
+    '/the/second/url.do',
+    //...
+]
+
+// data.json
+
+{
+    someKey1: someVal1,
+    someKey2: someVal2,
+    //...
+}
+
+// url文件中所有url对应的接口都返回data文件中配置的数据
+ ```
+
  4. 每个页面中独有的ftl mock 数据的文件目录, 每个文件是json文件, 文件的命名规则见<a href="#mmgz">命名规则</a>
  5. 页面中每个ajax接口的mock数据放在一个json文件中, 每个页面的所有mock数据的json文件放在一个ajax文件夹(ajax文件夹的命名规则见<a href="#mmgz">命名规则</a>)中, 所有页面的ajax文件夹放在此目录下
  6. 存放所有ftl文件/文件夹的根路径(相对当前配置文件的路径)
@@ -102,9 +135,9 @@
 则向mock/urlMap.json文件中的数组添加一项
 
     {
-	    entry: '/abc/def.do',
-	    ftlPath: 'new_template/pages/aaa/bbb/ccc.ftl'
-	}
+        entry: '/abc/def.do',
+        ftlPath: 'new_template/pages/aaa/bbb/ccc.ftl'
+    }
 如果需要在ftl中渲染同步数据的话, 在mock/ftlMockData/路径下新建文件`abc.def.do.json`,  同步数据, 如下:
 
     {
@@ -124,17 +157,13 @@
 页面中每添加一个异步接口，就在abc.def.do路径下添加一个json文件, 文件名随意，json结构如下：
 
     {
-	    "url": "/cms/album/searchTag.do",   //异步接口地址
-	    "method": "post",                   //接口调用方法(get/post/put/delete) 不写时默认为post.
-	    //如果需要支持多种请求方式返回同样的结果, 可以将请求方式用逗号分开 如"method": "get,post"
-	    "result": {                         //接口返回值
-	        "abc": "def"
-	    }
-	}
-
-##### 2.简化配置
-
-对于只需要server返回`{retCode: 200}`的接口(如发布数据, 删除数据的接口), 只需将接口的地址直接添加到`retCode200.json`中即可, 不需要其他配置
+        "url": "/cms/album/searchTag.do",   //异步接口地址
+        "method": "post",                   //接口调用方法(get/post/put/delete) 不写时默认为post.
+        //如果需要支持多种请求方式返回同样的结果, 可以将请求方式用逗号分开 如"method": "get,post"
+        "result": {                         //接口返回值
+            "abc": "def"
+        }
+    }
 
 #### c.proxy配置
 
@@ -194,26 +223,26 @@ multi-line string',
 
 #### a. 自定义异步接口返回数据的逻辑:
 
-	/**
-	 * query代表`req.query`
-	 * body代表`req.body`
-	 * params代表`req.params`
-	 * /
+    /**
+     * query代表`req.query`
+     * body代表`req.body`
+     * params代表`req.params`
+     * /
 
-	result: function(query, body, params) {
-		return xxx;
-	}
+    result: function(query, body, params) {
+        return xxx;
+    }
 
 #### b.mock 文件中的数据支持正则编辑规则:
 可能如下
 ```
 {
-	url: 'xxx',
-	method: 'post',
-	result: {
-		a: '1number10', //介于1到10之间的整数
-		b: '5string20'  //介于5到10字母长度的字符串
-	}
+    url: 'xxx',
+    method: 'post',
+    result: {
+        a: '1number10', //介于1到10之间的整数
+        b: '5string20'  //介于5到10字母长度的字符串
+    }
 }
 ```
 参考资料:

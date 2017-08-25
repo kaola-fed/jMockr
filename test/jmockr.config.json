@@ -16,10 +16,10 @@
   "moduleFtlPathes": [],
   "dataPath": {
     "urlMap": "./mock/urlMap.json",
-    "url200": "./mock/ajax/retCode200.json",
     "commonFtl": "./mock/commonFtlData",
     "pageFtl": "./mock/ftlMockData",
-    "ajax": "./mock/ajax"
+    "ajax": "./mock/ajax",
+    "commonAjax": "./mock/commonAjax",
   },
   "serverConfig": {
     "port": 4500,

@@ -1,5 +1,5 @@
 
-function init(app, urlMap, urlsReturn200) {
+function init(app, urlMap, commonAjax) {
     urlMap.forEach((page) => {
         if (!page.ajax) return;
         page.ajax.forEach((opt) => {
@@ -16,15 +16,15 @@ function init(app, urlMap, urlsReturn200) {
         });
     });
 
-    urlsReturn200.forEach((url) => {
+    commonAjax.forEach((cfg) => {
         try {
-            app.use(url, (req, res) => {
-                res.json({
-                    retCode: 200
+            cfg.urls.forEach((url) => {
+                app.use(url, (req, res) => {
+                    res.json(cfg.data);
                 });
             });
         } catch (e) {
-            throw new Error(`Error initializing retCode200 ajax:${url}`);
+            throw new Error(`Error initializing common ajax.`);
         }
     });
 
@@ -34,6 +34,4 @@ function init(app, urlMap, urlsReturn200) {
         res.status(404).send('Page not found.');
     });
 }
-module.exports = {
-    init
-};
+module.exports = { init };

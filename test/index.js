@@ -1,5 +1,4 @@
 const exec = require('child_process').exec;
-const path = require('path');
 
 let child;
 function getRunKey(char) {
@@ -7,9 +6,9 @@ function getRunKey(char) {
 }
 
 function runServer(char) {
-    let key = getRunKey(char);
+    const key = getRunKey(char);
     child = exec(`npm run ${key}`, {
-        cwd: __dirname
+        cwd: __dirname,
     }, (err, stdout, stderr) => {
         // This function is useless currently, save it for debug.
         if (err) {

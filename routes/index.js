@@ -3,7 +3,6 @@
 const path = require('path');
 const ftlParser = require('../ftl_parse');
 const scanner = require('../scanner/index');
-const logUtil = require(`../util/logUtil`);
 const uploadImg = require('./uploadImg');
 const uploadFile = require('./uploadFile');
 const noProxyAjax = require('./noProxyAjax');
@@ -12,12 +11,12 @@ const proxyConfig = scanner.proxyConfig;
 const injector = require('connect-inject');
 
 function initRequestMap(app, cb) {
-    let {mockData, url200} = scanner.scan();
+    const { commonAjaxMock, mockData } = scanner.scan();
 
     initCORS(app);
     initWebSocket(app);
 
-    //初始化页面入口路由
+    // 初始化页面入口路由
     mockData.forEach((page) => {
         try {
             app.get(page.entry, (req, res, next) => {
@@ -35,15 +34,15 @@ function initRequestMap(app, cb) {
         }
     });
 
-    //初始化图片上传路由
+    // Init upload image
     uploadImg(app);
-    //初始化上传文件
+    // Init upload file
     uploadFile(app);
 
-    if (proxyConfig.enable) { //初始化ajax路由(返回本地配置的mock数据)
+    if (proxyConfig.enable) { // 初始化ajax路由(返回本地配置的mock数据)
         proxyAjax.init(app);
-    } else { //初始化ajax路由(代理到远程测试服务器)
-        noProxyAjax.init(app, mockData, url200);
+    } else { // 初始化ajax路由(代理到远程测试服务器)
+        noProxyAjax.init(app, mockData, commonAjaxMock);
     }
     return cb();
 }
@@ -70,7 +69,7 @@ function initWebSocket(app) {
                 location.reload();
             });
         </script>
-        `
+        `,
     }));
 }
 

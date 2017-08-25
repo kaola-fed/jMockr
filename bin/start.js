@@ -1,18 +1,15 @@
 #!/usr/bin/env node
 'use strict';
 
-const path = require('path');
-const config = require('../scanner/config');
 const version = require('../package.json').version;
 const parseArgv = require('minimist');
 const chalk = require('chalk');
 
-const watcher = require('../watcher/base');
 const mockDataWatcher = require('../watcher/mockDataWatcher');
 const pageWatcher = require('../watcher/pageWatcher');
 const app = require('../app');
 
-let args = parseArgv(process.argv.slice(2));
+const args = parseArgv(process.argv.slice(2));
 
 index(args);
 
@@ -33,7 +30,7 @@ function index(args) {
         });
         if (args.s || args.start) return; // Only restart when mock data changed.
 
-        //Reload when page content changed.
+        // Reload when page content changed.
         pageWatcher.addListener(() => {
             app.reloadPages();
         });
@@ -41,7 +38,7 @@ function index(args) {
 }
 
 function sayHi() {
-    let welcomeMsg = '\n============Welcome using jMockr============';
+    const welcomeMsg = '\n============Welcome using jMockr============';
     console.info(chalk.bgGreen.bold(welcomeMsg));
 }
 
@@ -51,7 +48,7 @@ function argsUnknown(args) {
         'n', 'normal',
         'l', 'live',
         's', 'start',
-        'v', 'version'
+        'v', 'version',
     ].every((name) => {
         return !args.hasOwnProperty(name);
     });

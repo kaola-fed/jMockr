@@ -1,5 +1,6 @@
 # jmockr introduction
 
+[中文文档](https://github.com/yubaoquan/jMockr/blob/master/readme.zh-CN.md)
 [![NPM version][npm-image]][npm-url]
 [![Build Status](https://travis-ci.org/yubaoquan/jMockr.svg?branch=master)](https://travis-ci.org/yubaoquan/jMockr)
 [![npm download][download-image]][download-url]
@@ -42,7 +43,7 @@ Here is a demo:
     "dataPath": {
         "urlMap": "mock/urlMap.json", // 1.[file]
         "commonFtl": "mock/commonFtlData", // 2.[folder]
-        "url200": "mock/ajax/retCode200.json", // 3.[file]
+        "commonAjax": "mock/commonAjax", // 3.[folder]
         "pageFtl": "mock/ftlMockData", // 4.[folder]
         "ajax": "mock/ajax" // 5.[folder]
     },
@@ -72,7 +73,39 @@ Here is a demo:
 
  2. A folder stores common freemarker mock data(the mock data that all pages need to use), files under the folder are json files.
 
- 3. Array of url in this file, all the url is ajax that response `{retCode: 200}`
+ 3. A root folder stores common ajax config folders, each subfolder in root folder contains two file: one file (its name could be `url.js`, `url.json` or `url.json5`) contains the urls of the ajax, another file (its name could be `data.js`, `data.json` or `data.json5`) contains the response data of the urls, below is an example:
+ ```
+ // structure
+ /mock/commonAjax/
+                |
+                -------api1
+                |        |
+                |        |--url.json
+                |        |--data.json
+                |
+                |------api2
+                |        |
+                |        |--url.json
+                |        |--data.json
+
+// url.json
+
+[
+    '/the/first/url.do',
+    '/the/second/url.do',
+    //...
+]
+
+// data.json
+
+{
+    someKey1: someVal1,
+    someKey2: someVal2,
+    //...
+}
+
+// All the ajax of url in url.json will response data in data.json which in the same folder of url.json.
+ ```
 
  4. Folder stores page scoped freemarker mock data ftl mock. Every file in this folder is json file, see<a href="#mmgz">naming rule</a>
 
@@ -105,9 +138,9 @@ When you create a page, like
 You need to add one config item to array in `mock/urlMap.json`
 
     {
-	    entry: '/abc/def.do',
-	    ftlPath: 'new_template/pages/aaa/bbb/ccc.ftl'
-	}
+        entry: '/abc/def.do',
+        ftlPath: 'new_template/pages/aaa/bbb/ccc.ftl'
+    }
 If you need to put some sync data to freemarker, create a new file named`abc.def.do.json`, put it to `mock/ftlMockData/` fill the sync mock data in this file, like:
 
     {
@@ -127,17 +160,13 @@ File name is entry(the page url) exclude the first slash.
 When add an ajax config to the page，add a json file to `abc.def.do`, file name is not limited，data structure like this：
 
     {
-	    "url": "/cms/album/searchTag.do",   // the ajax url
-	    "method": "post",                   // (get/post/put/delete) if omitted, set to post.
-	    //if want to support multi methods to a ajax, split the methods with comma. like"method": "get,post"
-	    "result": {                         // response data from ajax
-	        "abc": "def"
-	    }
-	}
-
-##### 2.simplified special config
-
-There is a special config: If you need some ajax interface return `{retCode: 200}`, just add ajax url to  `retCode200.json`, no other config
+        "url": "/cms/album/searchTag.do",   // the ajax url
+        "method": "post",                   // (get/post/put/delete) if omitted, set to post.
+        //if want to support multi methods to a ajax, split the methods with comma. like"method": "get,post"
+        "result": {                         // response data from ajax
+            "abc": "def"
+        }
+    }
 
 #### c.Proxy config
 

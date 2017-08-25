@@ -1,0 +1,14 @@
+{
+    house: {
+        name: 'the house',
+        people: [
+            {
+                name: 'person1',
+                age: 12,
+            }, {
+                name: 'person2',
+                age: 22,
+            },
+        ],
+    },
+}

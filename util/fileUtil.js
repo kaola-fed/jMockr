@@ -5,8 +5,8 @@ function listFiles(path, myFilter) {
     return new Promise(function(resolve, reject) {
         fs.readdir(path, function(err, files) {
             if (err) {
-                //console.info(`读取目录[${path}]失败`);
-                //console.info(err);
+                // console.info(`读取目录[${path}]失败`);
+                // console.info(err);
                 reject(err);
             } else {
                 resolve(files.filter(myFilter || (() => true)));
@@ -16,7 +16,7 @@ function listFiles(path, myFilter) {
 }
 
 function listFilesSync(path, myFilter = () => true) {
-    let files = fs.readdirSync(path).filter(myFilter);
+    const files = fs.readdirSync(path).filter(myFilter);
     return (operation) => {
         files.forEach((file) => {
             operation(file);
@@ -77,7 +77,7 @@ function json5Require(filePath) {
             return require(filePath);
         }
 
-        let fileContent = fs.readFileSync(filePath);
+        const fileContent = fs.readFileSync(filePath);
         return JSON5.parse(fileContent);
     } catch (e) {
         console.info(`require json5 file [${filePath}] failed`, e);
@@ -102,7 +102,7 @@ function purgeCache(moduleName) {
     // Remove cached paths to the module.
     // Thanks to @bentael for pointing this out.
     Object.keys(module.constructor._pathCache).forEach(function(cacheKey) {
-        if (cacheKey.indexOf(moduleName)>0) {
+        if (cacheKey.indexOf(moduleName) > 0) {
             delete module.constructor._pathCache[cacheKey];
         }
     });
@@ -114,7 +114,7 @@ function purgeCache(moduleName) {
  */
 function searchCache(moduleName, callback) {
     // Resolve the module identified by the specified name
-    var mod = require.resolve(moduleName);
+    let mod = require.resolve(moduleName);
 
     // Check if the module has been resolved and found within
     // the cache
@@ -140,5 +140,5 @@ module.exports = {
     readFile,
     makeFile,
     json5Require,
-    isImportable
+    isImportable,
 };
