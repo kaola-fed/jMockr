@@ -4,7 +4,7 @@
   "description": "for seperate frontend and backend development",
   "main": "app.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --runInBand"
   },
   "bin": {
     "jmockr": "bin/start.js"
