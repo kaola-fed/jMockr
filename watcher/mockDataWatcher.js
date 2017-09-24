@@ -8,10 +8,10 @@ const files2Watch = [
 ].filter((path) => !!path);
 
 const directories2Watch = [
-    dataPath.commonFtl,
-    dataPath.pageFtl,
+    dataPath.commonSync,
+    dataPath.pageSync,
     dataPath.ajax,
-    dataPath.commonAjax,
+    dataPath.commonAsync,
 ].filter((path) => !!path);
 
 const mockDataWatcher = watcher.getInstance({

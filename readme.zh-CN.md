@@ -43,9 +43,9 @@
     },
     "dataPath": {
         "urlMap": "mock/urlMap.json", // 1.[文件地址]
-        "commonFtl": "mock/commonFtlData", // 2.[文件夹地址]
-        "commonAjax": "mock/commonAjax", // 3.[文件夹地址]
-        "pageFtl": "mock/ftlMockData", // 4.[文件夹地址]
+        "commonSync": "mock/commonSyncData", // 2.[文件夹地址]
+        "commonAsync": "mock/commonAsync", // 3.[文件夹地址]
+        "pageSync": "mock/ftlMockData", // 4.[文件夹地址]
         "ajax": "mock/ajax" // 5.[文件夹地址]
     },
     "serverConfig": {
@@ -70,12 +70,12 @@
 }
  ```
 
- 1. 页面地址映射到的ftl文件相对路径, 内容为一个数组, 形如`[{"entry": "xxxxx", "ftlPath": "yyyyy"}, {"entry": "xxxxx2", "ftlPath": "yyyyy2"}]`
+ 1. 页面地址映射到的ftl文件相对路径, 内容为一个数组, 形如`[{"entry": "xxxxx", "template": "yyyyy"}, {"entry": "xxxxx2", "template": "yyyyy2"}]`
  2. 存放通用ftl mock数据(即所有页面均会使用的ftl数据)文件的目录, 每个文件是json文件
  3. 存放通用ajax配置的根目录, 此文件夹下包含的每个配置项是一个子文件夹, 每个子文件夹中包含两个文件: 一个文件 (文件名可以是 `url.js`, `url.json` 或者 `url.json5`) 存放异步接口的地址, 另一个文件 (文件名可以是 `data.js`, `data.json` 或者 `data.json5`) 存放异步接口返回的数据, 下面是一个例子:
  ```
  // 文件结构
- /mock/commonAjax/
+ /mock/commonAsync/
                 |
                 -------api1
                 |        |
@@ -136,7 +136,7 @@
 
     {
         entry: '/abc/def.do',
-        ftlPath: 'new_template/pages/aaa/bbb/ccc.ftl'
+        template: 'new_template/pages/aaa/bbb/ccc.ftl'
     }
 如果需要在ftl中渲染同步数据的话, 在mock/ftlMockData/路径下新建文件`abc.def.do.json`,  同步数据, 如下:
 

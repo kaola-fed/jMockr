@@ -11,7 +11,7 @@ const r = request('http://localhost:4500');
 
 let childProcess;
 let originURLs;
-const filePath = path.join(__dirname, '../mock/commonAjax/retCode200/url.json5');
+const filePath = path.join(__dirname, '../mock/commonAsync/retCode200/url.json5');
 let urls;
 
 beforeAll(() => {

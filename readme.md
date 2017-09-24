@@ -42,9 +42,9 @@ Here is a demo:
     },
     "dataPath": {
         "urlMap": "mock/urlMap.json", // 1.[file]
-        "commonFtl": "mock/commonFtlData", // 2.[folder]
-        "commonAjax": "mock/commonAjax", // 3.[folder]
-        "pageFtl": "mock/ftlMockData", // 4.[folder]
+        "commonSync": "mock/commonSyncData", // 2.[folder]
+        "commonAsync": "mock/commonAsync", // 3.[folder]
+        "pageSync": "mock/ftlMockData", // 4.[folder]
         "ajax": "mock/ajax" // 5.[folder]
     },
     "serverConfig": {
@@ -69,14 +69,14 @@ Here is a demo:
 }
  ```
 
- 1. Array of map, the map is pages url to page template file , like`[{"entry": "/this/is/a/page", "ftlPath": "/the/template/file.ftl"}, {"entry": "xxxxx2", "ftlPath": "yyyyy2"}]`
+ 1. Array of map, the map is pages url to page template file , like`[{"entry": "/this/is/a/page", "template": "/the/template/file.ftl"}, {"entry": "xxxxx2", "template": "yyyyy2"}]`
 
  2. A folder stores common freemarker mock data(the mock data that all pages need to use), files under the folder are json files.
 
  3. A root folder stores common ajax config folders, each subfolder in root folder contains two file: one file (its name could be `url.js`, `url.json` or `url.json5`) contains the urls of the ajax, another file (its name could be `data.js`, `data.json` or `data.json5`) contains the response data of the urls, below is an example:
  ```
  // structure
- /mock/commonAjax/
+ /mock/commonAsync/
                 |
                 -------api1
                 |        |
@@ -139,7 +139,7 @@ You need to add one config item to array in `mock/urlMap.json`
 
     {
         entry: '/abc/def.do',
-        ftlPath: 'new_template/pages/aaa/bbb/ccc.ftl'
+        template: 'new_template/pages/aaa/bbb/ccc.ftl'
     }
 If you need to put some sync data to freemarker, create a new file named`abc.def.do.json`, put it to `mock/ftlMockData/` fill the sync mock data in this file, like:
 

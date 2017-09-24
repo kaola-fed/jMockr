@@ -2,10 +2,6 @@
 
 const path = require('path');
 const config = require('../scanner/config');
-const render = require('@ybq/jmockr-ftl-render')({
-    templateRoot: config.templateRoot,
-    moduleFtlPathes: config.moduleFtlPathes,
-});
 const scanner = require('../scanner/index');
 const uploadImg = require('./uploadImg');
 const uploadFile = require('./uploadFile');
@@ -14,8 +10,25 @@ const proxyAjax = require('./proxyAjax');
 const proxyConfig = scanner.proxyConfig;
 const injector = require('connect-inject');
 
+function getRender(type = 'freemarker') {
+    switch (type) {
+        case 'freemarker':
+            return require('@ybq/jmockr-ftl-render')({
+                templateRoot: path.dirname(config.templateRoot),
+                moduleFtlPathes: config.moduleFtlPathes,
+            });
+        case 'thymeleaf':
+            const { TemplateEngin } = require('thymeleaf');
+            const enginInstance = new TemplateEngin();
+            return enginInstance.processFile.bind(enginInstance);
+        default:
+            console.error('Invalid template type:', type);
+            throw new Error(`Invalid template type:${type}`);
+    }
+}
 function initRequestMap(app, cb) {
-    const { commonAjaxMock, mockData } = scanner.scan();
+    const render = getRender(config.templateType || 'freemarker');
+    const { commonAsyncMock, mockData } = scanner.scan();
 
     initCORS(app);
     initWebSocket(app);
@@ -27,10 +40,10 @@ function initRequestMap(app, cb) {
                 if (req.xhr) {
                     next();
                 } else {
-                    page.ftlData.RequestParameters = req.query || {};
-                    render(page.ftlPath, (html) => {
+                    page.syncData.RequestParameters = req.query || {};
+                    render(page.template, page.syncData, (html) => {
                         res.send(html);
-                    }, page.ftlData);
+                    });
                 }
             });
         } catch (e) {
@@ -43,10 +56,10 @@ function initRequestMap(app, cb) {
     // Init upload file
     uploadFile(app);
 
-    if (proxyConfig.enable) { // 初始化ajax路由(返回本地配置的mock数据)
+    if (proxyConfig.enable) { // 初始化异步接口(返回本地配置的mock数据)
         proxyAjax.init(app);
-    } else { // 初始化ajax路由(代理到远程测试服务器)
-        noProxyAjax.init(app, mockData, commonAjaxMock);
+    } else { // 初始化异步接口(代理到远程测试服务器)
+        noProxyAjax.init(app, mockData, commonAsyncMock);
     }
     return cb();
 }

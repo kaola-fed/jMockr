@@ -10,14 +10,14 @@ function init(app) {
     authTool.login()
         .then((superagent) => {
             app.use((req, res) => {
-                var m = req.method.toLowerCase();
-                var url = `${urlRoot}${req.path}`;
+                const m = req.method.toLowerCase();
+                const url = `${urlRoot}${req.path}`;
                 console.info(url);
                 logUtil.logRequest(req);
                 superagent[m](url)
                     .set({
                         'Content-Type': req.get('Content-Type'),
-                        'User-Agent': req.get('User-Agent')
+                        'User-Agent': req.get('User-Agent'),
                     })
                     .query(req.query)
                     .send(req.body)
@@ -28,7 +28,7 @@ function init(app) {
                             res.status(500)
                                 .json({
                                     retCode: 500,
-                                    retDesc: 'proxy Error'
+                                    retDesc: 'proxy Error',
                                 });
                         } else {
                             console.info('Response arrived.');
@@ -45,5 +45,5 @@ function init(app) {
 }
 
 module.exports = {
-    init
+    init,
 };

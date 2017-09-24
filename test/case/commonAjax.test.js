@@ -5,7 +5,7 @@ const { get, kill } = require('../util');
 
 let childProcess;
 
-const commonAjaxCfg = [
+const commonAsyncCfg = [
     {
         urls: [
             '/abc/def.do',
@@ -56,7 +56,7 @@ beforeAll(() => {
 
 test('Common ajax config runs well', async () => {
     expect.assertions();
-    commonAjaxCfg.forEach((cfg) => {
+    commonAsyncCfg.forEach((cfg) => {
         cfg.urls.forEach((url) => {
             get(`http://localhost:4500${url}`, (res) => {
                 expect(res.body).toEqual(cfg.data);

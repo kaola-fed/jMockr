@@ -12,14 +12,16 @@
     "enablePort": false,
     "port": 4000
   },
-  "templateRoot": "./webapp/WEB-INF/ftl",
+  "templateType": "thymeleaf",
+  "templateRootx": "./webapp/ftl",
+  "templateRoot": "./webapp/ehyemleaf",
   "moduleFtlPathes": [],
   "dataPath": {
     "urlMap": "./mock/urlMap.json",
-    "commonFtl": "./mock/commonFtlData",
-    "pageFtl": "./mock/ftlMockData",
-    "ajax": "./mock/ajax",
-    "commonAjax": "./mock/commonAjax",
+    "commonSync": "./mock/commonSyncData",
+    "pageSync": "./mock/pageSyncData",
+    "pageAsync": "./mock/pageAsyncData",
+    "commonAsync": "./mock/commonAsyncData",
   },
   "serverConfig": {
     "port": 4500,

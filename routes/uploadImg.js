@@ -6,29 +6,29 @@
  */
 
 const fs = require('fs');
-const multer  = require('multer');
+const multer = require('multer');
 const path = require('path');
 const sizeOf = require('image-size');
 const logUtil = require('../util/logUtil');
 
-var storage = multer.diskStorage({
+const storage = multer.diskStorage({
     destination(req, file, cb) {
         cb(null, path.join(__dirname, '../fileStorage'));
     },
     filename(req, file, cb) {
-        var fileNewName = `${Date.now()}-${file.originalname}`;
+        const fileNewName = `${Date.now()}-${file.originalname}`;
         cb(null, fileNewName);
-    }
+    },
 });
-var upload = multer({
+let upload = multer({
     storage: storage,
-    fileFilter(req, file, cb) { //本来打算在这里做图片尺寸校验, 但是发现file参数的属性不够
+    fileFilter(req, file, cb) { // 本来打算在这里做图片尺寸校验, 但是发现file参数的属性不够
         cb(null, true);
-        //cb(new Error('I don\'t have a clue!'))
-    }
+        // cb(new Error('I don\'t have a clue!'))
+    },
 });
 
-upload = upload.fields([{name: 'imgFile'}]);
+upload = upload.fields([{ name: 'imgFile' }]);
 
 function dealUpload(req, res) {
     return new Promise((resolve, reject) => {
@@ -51,7 +51,7 @@ function dealUpload(req, res) {
  *                   2: 图片格式不对(不允许上传png)
  */
 function imgValid(limit, imgInfo) {
-    var widthAndHeight = `${imgInfo.width}*${imgInfo.height}`;
+    const widthAndHeight = `${imgInfo.width}*${imgInfo.height}`;
     if (!!limit.size && widthAndHeight != limit.size) return 1;
     if (limit.isAllowPng != 1 && imgInfo.type == 'png') return 2;
     return 0;
@@ -59,21 +59,21 @@ function imgValid(limit, imgInfo) {
 
 module.exports = function(app) {
     app.post('/frontpage/uploadimg.do', (req, res, next) => {
-        var moduleId = req.query.module;
+        const moduleId = req.query.module;
         dealUpload(req, res)
             .then(() => {
-                var imgName = req.files.imgFile[0].filename,
-                    limit = {
-                        size: req.query.imgSize,
-                        //type: req.query.isAllowPng,
-                        isAllowPng: req.query.isAllowPng
-                    };
+                const imgName = req.files.imgFile[0].filename;
+                const limit = {
+                    size: req.query.imgSize,
+                    // type: req.query.isAllowPng,
+                    isAllowPng: req.query.isAllowPng,
+                };
 
-                let imgPath = path.join(__dirname, `../fileStorage/${imgName}`);
-                //需要先把图片保存才能得到图片的尺寸, 然后按照nos的规则将图片文件重命名以便前端根据图片名进行尺寸二次判断的操作
-                let imgInfo = sizeOf(imgPath);
-                let newImgName = `img${Date.now()}_${imgInfo.width}_${imgInfo.height}.${imgInfo.type}`;
-                let newImgPath = path.join(__dirname, `../fileStorage/${newImgName}`);
+                const imgPath = path.join(__dirname, `../fileStorage/${imgName}`);
+                // 需要先把图片保存才能得到图片的尺寸, 然后按照nos的规则将图片文件重命名以便前端根据图片名进行尺寸二次判断的操作
+                const imgInfo = sizeOf(imgPath);
+                const newImgName = `img${Date.now()}_${imgInfo.width}_${imgInfo.height}.${imgInfo.type}`;
+                const newImgPath = path.join(__dirname, `../fileStorage/${newImgName}`);
                 fs.renameSync(imgPath, newImgPath);
 
                 switch (imgValid(limit, imgInfo)) {

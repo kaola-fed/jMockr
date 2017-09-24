@@ -1,8 +1,8 @@
 
-function init(app, urlMap, commonAjax) {
+function init(app, urlMap, commonAsync) {
     urlMap.forEach((page) => {
-        if (!page.ajax) return;
-        page.ajax.forEach((opt) => {
+        if (!page.async) return;
+        page.async.forEach((opt) => {
             try {
                 opt.method = opt.method || 'post';
                 opt.method.split(',').forEach(function(m) {
@@ -11,12 +11,12 @@ function init(app, urlMap, commonAjax) {
                     });
                 });
             } catch (e) {
-                throw new Error(`Error initializing ajax:${opt.url}`);
+                throw new Error(`Error initializing page async data:${opt.url}`);
             }
         });
     });
 
-    commonAjax.forEach((cfg) => {
+    commonAsync.forEach((cfg) => {
         try {
             cfg.urls.forEach((url) => {
                 app.use(url, (req, res) => {
@@ -24,7 +24,7 @@ function init(app, urlMap, commonAjax) {
                 });
             });
         } catch (e) {
-            throw new Error(`Error initializing common ajax.`);
+            throw new Error(`Error initializing common async data.`);
         }
     });
 

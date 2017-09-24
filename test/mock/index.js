@@ -1,6 +1,6 @@
 'use strict';
 /* eslint-disable */
-const commonData = require('./commonFtlData/commonData');
+const commonData = require('./commonSyncData/commonData');
 const fileUtil = require('../util/fileUtil');
 const arr = require('./urlMap.json');
 const extend = require('node.extend');

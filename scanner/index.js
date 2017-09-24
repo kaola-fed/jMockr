@@ -13,7 +13,7 @@ config.serverConfig = config.serverConfig || {};
 /*
  * cPath: 公共ftl数据
  * pPath: 单页ftl数据
- * aPath: 单页ajax数据
+ * aPath: 单页异步数据
  * uPath: url--页面映射
  * url200Path: 只返回{retCode: 200} 的接口列表的文件地址
  */
@@ -27,74 +27,75 @@ let urlMap;
 
 function initMockData() {
     initialedPage = 0;
-    const pathes = convertPathes(config);
+    const paths = convertPathes(config);
 
-    urlMap = j5require(pathes.uPath) || [];
+    urlMap = j5require(paths.uPath) || [];
 
-    cPath = pathes.cPath;
-    pPath = pathes.pPath;
-    aPath = pathes.aPath;
+    cPath = paths.cPath;
+    pPath = paths.pPath;
+    aPath = paths.aPath;
 
-    url200Path = pathes.url200Path;
+    url200Path = paths.url200Path;
     urlsReturn200 = j5require(url200Path) || [];
 
     return {
-        commonAjaxMock: initCommonAjax(pathes.commonAjax),
+        commonAsyncMock: initCommonAsyncData(paths.commonAsync),
         mockData: urlMap.map((page) => mock(page)),
         url200: urlsReturn200,
     };
 }
 
 function convertPathes(config) {
-    const pathes = Object.assign({
+    const paths = Object.assign({
         urlMap: false,
-        commonFtl: false,
-        pageFtl: false,
-        commonAjax: false,
-        ajax: false,
+        commonSync: false,
+        pageSync: false,
+        commonAsync: false,
+        async: false,
         url200: false,
     }, config.dataPath);
 
     const errors = [];
-    if (pathes.urlMap) {
-        pathes.uPath = path.resolve(pathes.urlMap);
+    if (paths.urlMap) {
+        paths.uPath = path.resolve(paths.urlMap);
     } else {
         console.error('URLMap not found!');
         process.exit(1);
     }
-    if (pathes.commonFtl) {
-        pathes.cPath = path.resolve(pathes.commonFtl);
+    if (paths.commonSync) {
+        paths.cPath = path.resolve(paths.commonSync);
     } else {
         errors.push('Common ftl mock data not found.');
     }
-    if (pathes.pageFtl) {
-        pathes.pPath = path.resolve(pathes.pageFtl);
+    if (paths.pageSync) {
+        paths.pPath = path.resolve(paths.pageSync);
     } else {
         errors.push('Page ftl mock data not found.');
     }
-    if (pathes.commonAjax) {
-        pathes.commonAjax = path.resolve(pathes.commonAjax);
-        console.info(pathes.commonAjax);
+    if (paths.commonAsync) {
+        paths.commonAsync = path.resolve(paths.commonAsync);
+        console.info(paths.commonAsync);
     } else {
-        errors.push('Common ajax mock data not found');
+        errors.push('Common async mock data not found');
     }
-    if (pathes.ajax) {
-        pathes.aPath = path.resolve(pathes.ajax);
+    if (paths.async) {
+        paths.aPath = path.resolve(paths.async);
     } else {
-        errors.push('Page ajax mock data not found.');
+        errors.push('Page async mock data not found.');
     }
-    if (pathes.url200) {
-        pathes.url200Path = path.resolve(pathes.url200);
+    if (paths.url200) {
+        paths.url200Path = path.resolve(paths.url200);
     }
     errors.forEach((error) => {
         console.error(error);
     });
-    return pathes;
+    return paths;
 }
 
 function mock(page) {
     page.ftlData = {};
     try {
+        page.template = path.resolve(config.templateRoot, page.template);
         initCommonFtl(page, cPath);
         initPageFtl(page, pPath);
         initAJAX(page, aPath);
@@ -108,14 +109,20 @@ function mock(page) {
 function countResolvedPage() {
     initialedPage++;
     let percent = (initialedPage / urlMap.length * 100).toFixed(2);
-    if (percent == '100.00') percent = 100;
+    if (percent == '100.00') {
+        percent = 100;
+    }
     Print.update(`          Loading configuration ... ${percent}%`);
 }
 
 function initCommonFtl(page, cPath) {
-    if (!cPath) return;
+    if (!cPath) {
+        return;
+    }
     const fileIterator = fileUtil.listFilesSync(cPath, (name) => {
-        if (!fileUtil.isImportable(name)) return false;
+        if (!fileUtil.isImportable(name)) {
+            return false;
+        }
         return fs.statSync(`${cPath}/${name}`).isFile();
     });
     fileIterator(function(fileName) {
@@ -125,7 +132,9 @@ function initCommonFtl(page, cPath) {
 }
 
 function initPageFtl(page, pPath) {
-    if (!pPath) return;
+    if (!pPath) {
+        return;
+    }
     const ftlMockFilePath = path.join(pPath, page.entry.slice(1).replace(/\//g, '.'));
     const ftlMockFilePath1 = ftlMockFilePath + '.json';
     const ftlMockFilePath2 = ftlMockFilePath + '.json5';
@@ -135,21 +144,25 @@ function initPageFtl(page, pPath) {
 }
 
 function initAJAX(page, aPath) {
-    page.ajax = [];
-    if (!aPath || page.entry == '/') return;
+    page.async = [];
+    if (!aPath || page.entry == '/') {
+        return;
+    }
     const relativePath = page.entry.slice(1).replace(/\//g, '.');
-    const ajaxFolderPath = path.join(aPath, relativePath);
+    const asyncFolderPath = path.join(aPath, relativePath);
 
-    if (!fs.existsSync(ajaxFolderPath)) return;
-    // 限制文件返回格式为json; 可以过滤mac中的隐藏文件, 如.DSstore, 防止读取ajax配置失败
-    const fileIterator = fileUtil.listFilesSync(ajaxFolderPath, (item) => /\.json(5)?$/.test(item));
+    if (!fs.existsSync(asyncFolderPath)) {
+        return;
+    }
+    // 限制文件返回格式为json; 可以过滤mac中的隐藏文件, 如.DSstore, 防止读取异步数据配置失败
+    const fileIterator = fileUtil.listFilesSync(asyncFolderPath, (item) => /\.json(5)?$/.test(item));
 
     fileIterator((fileName) => {
-        const json = j5require(path.join(ajaxFolderPath, fileName));
-        json && page.ajax.push(json);
+        const json = j5require(path.join(asyncFolderPath, fileName));
+        json && page.async.push(json);
     });
 }
-function initCommonAjax(folder) {
+function initCommonAsyncData(folder) {
     const res = [];
     if (!folder) {
         return res;
@@ -196,7 +209,7 @@ function getDefaultData(type) {
 }
 
 module.exports.scan = initMockData;
-module.exports.ftlPath = config.ftlPath;
+module.exports.template = config.template;
 module.exports.authConfig = config.authConfig;
 module.exports.proxyConfig = config.proxyConfig;
 module.exports.serverPort = config.serverConfig.port || 3000;

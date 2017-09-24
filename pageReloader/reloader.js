@@ -1,5 +1,4 @@
 const socketIO = require('socket.io');
-const scanner = require('../scanner/index');
 
 let io;
 
