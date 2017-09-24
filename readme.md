@@ -53,7 +53,7 @@ Here is a demo:
         "noOpenPage": false, // whether open the default page in browser. if initialURL is set, this option is omitted
         "initialURL": 'www.test.com' // Default page to open after server launched. If ommited, will set to `http://localhost:port`
     },
-    "ftlFilePath": "xxxx", // Folder
+    "templateRoot": "xxxx", // Folder
     "moduleFtlPathes": ["aaa", "bbb"], // Folder
     "liveReload": { // live reload config
         "watch": [ // paths to watch, if file under these has changed, server will refresh the browser
@@ -113,7 +113,7 @@ Here is a demo:
 
  6. Store all ftl files or subfolders(ralative to jmockr config file).
 
- 7. Other ftl's root path(on the same level or out of `ftlFilePath`, for example ftl in node_modules)
+ 7. Other ftl's root path(on the same level or out of `templateRoot`, for example ftl in node_modules)
 
 **Tips: all relative paths are relative to `jmockr.config.json`**
 

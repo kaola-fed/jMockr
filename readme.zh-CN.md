@@ -54,7 +54,7 @@
         "noOpenPage": false, //服务器启动之后, 是否禁止自动在浏览器中打开默认页面, 如果设置了initialURL, 此配置项无效
         "initialURL": 'www.test.com' //服务器启动后默认打开的页面地址, 如果不填, 将打开 http://localhost:port
     },
-    "ftlFilePath": "xxxx", // 6.[文件夹地址]
+    "templateRoot": "xxxx", // 6.[文件夹地址]
     "moduleFtlPathes": ["aaa", "bbb"], // 7.[文件夹地址]
     "liveReload": { //liveReload 模式的配置
         "watch": [ //监听变化的文件或路径
@@ -109,7 +109,7 @@
  4. 每个页面中独有的ftl mock 数据的文件目录, 每个文件是json文件, 文件的命名规则见<a href="#mmgz">命名规则</a>
  5. 页面中每个ajax接口的mock数据放在一个json文件中, 每个页面的所有mock数据的json文件放在一个ajax文件夹(ajax文件夹的命名规则见<a href="#mmgz">命名规则</a>)中, 所有页面的ajax文件夹放在此目录下
  6. 存放所有ftl文件/文件夹的根路径(相对当前配置文件的路径)
- 7. 其他ftl根路径(与`ftlFilePath`同级或在`ftlFilePath`外层, 如从node_modules中引用的ftl, 可以在这里配置)
+ 7. 其他ftl根路径(与`templateRoot`同级或在`templateRoot`外层, 如从node_modules中引用的ftl, 可以在这里配置)
 
 **注意: 所有的相对路径, 都是相对于jmockr.config.json文件**
 

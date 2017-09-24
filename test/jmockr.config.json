@@ -12,7 +12,7 @@
     "enablePort": false,
     "port": 4000
   },
-  "ftlFilePath": "./webapp/WEB-INF/ftl",
+  "templateRoot": "./webapp/WEB-INF/ftl",
   "moduleFtlPathes": [],
   "dataPath": {
     "urlMap": "./mock/urlMap.json",

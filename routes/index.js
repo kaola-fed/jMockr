@@ -1,7 +1,11 @@
 'use strict';
 
 const path = require('path');
-const ftlParser = require('../ftl_parse');
+const config = require('../scanner/config');
+const render = require('@ybq/jmockr-ftl-render')({
+    templateRoot: config.templateRoot,
+    moduleFtlPathes: config.moduleFtlPathes,
+});
 const scanner = require('../scanner/index');
 const uploadImg = require('./uploadImg');
 const uploadFile = require('./uploadFile');
@@ -24,7 +28,7 @@ function initRequestMap(app, cb) {
                     next();
                 } else {
                     page.ftlData.RequestParameters = req.query || {};
-                    ftlParser.render(page.ftlPath, (html) => {
+                    render(page.ftlPath, (html) => {
                         res.send(html);
                     }, page.ftlData);
                 }
