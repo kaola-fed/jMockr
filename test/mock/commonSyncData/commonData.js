@@ -9,3 +9,4 @@ const navMenu = require('./navMenu/index');
 
 module.exports.menu = navMenu;
 module.exports.userRealName = 'commander';
+module.exports.commonValue = 999;
