@@ -14,13 +14,25 @@ function getRender(type = 'freemarker') {
     switch (type) {
         case 'freemarker':
             return require('@ybq/jmockr-ftl-render')({
-                templateRoot: path.dirname(config.templateRoot),
+                templateRoot: config.templateRoot,
                 moduleFtlPathes: config.moduleFtlPathes,
             });
         case 'thymeleaf':
-            const { TemplateEngin } = require('thymeleaf');
-            const enginInstance = new TemplateEngin();
-            return enginInstance.processFile.bind(enginInstance);
+            const { TemplateEngine, StandardDialect } = require('thymeleaf');
+            const engine = new TemplateEngine({
+                dialects: [new StandardDialect('th')],
+            });
+            return (template, syncData, cb) => {
+                const absolutePath = path.resolve(config.templateRoot, template);
+                engine.processFile(absolutePath, syncData)
+                    .then((result) => {
+                        cb(result);
+                    })
+                    .catch((e) => {
+                        console.error('render error', e);
+                        cb(e);
+                    });
+            };
         default:
             console.error('Invalid template type:', type);
             throw new Error(`Invalid template type:${type}`);

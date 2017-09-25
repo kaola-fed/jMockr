@@ -1,6 +1,6 @@
 {
   "name": "jmockr",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "for seperate frontend and backend development",
   "main": "app.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "author": "yubaoquan",
   "license": "ISC",
   "dependencies": {
-    "@ybq/jmockr-ftl-render": "^0.0.1",
+    "@ybq/jmockr-ftl-render": "^0.0.2",
     "ansi-escapes": "^1.4.0",
     "body-parser": "^1.15.2",
     "chalk": "^1.1.3",

@@ -24,6 +24,10 @@ let url200Path;
 let urlsReturn200;
 let initialedPage;
 let urlMap;
+let suffix = '.ftl';
+if (config.templateType === 'thymeleaf') {
+    suffix = '.html';
+}
 
 function initMockData() {
     initialedPage = 0;
@@ -74,12 +78,11 @@ function convertPathes(config) {
     }
     if (paths.commonAsync) {
         paths.commonAsync = path.resolve(paths.commonAsync);
-        console.info(paths.commonAsync);
     } else {
         errors.push('Common async mock data not found');
     }
-    if (paths.async) {
-        paths.aPath = path.resolve(paths.async);
+    if (paths.pageAsync) {
+        paths.aPath = path.resolve(paths.pageAsync);
     } else {
         errors.push('Page async mock data not found.');
     }
@@ -93,9 +96,9 @@ function convertPathes(config) {
 }
 
 function mock(page) {
-    page.ftlData = {};
+    page.syncData = {};
+    page.template += suffix;
     try {
-        page.template = path.resolve(config.templateRoot, page.template);
         initCommonFtl(page, cPath);
         initPageFtl(page, pPath);
         initAJAX(page, aPath);
@@ -127,7 +130,7 @@ function initCommonFtl(page, cPath) {
     });
     fileIterator(function(fileName) {
         const data = j5require(`${cPath}/${fileName}`);
-        extend(page.ftlData, data);
+        extend(page.syncData, data);
     });
 }
 
@@ -139,8 +142,8 @@ function initPageFtl(page, pPath) {
     const ftlMockFilePath1 = ftlMockFilePath + '.json';
     const ftlMockFilePath2 = ftlMockFilePath + '.json5';
 
-    extend(page.ftlData, j5require(ftlMockFilePath1));
-    extend(page.ftlData, j5require(ftlMockFilePath2));
+    extend(page.syncData, j5require(ftlMockFilePath1));
+    extend(page.syncData, j5require(ftlMockFilePath2));
 }
 
 function initAJAX(page, aPath) {

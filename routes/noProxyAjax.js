@@ -1,7 +1,9 @@
 
 function init(app, urlMap, commonAsync) {
     urlMap.forEach((page) => {
-        if (!page.async) return;
+        if (!page.async) {
+            return;
+        }
         page.async.forEach((opt) => {
             try {
                 opt.method = opt.method || 'post';

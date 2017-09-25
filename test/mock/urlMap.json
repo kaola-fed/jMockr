@@ -1,22 +1,22 @@
 [
   {
     "entry": "/",//这是一段注释
-    "template": "index.ftl"
+    "template": "index"
   },
   {
     "entry": "/index.do",
-    "template": "index.ftl"
+    "template": "index"
   },
   {
     "entry": "/tanks/sky.do",
-    "template": "pages/tanks/sky.ftl"
+    "template": "pages/tanks/sky"
   },
   {
     "entry": "/tanks/robot.do",
-    "template": "/pages/tanks/robot.ftl"
+    "template": "pages/tanks/robot"
   },
   {
     "entry": "/tanks/shining.do",
-    "template": "/pages/tanks/shining.ftl"
+    "template": "pages/tanks/shining"
   }
 ]

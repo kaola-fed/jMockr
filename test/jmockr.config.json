@@ -13,8 +13,7 @@
     "port": 4000
   },
   "templateType": "thymeleaf",
-  "templateRootx": "./webapp/ftl",
-  "templateRoot": "./webapp/ehyemleaf",
+  "templateRoot": "./webapp/thymeleaf",
   "moduleFtlPathes": [],
   "dataPath": {
     "urlMap": "./mock/urlMap.json",

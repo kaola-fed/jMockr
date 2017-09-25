@@ -10,6 +10,7 @@
 [download-image]: https://img.shields.io/npm/dm/jmockr.svg?style=flat-square
 [download-url]: https://npmjs.org/package/jmockr
 
+A `nodejs`, `expressjs` based mock server, currently support two server side templates: `freemarker` and `thymeleaf`. (The thymeleaf parsing relys on package [thymeleaf](https://www.npmjs.com/package/thymeleaf#), and this package is not fully developed. So the support of thymeleaf is kind of weak)
 
 ## 1. Install
 
@@ -45,7 +46,7 @@ Here is a demo:
         "commonSync": "mock/commonSyncData", // 2.[folder]
         "commonAsync": "mock/commonAsync", // 3.[folder]
         "pageSync": "mock/ftlMockData", // 4.[folder]
-        "ajax": "mock/ajax" // 5.[folder]
+        "pageAsync": "mock/ajax" // 5.[folder]
     },
     "serverConfig": {
         "port": 3000, // port jmockr listens on
@@ -53,6 +54,7 @@ Here is a demo:
         "noOpenPage": false, // whether open the default page in browser. if initialURL is set, this option is omitted
         "initialURL": 'www.test.com' // Default page to open after server launched. If ommited, will set to `http://localhost:port`
     },
+    "templateType": "freemarker", // freemarker or thymeleaf
     "templateRoot": "xxxx", // Folder
     "moduleFtlPathes": ["aaa", "bbb"], // Folder
     "liveReload": { // live reload config
@@ -69,7 +71,12 @@ Here is a demo:
 }
  ```
 
- 1. Array of map, the map is pages url to page template file , like`[{"entry": "/this/is/a/page", "template": "/the/template/file.ftl"}, {"entry": "xxxxx2", "template": "yyyyy2"}]`
+ 1. Array of map, the map is pages url to page template file, like`[{"entry": "/this/is/a/page", "template": "/the/template/file"}, {"entry": "xxxxx2", "template": "yyyyy2"}]`. File suffix of templates like `.ftl`, `.html` should be omitted. Below is an example:
+
+```
+ [{"entry": "xxxx", "template": "/a/b.ftl"}] // wrong
+ [{"entry": "xxxx", "template": "/a/b"}] // right
+ ```
 
  2. A folder stores common freemarker mock data(the mock data that all pages need to use), files under the folder are json files.
 
@@ -149,7 +156,7 @@ If you need to put some sync data to freemarker, create a new file named`abc.def
         arr: [1, 2, 3, 4, 5, 6, 7]
     }
 
-#### b. AJAX config
+#### b. Async mock data config
 
 ##### 1.Complete config
 

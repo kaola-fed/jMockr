@@ -7,7 +7,8 @@
     <title>Document</title>
 </head>
 <body>
-    <h1 data-th-text="#{commonValue}">commonValue</h1>
-    <h2 data-th-text="#{pageValue}">pageValue</h2>
+    <h1 data-th-text="${commonValue}">commonValue</h1>
+    <h2 data-th-text=${pageValue}>pageValue</h2>
+    <a data-th-href="@{link}">${linkName}</a>
 </body>
 </html>
