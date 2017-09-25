@@ -12,8 +12,8 @@
     "enablePort": false,
     "port": 4000
   },
-  "templateType": "thymeleaf",
-  "templateRoot": "./webapp/thymeleaf",
+  "templateType": "freemarker",
+  "templateRoot": "./webapp/ftl",
   "moduleFtlPathes": [],
   "dataPath": {
     "urlMap": "./mock/urlMap.json",
