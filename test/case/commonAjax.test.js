@@ -1,9 +1,9 @@
 /* global beforeAll expect test afterAll */
 
-const runServer = require('../index');
-const { get, kill } = require('../util');
+const runServer = require('../index')
+const { get, kill } = require('../util')
 
-let childProcess;
+let childProcess
 
 const commonAsyncCfg = [
     {
@@ -44,27 +44,27 @@ const commonAsyncCfg = [
             },
         },
     },
-];
+]
 
 
 beforeAll(() => {
-    childProcess = runServer('s');
+    childProcess = runServer('s')
     return new Promise((resolve, reject) => {
-        return setTimeout(resolve, 1500);
-    });
-});
+        return setTimeout(resolve, 1500)
+    })
+})
 
 test('Common ajax config runs well', async () => {
-    expect.assertions();
+    expect.assertions()
     commonAsyncCfg.forEach((cfg) => {
         cfg.urls.forEach((url) => {
             get(`http://localhost:4500${url}`, (res) => {
-                expect(res.body).toEqual(cfg.data);
-            });
-        });
-    });
-});
+                expect(res.body).toEqual(cfg.data)
+            })
+        })
+    })
+})
 
 afterAll(() => {
-    kill(childProcess.pid);
-});
+    kill(childProcess.pid)
+})
