@@ -1,23 +1,23 @@
-const watcher = require('./base');
-const config = require('../scanner/config');
+const watcher = require('./base')
+const config = require('../scanner/config')
 
-const dataPath = config.dataPath;
+const dataPath = config.dataPath
 const files2Watch = [
     dataPath.urlMap,
     dataPath.url200,
-].filter((path) => !!path);
+].filter((path) => !!path)
 
 const directories2Watch = [
     dataPath.commonSync,
     dataPath.pageSync,
-    dataPath.ajax,
+    dataPath.pageAsync,
     dataPath.commonAsync,
-].filter((path) => !!path);
+].filter((path) => !!path)
 
 const mockDataWatcher = watcher.getInstance({
     files: files2Watch,
     dirs: directories2Watch,
     watchUnlink: true,
-});
+})
 
-module.exports = mockDataWatcher;
+module.exports = mockDataWatcher

@@ -1,13 +1,13 @@
-const watcher = require('./base');
-const config = require('../scanner/config');
+const watcher = require('./base')
+const config = require('../scanner/config')
 
-const liveReload = config.liveReload || {};
+const liveReload = config.liveReload || {}
 
-let pageWatcher = watcher.getInstance({
+const pageWatcher = watcher.getInstance({
     pathes: liveReload.watch,
     otherOpt: {
-        ignored: liveReload.ignore
-    }
-});
+        ignored: liveReload.ignore,
+    },
+})
 
-module.exports = pageWatcher;
+module.exports = pageWatcher
