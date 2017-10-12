@@ -5,14 +5,14 @@ const dataPath = config.dataPath
 const files2Watch = [
     dataPath.urlMap,
     dataPath.url200,
-].filter(path => !!path)
+].filter((path) => !!path)
 
 const directories2Watch = [
     dataPath.commonSync,
     dataPath.pageSync,
     dataPath.pageAsync,
     dataPath.commonAsync,
-].filter(path => !!path)
+].filter((path) => !!path)
 
 const mockDataWatcher = watcher.getInstance({
     files: files2Watch,
@@ -20,4 +20,4 @@ const mockDataWatcher = watcher.getInstance({
     watchUnlink: true,
 })
 
-module.exports = mockDataWatcher
+export default mockDataWatcher
