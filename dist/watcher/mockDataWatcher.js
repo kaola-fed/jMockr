@@ -1,7 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var watcher = require('./base');
-var config = require('../scanner/config');
+var config = require('../scanner/config').default;
+console.info('========================');
+console.info(config);
+console.info(config.dataPath);
+console.info('=========================');
 var dataPath = config.dataPath;
 var files2Watch = [
     dataPath.urlMap,
