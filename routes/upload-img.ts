@@ -64,7 +64,7 @@ function imgValid(limit: {
     return 0
 }
 
-module.exports = function(app: any) {
+export default function(app: any) {
     app.post('/frontpage/uploadimg.do', (req: any, res: any) => {
         const moduleId = req.query.module
         dealUpload(req, res)

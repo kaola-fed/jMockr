@@ -5,7 +5,7 @@ const fs = require('fs')
 const fileUtil = require('../util/file-util')
 const logUtil = require('../util/log-util')
 const j5require = fileUtil.json5Require
-const config = require('./config')
+import config from './config'
 const Print = require('../util/print')
 const extend = require('node.extend')
 

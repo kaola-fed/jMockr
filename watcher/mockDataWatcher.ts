@@ -1,10 +1,5 @@
 const watcher = require('./base')
 const config = require('../scanner/config').default
-
-console.info('========================')
-console.info(config)
-console.info(config.dataPath)
-console.info('=========================')
 const dataPath = config.dataPath
 const files2Watch = [
     dataPath.urlMap,

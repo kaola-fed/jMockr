@@ -8,7 +8,8 @@ import config from './scanner/config'
 import * as express from 'express'
 import * as path from 'path'
 const bodyParser = require('body-parser')
-const routes = require('./routes/index')
+import routes from './routes/index'
+console.info(routes)
 const opn = require('opn')
 import * as print from './util/print'
 import * as reloader from './pageReloader/reloader'

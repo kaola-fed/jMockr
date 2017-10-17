@@ -5,10 +5,10 @@ var fs = require('fs');
 var fileUtil = require('../util/file-util');
 var logUtil = require('../util/log-util');
 var j5require = fileUtil.json5Require;
-var config = require('./config');
+var config_1 = require("./config");
 var Print = require('../util/print');
 var extend = require('node.extend');
-config.serverConfig = config.serverConfig || {};
+config_1.default.serverConfig = config_1.default.serverConfig || {};
 var cPath;
 var pPath;
 var aPath;
@@ -17,12 +17,12 @@ var urlsReturn200;
 var initialedPage;
 var urlMap;
 var suffix = '.ftl';
-if (config.templateType === 'thymeleaf') {
+if (config_1.default.templateType === 'thymeleaf') {
     suffix = '.html';
 }
 function initMockData() {
     initialedPage = 0;
-    var paths = convertPathes(config);
+    var paths = convertPathes(config_1.default);
     urlMap = j5require(paths.uPath) || [];
     cPath = paths.cPath;
     pPath = paths.pPath;
@@ -190,9 +190,9 @@ function getDefaultData(type) {
 }
 exports.default = {
     scan: initMockData,
-    template: config.template,
-    authConfig: config.authConfig,
-    proxyConfig: config.proxyConfig,
-    serverPort: config.serverConfig.port || 3000,
+    template: config_1.default.template,
+    authConfig: config_1.default.authConfig,
+    proxyConfig: config_1.default.proxyConfig,
+    serverPort: config_1.default.serverConfig.port || 3000,
 };
 //# sourceMappingURL=index.js.map

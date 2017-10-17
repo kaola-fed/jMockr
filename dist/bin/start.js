@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var package_json_1 = require("../package.json");
+var packageData = require("../package.json");
 var parseArgv = require("minimist");
 var chalk = require("chalk");
 var mockDataWatcher_1 = require("../watcher/mockDataWatcher");
@@ -30,7 +30,7 @@ function index(args) {
         showHelp();
     }
     else if (args.v || args.version) {
-        console.info(package_json_1.default.version);
+        console.info(packageData.version);
         process.exit(0);
     }
     else {

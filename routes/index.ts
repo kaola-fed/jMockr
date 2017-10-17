@@ -1,12 +1,12 @@
 'use strict'
 
 const path = require('path')
-const config = require('../scanner/config')
-const scanner = require('../scanner/index')
-const uploadImg = require('./upload-img')
-const uploadFile = require('./upload-file')
-const noProxyAjax = require('./noProxyAjax')
-const proxyAjax = require('./proxyAjax')
+import config from '../scanner/config'
+import scanner from '../scanner/index'
+import uploadImg from './upload-img'
+import uploadFile from './upload-file'
+import noProxyAjax from './no-proxy-ajax'
+const proxyAjax = require('./proxy-ajax')
 const proxyConfig = scanner.proxyConfig
 const injector = require('connect-inject')
 

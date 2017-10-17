@@ -1,4 +1,4 @@
-import packageData from '../package.json'
+import * as packageData from '../package.json'
 import * as parseArgv from 'minimist'
 import * as chalk from 'chalk'
 import mockDataWatcher from '../watcher/mockDataWatcher'
@@ -29,7 +29,7 @@ function index(args: { [key: string]: boolean }) {
     if (argsUnknown(args) || args.h || args.help) {
         showHelp()
     } else if (args.v || args.version) {
-        console.info(packageData.version)
+        console.info((packageData as any).version)
         process.exit(0)
     } else {
         app.start()

@@ -4,7 +4,8 @@ var config_1 = require("./scanner/config");
 var express = require("express");
 var path = require("path");
 var bodyParser = require('body-parser');
-var routes = require('./routes/index');
+var index_1 = require("./routes/index");
+console.info(index_1.default);
 var opn = require('opn');
 var print = require("./util/print");
 var reloader = require("./pageReloader/reloader");
@@ -30,7 +31,7 @@ function start() {
         res.status(err.status || 500).send('Server crashed.');
     });
     try {
-        routes(app, function () {
+        index_1.default(app, function () {
             server = app.listen(config_1.default.serverConfig.port, function () {
                 print.update("          jMockr listening on port " + config_1.default.serverConfig.port + "!\n");
                 if (openPageAfterLaunch) {

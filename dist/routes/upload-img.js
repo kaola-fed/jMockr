@@ -1,4 +1,5 @@
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
 var fs = require('fs');
 var multer = require('multer');
 var path = require('path');
@@ -40,7 +41,7 @@ function imgValid(limit, imgInfo) {
         return 2;
     return 0;
 }
-module.exports = function (app) {
+function default_1(app) {
     app.post('/frontpage/uploadimg.do', function (req, res) {
         var moduleId = req.query.module;
         dealUpload(req, res)
@@ -74,5 +75,6 @@ module.exports = function (app) {
             res.status(403).send("<script>window.top." + moduleId + "(\"\",\"\u56FE\u7247\u4E0A\u4F20\u5931\u8D25\uFF1A\u67D0\u4E9B\u672A\u5B9A\u4E49\u95EE\u9898\uFF01\");</script>");
         });
     });
-};
+}
+exports.default = default_1;
 //# sourceMappingURL=upload-img.js.map
