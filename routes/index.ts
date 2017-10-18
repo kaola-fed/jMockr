@@ -10,7 +10,7 @@ const proxyAjax = require('./proxy-ajax')
 const proxyConfig = scanner.proxyConfig
 const injector = require('connect-inject')
 
-function getRender(type = 'freemarker') {
+function getRender(type: string = 'freemarker') {
     switch (type) {
         case 'freemarker':
             return require('@ybq/jmockr-ftl-render')({

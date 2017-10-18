@@ -12,8 +12,6 @@ config_1.default.serverConfig = config_1.default.serverConfig || {};
 var cPath;
 var pPath;
 var aPath;
-var url200Path;
-var urlsReturn200;
 var initialedPage;
 var urlMap;
 var suffix = '.ftl';
@@ -27,12 +25,9 @@ function initMockData() {
     cPath = paths.cPath;
     pPath = paths.pPath;
     aPath = paths.aPath;
-    url200Path = paths.url200Path;
-    urlsReturn200 = j5require(url200Path) || [];
     return {
         commonAsyncMock: initCommonAsyncData(paths.commonAsync),
         mockData: urlMap.map(function (page) { return mock(page); }),
-        url200: urlsReturn200,
     };
 }
 function convertPathes(config) {

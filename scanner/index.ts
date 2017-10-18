@@ -20,10 +20,10 @@ config.serverConfig = config.serverConfig || {}
 let cPath: string
 let pPath: string
 let aPath: string
-let url200Path: string
-let urlsReturn200: [string]
 let initialedPage: number
-let urlMap: [{}]
+let urlMap: [{
+    [prop: string]: any,
+}]
 let suffix = '.ftl'
 if (config.templateType === 'thymeleaf') {
     suffix = '.html'
@@ -39,9 +39,6 @@ function initMockData() {
     pPath = paths.pPath
     aPath = paths.aPath
 
-    url200Path = paths.url200Path
-    urlsReturn200 = j5require(url200Path) || []
-
     return {
         commonAsyncMock: initCommonAsyncData(paths.commonAsync),
         mockData: urlMap.map((page: {
@@ -50,7 +47,6 @@ function initMockData() {
             syncData: {},
             async: [any],
         }) => mock(page)),
-        url200: urlsReturn200,
     }
 }
 
