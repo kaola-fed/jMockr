@@ -9,7 +9,6 @@
   },
   "bin": {
     "jmockr": "bin/start.js"
-    
   },
   "repository": {
     "type": "git",
@@ -45,7 +44,7 @@
     "pify": "^3.0.0",
     "ps-tree": "^1.1.0",
     "supertest": "^3.0.0",
-    "tslint": "^5.7.0",
+    "tslint": "5.8.0",
     "tslint-eslint-rules": "^4.1.1",
     "typescript": "^2.5.3"
   },
