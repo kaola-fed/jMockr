@@ -1,15 +1,18 @@
 'use strict'
 
-const path = require('path')
-const fs = require('fs')
-const fileUtil = require('../util/file-util')
-const logUtil = require('../util/log-util')
-const j5require = fileUtil.json5Require
+const path: any = require('path')
+const fs: any = require('fs')
+const fileUtil: any = require('../util/file-util')
+const logUtil: any = require('../util/log-util')
+const j5require: any = fileUtil.json5Require
 import config from './config'
-const Print = require('../util/print')
-const extend = require('node.extend')
+const Print: {
+    update: (input: string) => void,
+} = require('../util/print')
+const extend: any = require('node.extend')
 
 config.serverConfig = config.serverConfig || {}
+
 /*
  * cPath: 公共ftl数据
  * pPath: 单页ftl数据
@@ -24,14 +27,22 @@ let initialedPage: number
 let urlMap: [{
     [prop: string]: any,
 }]
-let suffix = '.ftl'
+
+interface Page {
+    syncData: {}
+    template: string
+    entry: string
+    async: [any],
+}
+
+let suffix: string = '.ftl'
 if (config.templateType === 'thymeleaf') {
     suffix = '.html'
 }
 
-function initMockData() {
+function initMockData(): any {
     initialedPage = 0
-    const paths = convertPathes(config)
+    const paths: any = convertPathes(config)
 
     urlMap = j5require(paths.uPath) || []
 
@@ -42,18 +53,18 @@ function initMockData() {
     return {
         commonAsyncMock: initCommonAsyncData(paths.commonAsync),
         mockData: urlMap.map((page: {
-            entry: string,
-            template: string,
-            syncData: {},
-            async: [any],
+            entry: string;
+            template: string;
+            syncData: {};
+            async: [any];
         }) => mock(page)),
     }
 }
 
 function convertPathes(config: {
     dataPath: string,
-}) {
-    const paths = (<any> Object).assign({
+}): {} {
+    const paths: any = (<any> Object).assign({
         urlMap: false,
         commonSync: false,
         pageSync: false,
@@ -62,7 +73,7 @@ function convertPathes(config: {
         url200: false,
     }, config.dataPath)
 
-    const errors = []
+    const errors: string[] = []
     if (paths.urlMap) {
         paths.uPath = path.resolve(paths.urlMap)
     } else {
@@ -92,18 +103,13 @@ function convertPathes(config: {
     if (paths.url200) {
         paths.url200Path = path.resolve(paths.url200)
     }
-    errors.forEach((error) => {
+    errors.forEach((error: string): void => {
         console.error(error)
     })
     return paths
 }
 
-function mock(page: {
-    syncData: {},
-    template: string,
-    entry: string,
-    async: [any],
-}) {
+function mock(page: Page): {} {
     page.syncData = {}
     page.template += suffix
     try {
@@ -117,7 +123,7 @@ function mock(page: {
     return page
 }
 
-function countResolvedPage() {
+function countResolvedPage(): void {
     initialedPage++
     let percent: string | number = (initialedPage / urlMap.length * 100).toFixed(2)
     if (percent == '100.00') {
@@ -128,18 +134,18 @@ function countResolvedPage() {
 
 function initCommonFtl(page: {
     syncData: any,
-}, cPath: string) {
+}, cPath: string): void {
     if (!cPath) {
         return
     }
-    const fileIterator = fileUtil.listFilesSync(cPath, (name: string) => {
+    const fileIterator: (fn: (filename: string) => void) => void = fileUtil.listFilesSync(cPath, (name: string) => {
         if (!fileUtil.isImportable(name)) {
             return false
         }
         return fs.statSync(`${cPath}/${name}`).isFile()
     })
-    fileIterator(function(fileName: string) {
-        const data = j5require(`${cPath}/${fileName}`)
+    fileIterator(function(fileName: string): void {
+        const data: {} = j5require(`${cPath}/${fileName}`)
         extend(page.syncData, data)
     })
 }
@@ -147,13 +153,14 @@ function initCommonFtl(page: {
 function initPageFtl(page: {
     entry: string,
     syncData: any,
-}, pPath: string) {
+}, pPath: string): void {
     if (!pPath) {
         return
     }
-    const ftlMockFilePath = path.join(pPath, page.entry.slice(1).replace(/\//g, '.'))
-    const ftlMockFilePath1 = ftlMockFilePath + '.json'
-    const ftlMockFilePath2 = ftlMockFilePath + '.json5'
+    const basename: string = page.entry.slice(1).replace(/\//g, '.')
+    const ftlMockFilePath: string = path.join(pPath, basename || 'index')
+    const ftlMockFilePath1: string = ftlMockFilePath + '.json'
+    const ftlMockFilePath2: string = ftlMockFilePath + '.json5'
 
     extend(page.syncData, j5require(ftlMockFilePath1))
     extend(page.syncData, j5require(ftlMockFilePath2))
@@ -162,55 +169,54 @@ function initPageFtl(page: {
 function initAJAX(page: {
     entry: string,
     async: [any],
-}, aPath: string) {
+}, aPath: string): void {
     page.async = <any> []
     if (!aPath || page.entry == '/') {
         return
     }
-    const relativePath = page.entry.slice(1).replace(/\//g, '.')
-    const asyncFolderPath = path.join(aPath, relativePath)
+    const relativePath: string = page.entry.slice(1).replace(/\//g, '.')
+    const asyncFolderPath: string = path.join(aPath, relativePath)
 
     if (!fs.existsSync(asyncFolderPath)) {
         return
     }
     // 限制文件返回格式为json; 可以过滤mac中的隐藏文件, 如.DSstore, 防止读取异步数据配置失败
-    const fileIterator = fileUtil
+    const fileIterator: (fn: (fn: string) => void) => void = fileUtil
         .listFilesSync(asyncFolderPath, (item: string) => /\.json(5)?$/.test(item))
 
     fileIterator((fileName: string) => {
-        const json = j5require(path.join(asyncFolderPath, fileName))
+        const json: any = j5require(path.join(asyncFolderPath, fileName))
         json && page.async.push(json)
     })
 }
-function initCommonAsyncData(folder: string) {
-    const res = <any> []
+function initCommonAsyncData(folder: string): any {
+    const res: any[] = <any> []
     if (!folder) {
         return res
     }
-    const subFolderIterator = fileUtil.listFilesSync(folder, (f: string) => {
+    const subFolderIterator: (fn: (fn: string) => void) => void = fileUtil.listFilesSync(folder, (f: string) => {
         return fs.statSync(path.join(folder, f)).isDirectory()
     })
     subFolderIterator((f: string) => {
-        const urls = mergeRequire(
+        const urls: string[] = <string[]> mergeRequire(
             path.join(folder, f, 'url'),
             Array,
         )
 
-        const data = mergeRequire(path.join(folder, f, 'data'))
+        const data: any = mergeRequire(path.join(folder, f, 'data'))
         res.push({ urls, data })
     })
-
 
     return res
 }
 
-function mergeRequire(pathLeft: string, type: Array<any> | Object = Object) {
-    const paths = ['.js', '.json', '.json5'].map((suffix) => {
+function mergeRequire(pathLeft: string, type: Array<any> | Object = Object): any {
+    const paths: string[] = ['.js', '.json', '.json5'].map((suffix: string): string => {
         return pathLeft + suffix
     })
     const defaultData: [any] | {} = getDefaultData(type)
     const res: [any] | {} = getDefaultData(type)
-    paths.forEach((p) => {
+    paths.forEach((p: string): void => {
         const data: [any] | {} = fileUtil.json5Require(p) || defaultData
         if (type === Array) {
             (res as [any]).push(...(data as [any]))

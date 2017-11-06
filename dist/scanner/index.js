@@ -120,7 +120,8 @@ function initPageFtl(page, pPath) {
     if (!pPath) {
         return;
     }
-    var ftlMockFilePath = path.join(pPath, page.entry.slice(1).replace(/\//g, '.'));
+    var basename = page.entry.slice(1).replace(/\//g, '.');
+    var ftlMockFilePath = path.join(pPath, basename || 'index');
     var ftlMockFilePath1 = ftlMockFilePath + '.json';
     var ftlMockFilePath2 = ftlMockFilePath + '.json5';
     extend(page.syncData, j5require(ftlMockFilePath1));
