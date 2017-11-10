@@ -5,7 +5,7 @@ import mockDataWatcher from '../watcher/mockDataWatcher'
 import pageWatcher from '../watcher/pageWatcher'
 import app from '../app'
 
-const args = parseArgv(process.argv.slice(2))
+const args: any = parseArgv(process.argv.slice(2))
 enum AvailableFullCommands {
     help =  'help',
     normal = 'normal',
@@ -24,7 +24,7 @@ enum AvailableShortCommands {
 
 index(args)
 
-function index(args: { [key: string]: boolean }) {
+function index(args: { [key: string]: boolean }): void {
     sayHi()
     if (argsUnknown(args) || args.h || args.help) {
         showHelp()
@@ -33,13 +33,17 @@ function index(args: { [key: string]: boolean }) {
         process.exit(0)
     } else {
         app.start()
-        if (args.n || args.normal) return // Normal start, no file change detect.
+        if (args.n || args.normal) {
+            return // Normal start, no file change detect.
+        }
 
         mockDataWatcher.addListener(() => {
             console.info('Mock data changed, restart server...')
             app.restart()
         })
-        if (args.s || args.start) return // Only restart when mock data changed.
+        if (args.s || args.start) {
+            return // Only restart when mock data changed.
+        }
 
         // Reload when page content changed.
         pageWatcher.addListener(() => {
@@ -49,7 +53,7 @@ function index(args: { [key: string]: boolean }) {
 }
 
 function sayHi(): void {
-    const welcomeMsg = '\n============Welcome using jMockr============'
+    const welcomeMsg: string = '\n============Welcome using jMockr============'
     console.info(chalk.bgGreen.bold(welcomeMsg))
 }
 

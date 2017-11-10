@@ -2,6 +2,11 @@
     "extends": [
         "tslint-eslint-rules"
     ],
+    "cliOptions": {
+        "exclude": [
+            "node_modules"
+        ]
+    },
     "rules": {
         "semicolon": [true, "never"],
         "no-extra-semi": true,

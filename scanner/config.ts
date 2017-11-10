@@ -1,4 +1,5 @@
-const path = require('path')
-const fileUtil = require('../util/file-util')
-const config = fileUtil.json5Require(path.resolve('./jmockr.config.json'))
+// const path: any = require('path')
+import * as path from 'path'
+import * as fileUtil from '../util/file-util'
+const config: any = fileUtil.json5Require(path.resolve('./jmockr.config.json'))
 export default config

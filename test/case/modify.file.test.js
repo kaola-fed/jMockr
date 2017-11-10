@@ -1,7 +1,7 @@
 /* global beforeAll expect test afterAll */
 
 const fs = require('fs')
-const fileUtil = require('../../util/fileUtil')
+const fileUtil = require('../../dist/util/file-util')
 const path = require('path')
 const pify = require('pify')
 const request = require('supertest')
@@ -17,7 +17,7 @@ let urls
 beforeAll(() => {
     childProcess = runServer('s')
     originURLs = fileUtil.json5Require(filePath)
-    urls = originURLs.map((url) => `http://localhost:4500${url}`)
+    urls = originURLs.map(url => `http://localhost:4500${url}`)
     console.info(urls)
     return new Promise((resolve, reject) => {
         return setTimeout(resolve, 1500)
@@ -27,7 +27,7 @@ beforeAll(() => {
 
 test('get home page should return status 200', () => {
     return r.get('/')
-        .expect((res) => {
+        .expect(res => {
             expect(res.status).toBe(200)
         })
 })
@@ -36,7 +36,7 @@ test('get home page should return status 200', () => {
 test('Before delete, all url are reachable', async () => {
     expect.assertions(urls.length)
     for (const url of urls) {
-        await get(url, (res) => {
+        await get(url, res => {
             expect(res && res.body && res.body.retCode).toBe(200)
         })
     }
@@ -57,7 +57,7 @@ async function changeRetCode200() {
         if (i === 0) {
             await get(urls[i])
         } else {
-            await get(urls[i], (res) => {
+            await get(urls[i], res => {
                 expect(res.statusCode).toBe(404)
             })
         }
@@ -67,7 +67,7 @@ async function changeRetCode200() {
 
 
 async function timeout(ms) {
-    await new Promise((resolve) => {
+    await new Promise(resolve => {
         setTimeout(resolve, ms)
     })
 }

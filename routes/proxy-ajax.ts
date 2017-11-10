@@ -1,21 +1,20 @@
 import configData from '../scanner/config'
 import authTool from '../auth/cas'
-const proxyCfg = configData.proxyConfig
+const proxyCfg: any = configData.proxyConfig
 import logUtil from '../util/log-util'
 
-let urlRoot = `${proxyCfg.protocol}://${proxyCfg.useIP ? proxyCfg.ip : proxyCfg.domain}`
+let urlRoot: string = `${proxyCfg.protocol}://${proxyCfg.useIP ? proxyCfg.ip : proxyCfg.domain}`
 
 if (proxyCfg.enablePort) {
     urlRoot += `:${proxyCfg.port || ''}`
 }
 
-function init(app: any) {
+function init(app: any): any {
     authTool.login()
         .then((superagent: any) => {
             app.use((req: any, res: any) => {
-                const m = req.method.toLowerCase()
-                const url = `${urlRoot}${req.path}`
-                console.info(url)
+                const m: string = req.method.toLowerCase()
+                const url: string = `${urlRoot}${req.path}`
                 logUtil.logRequest(req)
                 superagent[m](url)
                     .set({

@@ -1,34 +1,33 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
-var path = require('path');
+exports.__esModule = true;
+var path = require("path");
 var config_1 = require("../scanner/config");
 var index_1 = require("../scanner/index");
 var upload_img_1 = require("./upload-img");
 var upload_file_1 = require("./upload-file");
 var no_proxy_ajax_1 = require("./no-proxy-ajax");
-var proxyAjax = require('./proxy-ajax');
-var proxyConfig = index_1.default.proxyConfig;
-var injector = require('connect-inject');
+var proxy_ajax_1 = require("./proxy-ajax");
+var proxyConfig = index_1["default"].proxyConfig;
+var injector = require("connect-inject");
 function getRender(type) {
     if (type === void 0) { type = 'freemarker'; }
     switch (type) {
         case 'freemarker':
             return require('@ybq/jmockr-ftl-render')({
-                templateRoot: config_1.default.templateRoot,
-                moduleFtlPathes: config_1.default.moduleFtlPathes,
+                templateRoot: config_1["default"].templateRoot,
+                moduleFtlPathes: config_1["default"].moduleFtlPathes
             });
         case 'thymeleaf':
             var _a = require('thymeleaf'), TemplateEngine = _a.TemplateEngine, StandardDialect = _a.StandardDialect;
             var engine_1 = new TemplateEngine({
-                dialects: [new StandardDialect('th')],
+                dialects: [new StandardDialect('th')]
             });
             return function (template, syncData, cb) {
-                var absolutePath = path.resolve(config_1.default.templateRoot, template);
+                var absolutePath = path.resolve(config_1["default"].templateRoot, template);
                 engine_1.processFile(absolutePath, syncData)
                     .then(function (result) {
                     cb(result);
-                })
-                    .catch(function (e) {
+                })["catch"](function (e) {
                     console.error('render error', e);
                     cb(e);
                 });
@@ -39,8 +38,8 @@ function getRender(type) {
     }
 }
 function initRequestMap(app, cb) {
-    var render = getRender(config_1.default.templateType || 'freemarker');
-    var _a = index_1.default.scan(), commonAsyncMock = _a.commonAsyncMock, mockData = _a.mockData;
+    var render = getRender(config_1["default"].templateType || 'freemarker');
+    var _a = index_1["default"].scan(), commonAsyncMock = _a.commonAsyncMock, mockData = _a.mockData;
     initCORS(app);
     initWebSocket(app);
     mockData.forEach(function (page) {
@@ -61,13 +60,13 @@ function initRequestMap(app, cb) {
             throw new Error("Error initializing page entry:" + page.entry);
         }
     });
-    upload_img_1.default(app);
-    upload_file_1.default(app);
+    upload_img_1["default"](app);
+    upload_file_1["default"](app);
     if (proxyConfig.enable) {
-        proxyAjax.init(app);
+        proxy_ajax_1["default"].init(app);
     }
     else {
-        no_proxy_ajax_1.default.init(app, mockData, commonAsyncMock);
+        no_proxy_ajax_1["default"].init(app, mockData, commonAsyncMock);
     }
     return cb();
 }
@@ -83,9 +82,11 @@ function initWebSocket(app) {
     app.get('/socket.io.js', function (req, res, next) {
         res.sendFile(path.resolve(__dirname, '../script/socket.io.js'));
     });
-    app.use(injector({
-        snippet: "\n        <script src=\"/socket.io.js\"></script>\n        <script>\n            var socket = io()\n            socket.on('reload', function(msg) {\n                location.reload()\n            })\n        </script>\n        ",
-    }));
+    var param = {
+        snippet: "\n        <script src=\"/socket.io.js\"></script>\n        <script>\n            var socket = io()\n            socket.on('reload', function(msg) {\n                location.reload()\n            })\n        </script>\n        "
+    };
+    var t = injector(param);
+    app.use(t);
 }
-exports.default = initRequestMap;
+exports["default"] = initRequestMap;
 //# sourceMappingURL=index.js.map

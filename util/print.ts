@@ -1,5 +1,5 @@
 import * as ansiEscapes from 'ansi-escapes'
-  import * as Readline from 'readline'
+import * as Readline from 'readline'
 const readline: any = Readline.createInterface({
     terminal: true,
     input: process.stdin,

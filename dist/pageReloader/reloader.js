@@ -1,13 +1,13 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var socketIO = require('socket.io');
+exports.__esModule = true;
+var socketIO = require("socket.io");
 var io;
-var start = function (server) {
+function start(server) {
     io = socketIO(server);
-};
+}
 exports.start = start;
-var reloadPages = function () {
+function reloadPages() {
     io.emit('reload');
-};
+}
 exports.reloadPages = reloadPages;
 //# sourceMappingURL=reloader.js.map

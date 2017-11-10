@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 function default_1(app) {
     app.post('/batchUploadFile.do', function (req, res) {
         res.json({
@@ -7,9 +7,9 @@ function default_1(app) {
             retDesc: '操作成功',
             md5: '3b7ef9e6de488f9f58a820061cd2753c',
             fileName: '1481594190007x.zip',
-            url: 'http://haitao.nosdn1.127.net/1481594190007x.zip',
+            url: 'http://haitao.nosdn1.127.net/1481594190007x.zip'
         });
     });
 }
-exports.default = default_1;
+exports["default"] = default_1;
 //# sourceMappingURL=upload-file.js.map

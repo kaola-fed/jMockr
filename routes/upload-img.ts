@@ -5,24 +5,24 @@
  * @type {any}
  */
 
-const fs = require('fs')
-const multer = require('multer')
-const path = require('path')
-const sizeOf = require('image-size')
-const logUtil = require('../util/log-util')
+import * as fs from 'fs'
+import * as multer from 'multer'
+import * as path from 'path'
+import * as sizeOf from 'image-size'
+import logUtil from '../util/log-util'
 
-const storage = multer.diskStorage({
-    destination(req: any, file: any, cb: (a: any, b: boolean) => void) {
+const storage: any = multer.diskStorage({
+    destination(req: any, file: any, cb: (a: any, b: any) => void): void {
         cb(null, path.join(__dirname, '../fileStorage'))
     },
-    filename(req: any, file: any, cb: (a: any, b: string) => void) {
-        const fileNewName = `${Date.now()}-${file.originalname}`
+    filename(req: any, file: any, cb: (a: any, b: string) => void): void {
+        const fileNewName: string = `${Date.now()}-${file.originalname}`
         cb(null, fileNewName)
     },
 })
-let upload = multer({
+let upload: any = multer({
     storage: storage,
-    fileFilter(req: any, file: any, cb: (a: any, b: boolean) => void) { // 本来打算在这里做图片尺寸校验, 但是发现file参数的属性不够
+    fileFilter(req: any, file: any, cb: (a: any, b: boolean) => void): void { // 本来打算在这里做图片尺寸校验, 但是发现file参数的属性不够
         cb(null, true)
         // cb(new Error('I don\'t have a clue!'))
     },
@@ -30,8 +30,8 @@ let upload = multer({
 
 upload = upload.fields([{ name: 'imgFile' }])
 
-function dealUpload(req: any, res: any) {
-    return new Promise((resolve, reject) => {
+function dealUpload(req: any, res: any): any {
+    return new Promise((resolve: any, reject: any): void => {
         upload(req, res, (err: any) => {
             if (err) {
                 reject(err)
@@ -57,30 +57,30 @@ function imgValid(limit: {
     type: string,
     width: number,
     height: number,
-}) {
+}): number {
     const widthAndHeight: string = `${imgInfo.width}*${imgInfo.height}`
-    if (!!limit.size && widthAndHeight != limit.size) return 1
-    if (limit.isAllowPng != 1 && imgInfo.type == 'png') return 2
+    if (!!limit.size && widthAndHeight != limit.size) { return 1 }
+    if (limit.isAllowPng != 1 && imgInfo.type == 'png') { return 2 }
     return 0
 }
 
-export default function(app: any) {
+export default function(app: any): void {
     app.post('/frontpage/uploadimg.do', (req: any, res: any) => {
-        const moduleId = req.query.module
+        const moduleId: string = req.query.module
         dealUpload(req, res)
             .then(() => {
-                const imgName = req.files.imgFile[0].filename
-                const limit = {
+                const imgName: string = req.files.imgFile[0].filename
+                const limit: any = {
                     size: req.query.imgSize,
                     // type: req.query.isAllowPng,
                     isAllowPng: req.query.isAllowPng,
                 }
 
-                const imgPath = path.join(__dirname, `../fileStorage/${imgName}`)
+                const imgPath: string = path.join(__dirname, `../fileStorage/${imgName}`)
                 // 需要先把图片保存才能得到图片的尺寸, 然后按照nos的规则将图片文件重命名以便前端根据图片名进行尺寸二次判断的操作
-                const imgInfo = sizeOf(imgPath)
-                const newImgName = `img${Date.now()}_${imgInfo.width}_${imgInfo.height}.${imgInfo.type}`
-                const newImgPath = path.join(__dirname, `../fileStorage/${newImgName}`)
+                const imgInfo: any = sizeOf(imgPath)
+                const newImgName: string = `img${Date.now()}_${imgInfo.width}_${imgInfo.height}.${imgInfo.type}`
+                const newImgPath: string = path.join(__dirname, `../fileStorage/${newImgName}`)
                 fs.renameSync(imgPath, newImgPath)
 
                 switch (imgValid(limit, imgInfo)) {
@@ -97,7 +97,7 @@ export default function(app: any) {
                         res.send(`<script>window.top.${moduleId}("/mock_server/fileStorage/${newImgName}");</script>`)
                 }
             })
-            .catch((err) => {
+            .catch((err: string) => {
                 logUtil.log(err)
                 res.status(403).send(`<script>window.top.${moduleId}("","图片上传失败：某些未定义问题！");</script>`)
             })

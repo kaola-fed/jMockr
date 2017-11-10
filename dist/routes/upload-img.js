@@ -1,10 +1,10 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
-var fs = require('fs');
-var multer = require('multer');
-var path = require('path');
-var sizeOf = require('image-size');
-var logUtil = require('../util/log-util');
+exports.__esModule = true;
+var fs = require("fs");
+var multer = require("multer");
+var path = require("path");
+var sizeOf = require("image-size");
+var log_util_1 = require("../util/log-util");
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, path.join(__dirname, '../fileStorage'));
@@ -12,13 +12,13 @@ var storage = multer.diskStorage({
     filename: function (req, file, cb) {
         var fileNewName = Date.now() + "-" + file.originalname;
         cb(null, fileNewName);
-    },
+    }
 });
 var upload = multer({
     storage: storage,
     fileFilter: function (req, file, cb) {
         cb(null, true);
-    },
+    }
 });
 upload = upload.fields([{ name: 'imgFile' }]);
 function dealUpload(req, res) {
@@ -35,10 +35,12 @@ function dealUpload(req, res) {
 }
 function imgValid(limit, imgInfo) {
     var widthAndHeight = imgInfo.width + "*" + imgInfo.height;
-    if (!!limit.size && widthAndHeight != limit.size)
+    if (!!limit.size && widthAndHeight != limit.size) {
         return 1;
-    if (limit.isAllowPng != 1 && imgInfo.type == 'png')
+    }
+    if (limit.isAllowPng != 1 && imgInfo.type == 'png') {
         return 2;
+    }
     return 0;
 }
 function default_1(app) {
@@ -49,7 +51,7 @@ function default_1(app) {
             var imgName = req.files.imgFile[0].filename;
             var limit = {
                 size: req.query.imgSize,
-                isAllowPng: req.query.isAllowPng,
+                isAllowPng: req.query.isAllowPng
             };
             var imgPath = path.join(__dirname, "../fileStorage/" + imgName);
             var imgInfo = sizeOf(imgPath);
@@ -69,12 +71,11 @@ function default_1(app) {
                 default:
                     res.send("<script>window.top." + moduleId + "(\"/mock_server/fileStorage/" + newImgName + "\");</script>");
             }
-        })
-            .catch(function (err) {
-            logUtil.log(err);
+        })["catch"](function (err) {
+            log_util_1["default"].log(err);
             res.status(403).send("<script>window.top." + moduleId + "(\"\",\"\u56FE\u7247\u4E0A\u4F20\u5931\u8D25\uFF1A\u67D0\u4E9B\u672A\u5B9A\u4E49\u95EE\u9898\uFF01\");</script>");
         });
     });
 }
-exports.default = default_1;
+exports["default"] = default_1;
 //# sourceMappingURL=upload-img.js.map

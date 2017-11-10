@@ -1,8 +1,9 @@
-'use strict';
-var type = function(o) {
-    var s = Object.prototype.toString.call(o);
-    return s.match(/\[object (.*?)\]/)[1].toLowerCase();
-};
+'use strict'
+
+function type(o) {
+    const s = Object.prototype.toString.call(o)
+    return s.match(/\[object (.*?)\]/)[1].toLowerCase()
+}
 
 [
     'Null',
@@ -15,12 +16,12 @@ var type = function(o) {
     'Function',
     'RegExp',
     'NaN',
-    'Infinite'
+    'Infinite',
 ].forEach(function(t) {
-    let methodName = 'is' + t;
-    module.exports[methodName] = function (o) {
-        return type(o) === t.toLowerCase();
-    };
-});
+    const methodName = 'is' + t
+    module.exports[methodName] = function(o) {
+        return type(o) === t.toLowerCase()
+    }
+})
 
-module.exports.getType = type;
+module.exports.getType = type

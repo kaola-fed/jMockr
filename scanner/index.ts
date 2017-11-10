@@ -139,9 +139,7 @@ function countResolvedPage(): void {
     Print.update(`          Loading configuration ... ${percent}%`)
 }
 
-function initCommonFtl(page: {
-    syncData: any,
-}, cPath: string | undefined): void {
+function initCommonFtl(page: Page, cPath: string | undefined): void {
     if (!cPath) {
         return
     }
@@ -157,10 +155,7 @@ function initCommonFtl(page: {
     })
 }
 
-function initPageFtl(page: {
-    entry: string,
-    syncData: any,
-}, pPath: string | undefined): void {
+function initPageFtl(page: Page, pPath: string | undefined): void {
     if (!pPath) {
         return
     }
@@ -173,10 +168,7 @@ function initPageFtl(page: {
     extend(page.syncData, j5require(ftlMockFilePath2))
 }
 
-function initAJAX(page: {
-    entry: string,
-    async: any[],
-}, aPath: string | undefined): void {
+function initAJAX(page: Page, aPath: string | undefined): void {
     page.async = <any> []
     if (!aPath || page.entry == '/') {
         return

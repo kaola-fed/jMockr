@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var packageData = require("../package.json");
 var parseArgv = require("minimist");
 var chalk = require("chalk");
@@ -34,17 +34,19 @@ function index(args) {
         process.exit(0);
     }
     else {
-        app_1.default.start();
-        if (args.n || args.normal)
+        app_1["default"].start();
+        if (args.n || args.normal) {
             return;
-        mockDataWatcher_1.default.addListener(function () {
+        }
+        mockDataWatcher_1["default"].addListener(function () {
             console.info('Mock data changed, restart server...');
-            app_1.default.restart();
+            app_1["default"].restart();
         });
-        if (args.s || args.start)
+        if (args.s || args.start) {
             return;
-        pageWatcher_1.default.addListener(function () {
-            app_1.default.reloadPages();
+        }
+        pageWatcher_1["default"].addListener(function () {
+            app_1["default"].reloadPages();
         });
     }
 }

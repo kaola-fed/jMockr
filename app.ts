@@ -7,20 +7,20 @@
 import config from './scanner/config'
 import * as express from 'express'
 import * as path from 'path'
-const bodyParser = require('body-parser')
+import * as bodyParser from 'body-parser'
 import routes from './routes/index'
 console.info(routes)
-const opn = require('opn')
+import * as opn from 'opn'
 import * as print from './util/print'
 import * as reloader from './pageReloader/reloader'
 
 let server: any
 let sockets: any[]
-const serverConfig = config.serverConfig
-let openPageAfterLaunch = !!serverConfig.initialURL || (serverConfig.noOpenPage !== true)
+const serverConfig: any = config.serverConfig
+let openPageAfterLaunch: any = !!serverConfig.initialURL || (serverConfig.noOpenPage !== true)
 
-function start() {
-    const app = express()
+function start(): void {
+    const app: any = express()
     // http://stackoverflow.com/questions/10888610/ignore-invalid-self-signed-ssl-certificate-in-node-js-with-https-request
     // Ignore invalid self-signed ssl certificate in node.js with https.request
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
@@ -52,7 +52,7 @@ function start() {
             server = app.listen(config.serverConfig.port, () => {
                 print.update(`          jMockr listening on port ${config.serverConfig.port}!\n`)
                 if (openPageAfterLaunch) {
-                    const url = config.serverConfig.initialURL || `http://localhost:${config.serverConfig.port}`
+                    const url: string = config.serverConfig.initialURL || `http://localhost:${config.serverConfig.port}`
                     opn(url)
                     openPageAfterLaunch = false // only open once
                 }
@@ -72,14 +72,14 @@ function start() {
 
             })
         })
-    }catch (e) {
+    } catch (e) {
         console.info('jMockr crashed!')
         console.info(e)
     }
 }
 
-function restart() {
-    sockets.forEach(socket => socket.destroy())
+function restart(): void {
+    sockets.forEach((socket: any) => socket.destroy())
     server.close(start)
 }
 

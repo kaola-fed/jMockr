@@ -1,5 +1,5 @@
-export default function (app: any) {
-    app.post('/batchUploadFile.do', function(req: any, res: any) {
+export default function (app: any): void {
+    app.post('/batchUploadFile.do', function(req: any, res: any): void {
         res.json({
             retCode: 200,
             retDesc: '操作成功',

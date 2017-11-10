@@ -1,16 +1,16 @@
 'use strict'
 
-const path = require('path')
+import * as path from 'path'
 import config from '../scanner/config'
 import scanner from '../scanner/index'
 import uploadImg from './upload-img'
 import uploadFile from './upload-file'
 import noProxyAjax from './no-proxy-ajax'
-const proxyAjax = require('./proxy-ajax')
-const proxyConfig = scanner.proxyConfig
-const injector = require('connect-inject')
+import proxyAjax from './proxy-ajax'
+const proxyConfig: any = scanner.proxyConfig
+import injector = require('connect-inject')
 
-function getRender(type: string = 'freemarker') {
+function getRender(type: string = 'freemarker'): any {
     switch (type) {
         case 'freemarker':
             return require('@ybq/jmockr-ftl-render')({
@@ -19,11 +19,11 @@ function getRender(type: string = 'freemarker') {
             })
         case 'thymeleaf':
             const { TemplateEngine, StandardDialect } = require('thymeleaf')
-            const engine = new TemplateEngine({
+            const engine: any = new TemplateEngine({
                 dialects: [new StandardDialect('th')],
             })
-            return (template: string, syncData: {}, cb: (param: string) => void) => {
-                const absolutePath = path.resolve(config.templateRoot, template)
+            return (template: string, syncData: {}, cb: (param: string) => void): void => {
+                const absolutePath: string = path.resolve(config.templateRoot, template)
                 engine.processFile(absolutePath, syncData)
                     .then((result: string) => {
                         cb(result)
@@ -38,8 +38,8 @@ function getRender(type: string = 'freemarker') {
             throw new Error(`Invalid template type:${type}`)
     }
 }
-function initRequestMap(app: any, cb: () => void) {
-    const render = getRender(config.templateType || 'freemarker')
+function initRequestMap(app: any, cb: () => void): void {
+    const render: any = getRender(config.templateType || 'freemarker')
     const { commonAsyncMock, mockData } = scanner.scan()
 
     initCORS(app)
@@ -76,7 +76,7 @@ function initRequestMap(app: any, cb: () => void) {
     return cb()
 }
 
-function initCORS(app: any) {
+function initCORS(app: any): any {
     app.all('*', (req: any, res: any, next: any) => {
         res.header('Access-Control-Allow-Origin', '*')
         res.header('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With')
@@ -85,11 +85,11 @@ function initCORS(app: any) {
     })
 }
 
-function initWebSocket(app: any) {
+function initWebSocket(app: any): any {
     app.get('/socket.io.js', (req: any, res: any, next: any) => {
         res.sendFile(path.resolve(__dirname, '../script/socket.io.js'))
     })
-    app.use(injector({
+    const param: any = {
         snippet: `
         <script src="/socket.io.js"></script>
         <script>
@@ -99,7 +99,9 @@ function initWebSocket(app: any) {
             })
         </script>
         `,
-    }))
+    }
+    const t: any = injector(param)
+    app.use(t)
 }
 
 export default initRequestMap

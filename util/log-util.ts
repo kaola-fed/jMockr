@@ -1,45 +1,45 @@
-const util = require('util')
-const fileUtil = require('./file-util')
-const extend = require('node.extend')
+import * as util from 'util'
+import * as fileUtil from './file-util'
+import extend from 'node.extend'
 
-const logFileName = 'log'
+const logFileName: string = 'log'
 
 //向日志文件中打印日志
 function logFile(args: {
     title?: string,
     fileName?: string,
     content?: string,
-}) {
+}): void {
     args = args || {}
-    let now = new Date()
-    let year = now.getFullYear()
-    let month = padZero(now.getMonth() + 1)
-    let date = padZero(now.getDate())
-    let h = padZero(now.getHours())
-    let m = padZero(now.getMinutes())
-    let s = padZero(now.getSeconds())
-    let logTitle = `\n\n===========${year}-${month}-${date} ${h}:${m}:${s}====${args.title || ''}==========\n`
+    const now: Date = new Date()
+    const year: number = now.getFullYear()
+    const month: string = padZero(now.getMonth() + 1)
+    const date: string = padZero(now.getDate())
+    const h: string = padZero(now.getHours())
+    const m: string = padZero(now.getMinutes())
+    const s: string = padZero(now.getSeconds())
+    const logTitle: string = `\n\n===========${year}-${month}-${date} ${h}:${m}:${s}====${args.title || ''}==========\n`
 
     args.fileName = (args.fileName || '').replace(/[:\/\\\*\?"\|<>]/g, '_')
-    let path = `log/${args.fileName || logFileName}.txt`
+    const path: string = `log/${args.fileName || logFileName}.txt`
     fileUtil.makeFile({
         path: path,
         content: `${logTitle}${args.content}`,
     })
 }
 
-function padZero(n: number) {
-    if (n < 10) return '0' + n
-    return n
+function padZero(n: number): string {
+    if (n < 10) { return '0' + n }
+    return '' + n
 }
 
-function log(obj: {}) {
+function log(obj: {}): void {
     console.info(util.inspect(obj, false, null))
 }
 
 function stringify(obj: {
     toJSON: () => string,
-}) {
+}): string {
     obj = extend({}, obj)
     delete obj.toJSON
     return JSON.stringify(obj)
@@ -51,7 +51,7 @@ function logAgentRes(res: {
     header: string,
     body: string,
     text: string,
-}) {
+}): any {
     logFile({
         title: 'type',
         content: JSON.stringify(res.type),
@@ -75,7 +75,7 @@ function logRequest(req: {
     originalUrl: string,
     query: string,
     body: string,
-}) {
+}): any {
     logFile({
         title: 'request url',
         content: req.originalUrl,

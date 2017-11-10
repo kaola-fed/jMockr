@@ -1,8 +1,8 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var util = require('util');
-var fileUtil = require('./file-util');
-var extend = require('node.extend');
+exports.__esModule = true;
+var util = require("util");
+var fileUtil = require("./file-util");
+var node_extend_1 = require("node.extend");
 var logFileName = 'log';
 function logFile(args) {
     args = args || {};
@@ -18,59 +18,60 @@ function logFile(args) {
     var path = "log/" + (args.fileName || logFileName) + ".txt";
     fileUtil.makeFile({
         path: path,
-        content: "" + logTitle + args.content,
+        content: "" + logTitle + args.content
     });
 }
 function padZero(n) {
-    if (n < 10)
+    if (n < 10) {
         return '0' + n;
-    return n;
+    }
+    return '' + n;
 }
 function log(obj) {
     console.info(util.inspect(obj, false, null));
 }
 function stringify(obj) {
-    obj = extend({}, obj);
+    obj = node_extend_1["default"]({}, obj);
     delete obj.toJSON;
     return JSON.stringify(obj);
 }
 function logAgentRes(res) {
     logFile({
         title: 'type',
-        content: JSON.stringify(res.type),
+        content: JSON.stringify(res.type)
     });
     logFile({
         title: 'header',
-        content: JSON.stringify(res.header),
+        content: JSON.stringify(res.header)
     });
     logFile({
         title: 'body',
-        content: JSON.stringify(res.body),
+        content: JSON.stringify(res.body)
     });
     logFile({
         title: 'text',
-        content: res.text,
+        content: res.text
     });
 }
 function logRequest(req) {
     logFile({
         title: 'request url',
-        content: req.originalUrl,
+        content: req.originalUrl
     });
     logFile({
         title: 'request query',
-        content: JSON.stringify(req.query),
+        content: JSON.stringify(req.query)
     });
     logFile({
         title: 'request body',
-        content: JSON.stringify(req.body),
+        content: JSON.stringify(req.body)
     });
 }
-exports.default = {
+exports["default"] = {
     log: log,
     logFile: logFile,
     stringify: stringify,
     logRequest: logRequest,
-    logAgentRes: logAgentRes,
+    logAgentRes: logAgentRes
 };
 //# sourceMappingURL=log-util.js.map

@@ -1,12 +1,12 @@
-const socketIO = require('socket.io')
+import * as socketIO from 'socket.io'
 
 let io: any
 
-const start = (server: any) => {
+function start(server: any): void {
     io = socketIO(server)
 }
 
-const reloadPages = () => {
+function reloadPages(): void {
     io.emit('reload')
 }
 
