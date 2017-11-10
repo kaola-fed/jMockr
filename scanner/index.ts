@@ -3,7 +3,6 @@
 const path: any = require('path')
 const fs: any = require('fs')
 const fileUtil: any = require('../util/file-util')
-const logUtil: any = require('../util/log-util')
 const j5require: any = fileUtil.json5Require
 import config from './config'
 const Print: {
@@ -32,7 +31,15 @@ interface Page {
     syncData: {}
     template: string
     entry: string
-    async: [any],
+    async: any[],
+}
+
+interface FileIterator {
+    (fn: FileIteratorCallback): void
+}
+
+interface FileIteratorCallback {
+    (filename: string): void
 }
 
 let suffix: string = '.ftl'
@@ -56,7 +63,7 @@ function initMockData(): any {
             entry: string;
             template: string;
             syncData: {};
-            async: [any];
+            async: any[];
         }) => mock(page)),
     }
 }
@@ -134,11 +141,11 @@ function countResolvedPage(): void {
 
 function initCommonFtl(page: {
     syncData: any,
-}, cPath: string): void {
+}, cPath: string | undefined): void {
     if (!cPath) {
         return
     }
-    const fileIterator: (fn: (filename: string) => void) => void = fileUtil.listFilesSync(cPath, (name: string) => {
+    const fileIterator: FileIterator = fileUtil.listFilesSync(cPath, (name: string) => {
         if (!fileUtil.isImportable(name)) {
             return false
         }
@@ -153,7 +160,7 @@ function initCommonFtl(page: {
 function initPageFtl(page: {
     entry: string,
     syncData: any,
-}, pPath: string): void {
+}, pPath: string | undefined): void {
     if (!pPath) {
         return
     }
@@ -168,8 +175,8 @@ function initPageFtl(page: {
 
 function initAJAX(page: {
     entry: string,
-    async: [any],
-}, aPath: string): void {
+    async: any[],
+}, aPath: string | undefined): void {
     page.async = <any> []
     if (!aPath || page.entry == '/') {
         return
@@ -181,7 +188,7 @@ function initAJAX(page: {
         return
     }
     // 限制文件返回格式为json; 可以过滤mac中的隐藏文件, 如.DSstore, 防止读取异步数据配置失败
-    const fileIterator: (fn: (fn: string) => void) => void = fileUtil
+    const fileIterator: FileIterator = fileUtil
         .listFilesSync(asyncFolderPath, (item: string) => /\.json(5)?$/.test(item))
 
     fileIterator((fileName: string) => {
@@ -189,15 +196,15 @@ function initAJAX(page: {
         json && page.async.push(json)
     })
 }
-function initCommonAsyncData(folder: string): any {
+function initCommonAsyncData(folder: string | undefined): any[] {
     const res: any[] = <any> []
     if (!folder) {
         return res
     }
-    const subFolderIterator: (fn: (fn: string) => void) => void = fileUtil.listFilesSync(folder, (f: string) => {
+    const subFolderIterator: FileIterator = fileUtil.listFilesSync(folder, (f: string) => {
         return fs.statSync(path.join(folder, f)).isDirectory()
     })
-    subFolderIterator((f: string) => {
+    subFolderIterator((f: string): void => {
         const urls: string[] = <string[]> mergeRequire(
             path.join(folder, f, 'url'),
             Array,
@@ -214,12 +221,12 @@ function mergeRequire(pathLeft: string, type: Array<any> | Object = Object): any
     const paths: string[] = ['.js', '.json', '.json5'].map((suffix: string): string => {
         return pathLeft + suffix
     })
-    const defaultData: [any] | {} = getDefaultData(type)
-    const res: [any] | {} = getDefaultData(type)
+    const defaultData: any[] | {} = getDefaultData(type)
+    const res: any[] | {} = getDefaultData(type)
     paths.forEach((p: string): void => {
-        const data: [any] | {} = fileUtil.json5Require(p) || defaultData
+        const data: any[] | {} = fileUtil.json5Require(p) || defaultData
         if (type === Array) {
-            (res as [any]).push(...(data as [any]))
+            (<any[]> res).push(...(<any[]> data))
         } else {
             (<any> Object).assign(res, data)
         }
@@ -227,7 +234,7 @@ function mergeRequire(pathLeft: string, type: Array<any> | Object = Object): any
     return res
 }
 
-function getDefaultData(type: any): [any] | {} {
+function getDefaultData(type: any): any[] | {} {
     switch (type) {
         case Array: return []
         default: return {}

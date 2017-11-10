@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var path = require('path');
 var fs = require('fs');
 var fileUtil = require('../util/file-util');
-var logUtil = require('../util/log-util');
 var j5require = fileUtil.json5Require;
 var config_1 = require("./config");
 var Print = require('../util/print');
