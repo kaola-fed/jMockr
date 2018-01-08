@@ -68,7 +68,7 @@ function writeFile(fd: any, data: any): any {
     return new Promise((resolve: ReturnVoid, reject: ReturnVoid): void => {
         fs.appendFile(fd, data, 'utf-8', (err: any): void => {
             if (err) {
-                reject()
+                reject(err)
             } else {
                 resolve()
             }
@@ -87,7 +87,7 @@ function json5Require(filePath: string): string | null {
             return require(filePath)
         }
 
-        const fileContent: string = fs.readFileSync(filePath, {})
+        const fileContent: string = fs.readFileSync(filePath, { encoding: 'utf8' })
         return JSON5.parse(fileContent)
     } catch (e) {
         console.info(`require json5 file [${filePath}] failed`, e)
@@ -151,4 +151,5 @@ export {
     makeFile,
     json5Require,
     isImportable,
+    writeFile,
 }

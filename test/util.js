@@ -1,7 +1,7 @@
 /* global expect */
 
-const psTree = require('ps-tree');
-const sg = require('superagent');
+const psTree = require('ps-tree')
+const sg = require('superagent')
 function get(url, judge) {
     return new Promise((resolve, reject) => {
         try {
@@ -9,56 +9,59 @@ function get(url, judge) {
                 .end((err, res) => {
                     try {
                         if (err) {
-                            if (judge) return resolve(judge(res));
-                            else return resolve(expect(res.status).toBe(200));
+                            if (judge) {
+                                return resolve(judge(res))
+                            } else {
+                                return resolve(expect(res.status).toBe(200))
+                            }
                         }
                         if (judge) {
-                            resolve(judge(res));
+                            resolve(judge(res))
                         } else {
-                            resolve(expect(res.status).toBe(200));
+                            resolve(expect(res.status).toBe(200))
                         }
                     } catch (e) {
-                        console.error('inner reject');
-                        console.error('error on url ', url);
-                        console.error(e);
-                        resolve(e);
+                        console.error('inner reject')
+                        console.error('error on url ', url)
+                        console.error(e)
+                        resolve(e)
                     }
-                });
+                })
         } catch (e) {
-            console.error('outer reject');
-            console.error(e);
-            reject(e);
+            console.error('outer reject')
+            console.error(e)
+            reject(e)
         }
-    });
+    })
 }
 
 function kill(pid, signal, callback) {
-    signal = signal || 'SIGKILL';
-    callback = callback || function() {};
-    let killTree = true;
+    signal = signal || 'SIGKILL'
+    callback = callback || function() {}
+    const killTree = true
     if (killTree) {
         psTree(pid, (err, children) => {
             [pid].concat(
-                children.map((p) => p.PID)
-            ).forEach((tpid) => {
+                children.map(p => p.PID)
+            ).forEach(tpid => {
                 try {
-                    process.kill(tpid, signal) ;
+                    process.kill(tpid, signal)
                 } catch (ex) {
-                    console.error(ex);
+                    console.error(ex)
                 }
-            });
-            callback();
-        });
+            })
+            callback()
+        })
     } else {
         try {
-            process.kill(pid, signal);
+            process.kill(pid, signal)
         } catch (ex) {
-            console.info(ex);
+            console.info(ex)
         }
-        callback();
+        callback()
     }
 };
 
 
-module.exports.get = get;
-module.exports.kill = kill;
+module.exports.get = get
+module.exports.kill = kill

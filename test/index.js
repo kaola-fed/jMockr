@@ -1,12 +1,12 @@
-const exec = require('child_process').exec;
+const exec = require('child_process').exec
 
-let child;
+let child
 function getRunKey(char) {
-    return `test${char}`;
+    return `test${char}`
 }
 
 function runServer(char) {
-    const key = getRunKey(char);
+    const key = getRunKey(char)
     child = exec(`npm run ${key}`, {
         cwd: __dirname,
     }, (err, stdout, stderr) => {
@@ -20,27 +20,27 @@ function runServer(char) {
             // console.info(stdout);
             // console.info(stderr);
         }
-    });
+    })
 
-    child.stdout.on('data', (data) => {
+    child.stdout.on('data', data => {
         // console.info(data);
-    });
-    child.stderr.on('data', (data) => {
-        console.info(data);
-    });
+    })
+    child.stderr.on('data', data => {
+        console.info(data)
+    })
 
     process.on('exit', () => {
-        child.kill();
+        child.kill()
         // console.info('bye');
-    });
+    })
 
     process.on('SIGTERM', () => {
-        console.log('Got SIGTERM, exiting...');
-        process.exit(0);
-    });
+        console.log('Got SIGTERM, exiting...')
+        process.exit(0)
+    })
 
-    return child;
+    return child
 }
 
 
-module.exports = runServer;
+module.exports = runServer

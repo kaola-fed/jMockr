@@ -1,7 +1,8 @@
 {
   "authConfig": {
     "username": "Boss19860407",
-    "password": "qiqiab12345^"
+    "password": "qiqiab12345^",
+    "casDomain": "www.baidu.com",
   },
   "proxyConfig": {
     "enable": false,

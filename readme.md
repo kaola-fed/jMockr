@@ -12,6 +12,11 @@
 
 A `nodejs`, `expressjs` based mock server, currently support two server side templates: `freemarker` and `thymeleaf`. (The thymeleaf parsing relys on package [thymeleaf](https://www.npmjs.com/package/thymeleaf#), and this package is not fully developed. So the support of thymeleaf is kind of weak)
 
+## 0. Migrate from 1.x to 3.x
+
+```
+npm run jmockr -m
+```
 ## 1. Install
 
 

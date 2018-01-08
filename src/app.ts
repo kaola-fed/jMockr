@@ -9,7 +9,6 @@ import * as express from 'express'
 import * as path from 'path'
 import * as bodyParser from 'body-parser'
 import routes from './routes/index'
-console.info(routes)
 import * as opn from 'opn'
 import * as print from './util/print'
 import * as reloader from './pageReloader/reloader'

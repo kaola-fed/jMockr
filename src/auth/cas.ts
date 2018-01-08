@@ -1,11 +1,11 @@
-const config = require('../scanner/index')
-const cfg = config.authConfig
-const sg = require('superagent')
+const config: any = require('../scanner/index')
+const cfg: any = config.authConfig
+const sg: any = require('superagent')
 
-const superagent = sg.agent() //直接用sg的话, 不会保存cookie
+const superagent: any = sg.agent() //直接用sg的话, 不会保存cookie
 
-function getRedirectLocation(url: string, opt?: any) {
-    return new Promise((resolve, reject) => {
+function getRedirectLocation(url: string, opt?: any): Promise<any> {
+    return new Promise((resolve: (param: any) => void, reject: (e: any) => void): void => {
         opt = opt || {}
         superagent.get(url)
             .set({
@@ -19,7 +19,7 @@ function getRedirectLocation(url: string, opt?: any) {
                     console.info('Error on getting redirect location.')
                     reject(err)
                 } else {
-                    var redirectLocation = res.redirects[0]
+                    const redirectLocation: string = res.redirects[0]
                     resolve({
                         url: redirectLocation,
                         res: res,
@@ -29,12 +29,12 @@ function getRedirectLocation(url: string, opt?: any) {
     })
 }
 
-function getExecutionValue() {
-    return new Promise((resolve, reject) => {
-        getRedirectLocation('https://casserver-test.kaola.com/login.do')
+function getExecutionValue(): Promise<any> {
+    return new Promise((resolve: Function, reject: Function): void => {
+        getRedirectLocation(cfg.casDomain)
             .then((ret: any) => {
-                var reg = /execution=(.+)/
-                var value = reg.exec(ret.url)[1]
+                const reg: RegExp = /execution=(.+)/
+                const value: string = reg.exec(ret.url)![1]
                 resolve({
                     value: value,
                     url: ret.url,
@@ -43,9 +43,9 @@ function getExecutionValue() {
     })
 }
 
-function login() {
+function login(): Promise<any> {
     console.info('Login...')
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve: Function, reject: Function): void => {
         getExecutionValue()
             .then((result: any) => {
                 superagent.post(result.url)
@@ -65,7 +65,7 @@ function login() {
                             console.info('Error on sending login request.')
                             reject(err)
                         } else {
-                            let tempUrl = 'https://globalms.netease.com'
+                            const tempUrl: string = 'https://globalms.netease.com'
                             superagent.get(tempUrl)
                                 .end((err: any, res: any) => {
                                     if (err) {
@@ -78,7 +78,7 @@ function login() {
                                 })
                         }
                     })
-            }).catch((err) => {
+            }).catch((err: any) => {
                 console.info('Error getting execution value.')
                 reject(err)
             })

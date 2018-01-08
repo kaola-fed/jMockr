@@ -51,3 +51,4 @@ fileStorage
 /mock
 /log
 .idea/
+dist/

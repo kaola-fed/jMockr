@@ -1,15 +1,22 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
         "noUnusedLocals": true,
         "removeComments": true,
+        "noImplicitReturns": true,
+        "strictNullChecks": true,
         "preserveConstEnums": true,
         "sourceMap": true,
+        "experimentalDecorators": true,
         "lib": ["es7", "dom"],
         "baseUrl": "./",
         "outDir": "./dist"
     },
+    "include": [
+        "src/**/*"
+    ],
     "exclude": [
         "node_modules"
     ]

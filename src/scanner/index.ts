@@ -6,7 +6,7 @@ const fileUtil: any = require('../util/file-util')
 const j5require: any = fileUtil.json5Require
 import config from './config'
 const Print: {
-    update: (input: string) => void,
+    update(input: string): void,
 } = require('../util/print')
 const extend: any = require('node.extend')
 
@@ -77,7 +77,6 @@ function convertPathes(config: {
         pageSync: false,
         commonAsync: false,
         async: false,
-        url200: false,
     }, config.dataPath)
 
     const errors: string[] = []
@@ -106,9 +105,6 @@ function convertPathes(config: {
         paths.aPath = path.resolve(paths.pageAsync)
     } else {
         errors.push('Page async mock data not found.')
-    }
-    if (paths.url200) {
-        paths.url200Path = path.resolve(paths.url200)
     }
     errors.forEach((error: string): void => {
         console.error(error)

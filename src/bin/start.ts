@@ -1,13 +1,15 @@
-import * as packageData from '../package.json'
+import * as packageData from '../../package.json'
 import * as parseArgv from 'minimist'
 import * as chalk from 'chalk'
 import mockDataWatcher from '../watcher/mockDataWatcher'
 import pageWatcher from '../watcher/pageWatcher'
 import app from '../app'
+import { migrate } from '../util/migrate'
 
 const args: any = parseArgv(process.argv.slice(2))
 enum AvailableFullCommands {
-    help =  'help',
+    help = 'help',
+    migrate = 'migrate',
     normal = 'normal',
     live = 'live',
     start = 'start',
@@ -16,6 +18,7 @@ enum AvailableFullCommands {
 
 enum AvailableShortCommands {
     h = 'h',
+    m = 'm',
     n = 'n',
     l = 'l',
     s = 's',
@@ -31,6 +34,8 @@ function index(args: { [key: string]: boolean }): void {
     } else if (args.v || args.version) {
         console.info((packageData as any).version)
         process.exit(0)
+    } else if (args.m || args.migrate) {
+        migrate()
     } else {
         app.start()
         if (args.n || args.normal) {
