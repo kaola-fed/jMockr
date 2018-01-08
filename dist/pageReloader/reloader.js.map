@@ -1,0 +1,1 @@
+{"version":3,"file":"reloader.js","sourceRoot":"","sources":["../../src/pageReloader/reloader.ts"],"names":[],"mappings":";;AAAA,oCAAqC;AAErC,IAAI,EAAO,CAAA;AAEX,eAAe,MAAW;IACtB,EAAE,GAAG,QAAQ,CAAC,MAAM,CAAC,CAAA;AACzB,CAAC;AAOG,sBAAK;AALT;IACI,EAAE,CAAC,IAAI,CAAC,QAAQ,CAAC,CAAA;AACrB,CAAC;AAIG,kCAAW"}
