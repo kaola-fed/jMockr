@@ -1,6 +1,6 @@
 {
   "name": "jmockr",
-  "version": "3.0.3",
+  "version": "3.0.5",
   "description": "for seperate frontend and backend development",
   "main": "app.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "install": "tsc -p ./tsconfig.json && npm run copy"
   },
   "bin": {
-    "jmockr": "bin/start.js"
+    "jmockr": "dist/bin/start.js"
   },
   "repository": {
     "type": "git",
