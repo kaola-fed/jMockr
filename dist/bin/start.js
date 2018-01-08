@@ -1,4 +1,3 @@
-"use strict";
 exports.__esModule = true;
 var packageData = require("../../package.json");
 var parseArgv = require("minimist");

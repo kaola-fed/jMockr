@@ -1,4 +1,3 @@
-"use strict";
 exports.__esModule = true;
 var fs = require("fs");
 var JSON5 = require("json5");

@@ -1,4 +1,3 @@
-"use strict";
 exports.__esModule = true;
 var watcher = require('./base');
 var config = require('../scanner/config')["default"];

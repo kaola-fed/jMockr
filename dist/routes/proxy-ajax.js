@@ -1,4 +1,3 @@
-"use strict";
 exports.__esModule = true;
 var config_1 = require("../scanner/config");
 var cas_1 = require("../auth/cas");

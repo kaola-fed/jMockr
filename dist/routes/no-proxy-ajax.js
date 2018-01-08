@@ -1,4 +1,3 @@
-"use strict";
 exports.__esModule = true;
 function init(app, urlMap, commonAsync) {
     urlMap.forEach(function (page) {

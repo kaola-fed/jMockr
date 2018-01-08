@@ -1,4 +1,3 @@
-"use strict";
 exports.__esModule = true;
 function default_1(app) {
     app.post('/batchUploadFile.do', function (req, res) {

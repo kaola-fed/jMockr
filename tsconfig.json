@@ -9,6 +9,7 @@
         "strictNullChecks": true,
         "preserveConstEnums": true,
         "sourceMap": true,
+        "noImplicitUseStrict": true,
         "experimentalDecorators": true,
         "lib": ["es7", "dom"],
         "baseUrl": "./",

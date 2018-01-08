@@ -1,4 +1,3 @@
-"use strict";
 exports.__esModule = true;
 var path = require("path");
 var fileUtil = require("../util/file-util");
