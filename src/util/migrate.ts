@@ -45,6 +45,7 @@ async function migrate(): Promise<void> {
             pageSync: originDataPath.pageFtl,
             pageAsync: originDataPath.ajax,
         }
+        json.authConfig.casDomain = ''
         delete json.ftlFilePath
         const newContent: string = JSON.stringify(json, null, 4)
         fs.writeFileSync(filePath, newContent)
