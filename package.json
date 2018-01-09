@@ -1,12 +1,13 @@
 {
   "name": "jmockr",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "description": "for seperate frontend and backend development",
   "main": "app.js",
   "scripts": {
     "test": "jest --runInBand",
     "copy": "cp -r script/ dist/script/",
-    "install": "npm run copy"
+    "shebang": "node ./make-bin",
+    "install": "tsc -p ./tsconfig.json && npm run shebang && npm run copy"
   },
   "bin": {
     "jmockr": "dist/bin/start.js"
