@@ -1,4 +1,4 @@
-function init(app: any, urlMap: any, commonAsync: any) {
+function init(app: any, urlMap: any, commonAsync: any): void {
     urlMap.forEach((page: any) => {
         if (!page.async) {
             return
@@ -6,8 +6,11 @@ function init(app: any, urlMap: any, commonAsync: any) {
         page.async.forEach((opt: any) => {
             try {
                 opt.method = opt.method || 'post'
-                opt.method.split(',').forEach(function(m: string) {
+                opt.method.split(',').forEach(function(m: string): void {
                     app[m.toLowerCase()](opt.url, (req: any, res: any, next: any) => {
+                        if (opt.handler) {
+                            return res.json(opt.handler(req, res))
+                        }
                         res.json(opt.result)
                     })
                 })

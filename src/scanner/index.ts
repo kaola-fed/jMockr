@@ -180,8 +180,23 @@ function initAJAX(page: Page, aPath: string | undefined): void {
         .listFilesSync(asyncFolderPath, (item: string) => /\.json(5)?$/.test(item))
 
     fileIterator((fileName: string) => {
-        const json: any = j5require(path.join(asyncFolderPath, fileName))
-        json && page.async.push(json)
+        const filename: string = path.join(asyncFolderPath, fileName)
+        let jsFilename: string = ''
+        let handler: any = null
+        if (filename.match(/\.json5$/)) {
+            jsFilename = filename.slice(0, filename.length - 3)
+        }
+        if (filename.match(/\.json$/)) {
+            jsFilename = filename.slice(0, filename.length - 2)
+        }
+        if (fs.existsSync(jsFilename)) {
+            handler = require(jsFilename)
+        }
+        const json: any = j5require(filename)
+        if (json) {
+            json.handler = handler
+            page.async.push(json)
+        }
     })
 }
 function initCommonAsyncData(folder: string | undefined): any[] {
@@ -213,6 +228,8 @@ function mergeRequire(pathLeft: string, type: Array<any> | Object = Object): any
     const res: any[] | {} = getDefaultData(type)
     paths.forEach((p: string): void => {
         const data: any[] | {} = fileUtil.json5Require(p) || defaultData
+        console.info(pathLeft, '===============')
+        console.info(data)
         if (type === Array) {
             (<any[]> res).push(...(<any[]> data))
         } else {
