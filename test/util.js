@@ -48,7 +48,7 @@ function kill(pid, signal, callback) {
                     try {
                         process.kill(tpid, signal)
                     } catch (ex) {
-                        console.error(ex)
+                        console.error('Error on kill process: ', ex)
                     }
                 })
                 callback()
@@ -60,7 +60,7 @@ function kill(pid, signal, callback) {
         try {
             process.kill(pid, signal)
         } catch (ex) {
-            console.info(ex)
+            console.error('error kill process', ex)
         }
         callback()
     }
