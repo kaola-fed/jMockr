@@ -23,21 +23,14 @@ function init(app: any): any {
                     })
                     .query(req.query)
                     .send(req.body)
-                    .end((err: any, sres: any) => {
-                        if (err) {
-                            console.info('Error in sres')
-                            logUtil.logAgentRes(sres)
-                            res.status(500)
+                    .pipe(res)
+                    .on('error',function(err: any){
+                        res.status(500)
                                 .json({
                                     retCode: 500,
                                     retDesc: 'proxy Error',
                                 })
-                        } else {
-                            console.info('Response arrived.')
-                            logUtil.logAgentRes(sres)
-                            res.json(sres.body)
-                        }
-                    })
+                    });
             })
         })
         .catch((err: any) => {
