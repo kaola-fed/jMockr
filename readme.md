@@ -2,7 +2,7 @@
 
 [中文文档](https://github.com/yubaoquan/jMockr/blob/master/readme.zh-CN.md)
 [![NPM version][npm-image]][npm-url]
-[![Build Status](https://travis-ci.org/yubaoquan/jMockr.svg?branch=master)](https://travis-ci.org/yubaoquan/jMockr)
+[![Build Status](https://travis-ci.org/kaola-fed/jMockr.svg?branch=master)](https://travis-ci.org/kaola-fed/jMockr)
 [![npm download][download-image]][download-url]
 
 [npm-image]: http://img.shields.io/npm/v/jmockr.svg?style=flat-square
