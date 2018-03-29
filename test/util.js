@@ -1,6 +1,7 @@
 /* global expect */
 
 const psTree = require('ps-tree')
+const treeKill = require('tree-kill')
 const sg = require('superagent')
 function get(url, judge) {
     return new Promise((resolve, reject) => {
@@ -41,17 +42,13 @@ function kill(pid, signal, callback) {
     const killTree = true
     if (killTree) {
         try {
-            psTree(pid, (err, children) => {
-                [pid].concat(
-                    children.map(p => p.PID)
-                ).forEach(tpid => {
-                    try {
-                        process.kill(tpid, signal)
-                    } catch (ex) {
-                        console.error('Error on kill process: ', ex)
-                    }
-                })
-                callback()
+            treeKill(pid, signal, (err, children) => {
+                if (err) {
+                    console.info('errrrrrrr')
+                    return console.error('Error exec psTree', err);
+                }
+                console.info(`killed`)
+                callback && callback()
             })
         } catch (e) {
             console.error('Error on kill process', e);
