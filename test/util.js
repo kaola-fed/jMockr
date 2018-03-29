@@ -40,18 +40,22 @@ function kill(pid, signal, callback) {
     callback = callback || function() {}
     const killTree = true
     if (killTree) {
-        psTree(pid, (err, children) => {
-            [pid].concat(
-                children.map(p => p.PID)
-            ).forEach(tpid => {
-                try {
-                    process.kill(tpid, signal)
-                } catch (ex) {
-                    console.error(ex)
-                }
+        try {
+            psTree(pid, (err, children) => {
+                [pid].concat(
+                    children.map(p => p.PID)
+                ).forEach(tpid => {
+                    try {
+                        process.kill(tpid, signal)
+                    } catch (ex) {
+                        console.error(ex)
+                    }
+                })
+                callback()
             })
-            callback()
-        })
+        } catch (e) {
+            console.error('Error on kill process', e);
+        }
     } else {
         try {
             process.kill(pid, signal)
